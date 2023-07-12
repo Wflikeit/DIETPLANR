@@ -1,0 +1,16 @@
+__pycache__
+.pytest_cache
+.mypy_cache
+.idea/
+.vscode/
+env
+venv
+dist
+.coverage
+coverage.xml
+.venv
+build/
+.env
+.env.prod
+google_credentials.json
+.sqlite3
