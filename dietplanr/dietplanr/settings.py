@@ -31,12 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'account.apps.AccountConfig',
     'chat.apps.ChatConfig',
     'meal_plan.apps.MealplanConfig',
     'payments.apps.PaymentsConfig',
-    'tracker.apps.TrackerConfig'
-    '',
+    'tracker.apps.TrackerConfig',
+    'panel.apps.PanelConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
