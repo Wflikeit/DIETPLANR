@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+
+</head>
+<body>
+    <nav class="navbar">
+        <a href="">Product</a>
+        <a href="">Features</a>
+        <a href="">Our dietitians</a>
+        <a href="">FAQ</a>
+        <a href="">Sign up</a>
+    </nav>
+    <div id="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    <footer>
+        <div>
+            <p>            
+                Ready start your journey to better
+            </p>
+            <p>
+                health and nutrition, Your body
+            </p>
+            <p>
+                deserves?
+            </p>
+        </div>
+        <div>
+            <div>
+                <p>
+                    No account?
+                </p>
+                <p style="text-indent: 1rem;">
+                    No problem
+                </p>
+            </div>
+            <button class="register">REGISTER</button>
+        </div>
+    </footer>
+</body>
+</html>

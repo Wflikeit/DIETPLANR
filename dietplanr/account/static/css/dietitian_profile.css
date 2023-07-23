@@ -1,0 +1,181 @@
+.dietitian-heading, .recipe-heading, .recipe-heading, .appointment-form, .card, .body, .section, .appointments-heading{
+    padding: 1rem;
+    border-radius: 1rem;
+}
+.section{
+    .body{
+        margin-top: 1rem;
+    }
+}
+.container{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    margin: auto;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+.dietitian-heading, .recipe-heading{
+    background-color: rgba(255, 255, 255, 0.3);
+    display: grid;
+    & img{
+    object-fit: contain;
+    border-radius: 1rem;
+    border: 5px solid white;
+    width: 100%;
+    }
+    .section{
+        border: 1px solid rgba(255,255,255,0.5);
+        display: flex;
+        flex-direction: column;
+    }
+    .title{
+        text-align: center;
+        color: rgba(255,255,255,0.8);
+        font-size: large;
+    }
+    .body{
+        background-color:rgba(255,255,255,0.5);
+        color: rgba(0,0,0,0.7);
+        text-align: center;
+    }
+}
+.dietitian-heading{
+    position: relative;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: repeat(3,auto);
+    align-items: start;
+    .section{
+        height: 100%;
+    }
+}
+.recipe-heading{
+    grid-template-columns: 60% 40%;
+    grid-template-rows: repeat(2,auto);
+    height: fit-content;
+    :nth-child(1){
+        grid-row: 1/-1;
+    }
+    :nth-child(3){
+        grid-column-start: 2;
+    }
+    .section{
+        height: 100%;
+    }
+}
+.appointments-heading{
+    background-color: rgba(255,255,255,0.7);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .appointment-card{
+        background-color: rgba(169, 196, 255, 62%);
+        width: 40%;
+        padding: 1rem;
+        border-radius: 1rem;
+        .title{
+            background-color: rgba(255, 255, 255, 0.5);
+            color: rgba(0,0,0,0.8);
+            border-radius: 100rem;
+            padding: 0.5rem 0.5rem;
+            text-align: center;
+            font-size: large;
+        }
+        .body{
+            background-color:rgba(255,255,255,0.5);
+            color: rgba(0,0,0,0.7);
+            margin-top: 1rem;
+            & p{
+                text-align: center;
+                margin-top: 0.5rem;
+            }
+            .numbers{
+                background-color: rgba(255,255,255,0.5);
+                padding: 0.5rem 0.5rem;
+                border-radius: 1rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+            }
+        }
+        .appointment-btn{
+            display: block;
+            margin: auto;
+            margin-top: 1rem;
+            border-radius: 1000rem;
+            padding: 0.5rem;
+            border: none;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: medium;
+            background-color: rgba(177, 173, 234, 100%);
+        }
+        .appointment-btn:hover{
+            cursor: pointer;
+        }
+    }
+}
+.appointment-form{
+    background-color: rgba(255,255,255,0.7);
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    height: fit-content;
+    justify-content: space-around;
+    grid-gap: 1rem;
+    > *{
+        height: fit-content;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+
+    }
+    & .appointment-btn{
+        border-radius: 1000rem;
+        padding: 0.5rem;
+        width: fit-content;
+        border: none;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: medium;
+        background-color: rgba(81, 108, 252,70%);
+        margin: auto;
+    }
+    .appointment-btn:hover{
+        cursor: pointer;
+    }
+}
+@media (max-width: 768px) {
+    .container{
+        padding: 5rem;
+        gap: 5rem;
+    }
+    .container, .dietitian-heading, .recipe-heading{
+        grid-template-columns: auto;
+    }
+    .recipe-heading{
+        display: flex;
+        flex-direction: column;
+        > :nth-child(2){
+            order: 1;
+        }
+        > :nth-child(1){
+            order: 2;
+        }
+        > :nth-child(3){
+            order: 3;
+        }
+    }
+    .appointments-heading{
+        flex-wrap: wrap;
+        gap: 1rem;
+        > *{
+            flex-basis: 100%;
+        }
+    }
+    .appointment-form{
+        grid-template-columns: auto;
+    }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container{
+        grid-template-columns: auto;
+    }
+}

@@ -1,9 +1,89 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
+    Profil
+    <link href="{% static "css/dietitian_profile.css" %}" rel="stylesheet">
+
 {% endblock %}
 {% block content %}
-  {% for interest in p .interests%}
-    {{ interest }}
-  {% endfor %}
+  <div class="container">
+        <div class="dietitian-heading">
+            <img src="../../static/images/christina-wocintechchat-com-eF7HN40WbAQ-unsplash.jpg" alt="">
+            <div class="section">
+                <div class="title">Nutritional philosophy</div>
+                <div class="body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed accusantium libero unde dolores officia optio commodi adipisci! Dolores praesentium labore ut. Exercitationem, ipsam harum. Ad ipsam magnam delectus pariatur enim eaque repudiandae aliquid tempore iure omnis aliquam expedita iusto possimus velit impedit earum suscipit, quisquam autem consectetur! Deleniti, assumenda vel!
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse illum voluptatum facere nostrum ex perspiciatis quisquam. Amet eaque, dolore facere cumque at voluptatibus repellendus ipsam!
+                </div>
+            </div>
+            <div class="section">
+                <div class="title">Specialty</div>
+                <div class="body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere magni sed recusandae ullam dolorem perspiciatis, fuga expedita quod odio repellendus animi? Debitis deserunt repudiandae pariatur!
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores delectus adipisci corporis molestiae deleniti quas vel iste voluptas nobis obcaecati nisi facilis, eveniet quos dolore!
+                </div>
+            </div>
+            <div class="section">
+                <div class="title">Experience</div>
+                <div class="body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt repudiandae animi, temporibus eligendi voluptatibus perferendis at quasi dolore. Vero consequatur tempore fugiat accusantium impedit sit?
+                </div>
+            </div>
+            <div class="section">
+                <div class="title">Some more</div>
+                <div class="body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates ea earum qui doloribus quisquam quod magni ut nihil blanditiis veritatis cupiditate, laudantium nam quos quam.
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nam voluptatibus aliquid doloribus, numquam, officia cum quo voluptatum autem non nihil tenetur, ut exercitationem? Debitis, necessitatibus!
+                </div>
+            </div>
+        </div>
+        <div class="recipe-heading">
+                <div class="section">
+                    <div class="title">Dish name</div>
+                    <div class="body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora soluta sint, nobis ea at maiores dolorum totam rem natus inventore vero a. Minus, quo ratione.</div>
+                </div>
+                <img src="../../static/images/orijit-chatterjee-wEBg_pYtynw-unsplash.jpg" alt="">
+                <div class="section">
+                    <div class="title">Ingredients</div>
+                    <div class="body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi molestias quo perspiciatis praesentium consectetur illo magnam architecto veniam exercitationem accusantium! Odit eaque dolores et quia?</div>
+                </div>
+        </div>
+        <div class="appointments-heading">
+            <div class="appointment-card">
+                <div class="title">Consultation</div>
+                <div class="body">
+                    <div class="numbers">
+                        <div class="price">Price: 30$</div>
+                        <div class="time">Time: 60 min</div>
+                    </div>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam ad quam non veritatis inventore officia sapiente aliquam dolorem velit voluptatibus. Nam doloremque omnis dolore voluptates?
+                    </p>
+                </div>
+                <button class="appointment-btn">Appointment</button>
+            </div>
+            <div class="appointment-card">
+                <div class="title">Health check</div>
+                <div class="body">
+                    <div class="numbers">
+                        <div class="price">Price: 30$</div>
+                        <div class="time">Time: 60 min</div>
+                    </div>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Est mollitia totam, aspernatur tempore voluptatibus vitae voluptatem placeat rem eaque ullam sequi error sapiente facere. Possimus.
+                    </p>
+                </div>
+                <button class="appointment-btn">Appointment</button>
+            </div>
+        </div>
+        <form action="" method="post" class="appointment-form">
+            <input type="text" name="first_name" placeholder="First Name" id="">
+            <input type="text" name="last_name" placeholder="Last Name" id="">
+            <input type="text" name="email" placeholder="Email" id="">
+            <input type="text" name="date_of_birth" placeholder="Date of birth" id="">
+            <input type="text" name="gender" placeholder="Gender" id="">
+            <button type="submit" class="appointment-btn">Appointments</button>
+        </form>
+    </div>
 
 {% endblock %}
