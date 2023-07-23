@@ -3,5 +3,5 @@ from . import views
 
 app_name = 'panel'
 urlpatterns = [
-    path('my-profile/', views.show_my_profile())
+    path('my-profile/', views.show_my_profile)
 ]

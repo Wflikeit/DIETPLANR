@@ -2,7 +2,11 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
-genders = ['male', 'female', 'prefer not to say']
+ENDER_CHOICES = [
+    ('M', 'Male'),
+    ('F', 'Female'),
+    ('O', 'Other'),
+]
 
 
 class UserProfile(models.Model):
@@ -13,7 +17,7 @@ class UserProfile(models.Model):
                               blank=True, unique=True)
     name = models.TextField(max_length=40, editable=False)
     age = models.PositiveSmallIntegerField(editable=False)
-    gender = models.TextField(choices=genders, editable=False)
+    gender = models.TextField(choices=ENDER_CHOICES, editable=False, max_length=1)
     City = models.TextField(max_length=40)
     Country = models.TextField(editable=False)
 
