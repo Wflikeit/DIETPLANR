@@ -1,10 +1,11 @@
 # from django.shortcuts import render
-from django.views.generic import ListView
-
+from django.views.generic import ListView, FormView
 
 # from django.contrib.auth.mixins import LoginRequiredMixin, \
 #     PermissionRequiredMixin
 # Create your views here.
+from .forms import DietitianProfileForm
+from .models import DietitianProfile
 
 
 def show_my_profile(request):
@@ -51,3 +52,15 @@ class ManageSettings(ListView):
         # TODO return only recipes of current dietitian
         # return qs.filter()
 
+
+class EditProfileForm(FormView):
+    template_name = 'panel/dietitian_profile_edit.html'
+    form_class = DietitianProfileForm
+
+    class Meta:
+        model = DietitianProfile  # Ustaw model, z którego ma dziedziczyć formularz
+        fields = '__all__'
+
+
+def show_notifications(request):
+    pass
