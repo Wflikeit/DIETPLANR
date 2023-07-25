@@ -2,15 +2,16 @@
 {% load static %}
 {% block title %}Panel{% endblock %}
 {% block stylesheets %}<link href="{% static "css/dietitian_panel_clients.css" %}" rel="stylesheet">{% endblock %}
+{% block scripts %}<script src={% static "js/dietitian_panel.js" %} defer></script>{% endblock %}
 {% block content %}
-    <div class="container">
+<div class="container">
         <nav class="sidebar">
-            <a href="">clients</a>
-            <a href="">calendar</a>
-            <a href="">my recipes</a>
-            <a href="">settings</a>
+            <div class="active" data-tab>clients</div>
+            <div data-tab>calendar</div>
+            <div data-tab>my recipes</div>
+            <div data-tab>settings</div>
         </nav>
-        <div class="table-wrapper">
+        <div class="clients-container" data-container>
             <table>
                 <thead>
                     <tr>
@@ -43,6 +44,20 @@
                         <td>100%</td>
                         <td>xxx</td>
                     </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
                     <tr class="active-row">
                         <td>Maciek</td>
                         <td>20</td>
@@ -57,9 +72,198 @@
                         <td>100%</td>
                         <td>xxx</td>
                     </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr class="active-row">
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr class="active-row">
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr class="active-row">
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr class="active-row">
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr class="active-row">
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr class="active-row">
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr>
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+                    <tr class="active-row">
+                        <td>Maciek</td>
+                        <td>20</td>
+                        <td>yes</td>
+                        <td>100%</td>
+                        <td>xxx</td>
+                    </tr>
+
                 </tbody>
             </table>
         </div>
+        <div class="calendar-container" data-container>
+            <header>
+                {{ current_date }}
+            </header>
+            <form action="{% url 'account:view_panel' %}" method="POST">
+                {% csrf_token %}
+                <select name="year">
+                    {% for year in years %}
+                        {% if year == selected_year %}
+                            <option value="{{ year }}" selected>{{ year }}</option>
+                        {% else %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <select name="month">
+                    {% for number, month in months.items %}
+                        {% if number == selected_month %}
+                            <option value="{{ number }}" selected>{{ month }}</option>
+                        {% else %}
+                            <option value="{{ number }}">{{ month }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <button type="submit">SUBMIT</button>
+            </form>
+            <div class="calendar">
+                {% for weekday in weekdays %}
+                    <div>{{ weekday }}</div>
+                {% endfor %}
+                {% for day in prev_days %}
+                    <div class="diff_days">{{ day }}</div>
+                {% endfor %}
+                {% for day in days %}
+                    {% if selected_year == current_date.year and selected_month == current_date.month and day == current_day_num %}
+                        <div class="current_day">{{ day }}</div>
+                    {% else %}
+                        <div>{{ day }}</div>
+                    {% endif %}
+                {% endfor %}
+                {% for day in next_days %}
+                    <div class="diff_days">{{ day }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="my_recipes-container" data-container>
+        </div>
+        <div class="settings-container" data-container>
+        </div>
     </div>
-
 {% endblock %}
