@@ -1,14 +1,12 @@
 # from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView, FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
-
 
 # from django.contrib.auth.mixins import LoginRequiredMixin, \
 #     PermissionRequiredMixin
