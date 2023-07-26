@@ -1,11 +1,14 @@
 # from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, FormView
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+from django.views import View
+from django.views.generic import ListView, FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # from django.contrib.auth.mixins import LoginRequiredMixin, \
 #     PermissionRequiredMixin
@@ -60,6 +63,15 @@ class ManageSettings(ListView):
 
 
 class EditProfileForm(FormView):
+    template_name = 'panel/user_profile_edit.html'
+    form_class = DietitianProfileForm
+
+    class Meta:
+        model = DietitianProfile  # Ustaw model, z którego ma dziedziczyć formularz
+        fields = '__all__'
+
+
+class EditProfileForm(FormView):
     template_name = 'panel/dietitian_profile_edit.html'
     form_class = DietitianProfileForm
 
@@ -81,24 +93,39 @@ class UserRegistration(FormView):
         fields = '__all__'
 
 
-def create_appointment(request, dietitian_slug):
-    if request.method == 'POST':
+class DietitianRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        dietitian_slug = self.kwargs.get('dietitian_slug')
+        if dietitian_slug:
+            dietitian_profile = get_object_or_404(DietitianProfile, slug=dietitian_slug)
+            return dietitian_profile is not None
+        return False
+
+
+class CreateAppointmentView(View, DietitianRequiredMixin):
+    def get(self, request, dietitian_slug):
+        form = AppointmentForm()
+        return render(request, 'panel/appointment_set.html', {'form': form})
+
+    def post(self, request, dietitian_slug):
         form = AppointmentForm(request.POST)
         dietitian_profile = get_object_or_404(DietitianProfile, slug=dietitian_slug)
         user_profile = get_object_or_404(UserProfile, user=request.user)
         if form.is_valid():
             appointment = form.save(commit=False)
-            # Sprawdź, czy aktualnie zalogowany użytkownik to dietetyk
-            # Jeśli tak, przypisz go jako dietetyka w spotkaniu
             appointment.dietitian_profile = dietitian_profile
             appointment.user_profile = user_profile
             appointment.save()
-            html = "<html><body>Appointment created</body></html>"
+            html = "<html><body>Spotkanie utworzone</body></html>"
             return HttpResponse(html)
             # return redirect('success_page')
-    else:
-        form = AppointmentForm()
-    return render(request, 'panel/appointment_set.html', {'form': form})
+        else:
+            return render(request, 'panel/appointment_set.html', {'form': form})
+
+
+class ClientRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return hasattr(self.request.user, 'userprofile')
 
 # class SetAppointment(FormView):
 #     template_name = 'panel/appointment_set.html'
