@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import DietitianProfile, UserProfile
+from .models import DietitianProfile, UserProfile, Appointment
 
 
 class UserProfileForm(forms.ModelForm):
@@ -18,12 +18,12 @@ class DietitianProfileForm(forms.ModelForm):
                   'age', 'gender', 'City', 'Country']
 
 
-class AppointmentForm(forms.Form):
-    pass
+class AppointmentForm(forms.ModelForm):
 
     class Meta:
-        model = DietitianProfile
-        fields = ['date_of_birth']
+        model = Appointment
+        fields = ['title', 'event_duration',
+                  'date']
     # def clean_data(self):
     #     cd = self.cleaned_data[]
 
@@ -49,3 +49,4 @@ class UserRegistrationForm(forms.ModelForm):
         if User.objects.filter(email=data).exists():
             raise forms.ValidationError('Email already in use')
         return data
+

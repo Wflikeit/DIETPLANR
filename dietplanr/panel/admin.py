@@ -17,7 +17,7 @@ class DietitianProfileAdmin(admin.ModelAdmin):
 
 
 @admin.register(Appointment)
-class DietitianProfileAdmin(admin.ModelAdmin):
+class AppointmentAdmin(admin.ModelAdmin):
     list_display = ['title', 'dietitian_profile', 'user_profile', 'published_time',
                     'event_duration']
 

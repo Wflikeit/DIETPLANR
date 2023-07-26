@@ -17,7 +17,7 @@ class Activity(models.Model):
         ('skipping', 'Skipping'),
         # Add other activities that interest you
     ]
-    activity_duration = models.DurationField
+    activity_duration = models.PositiveSmallIntegerField(default=15)
     video = models.URLField(null=True, unique=True)
     activity_date = models.DateField(unique=True, default=now)
     title = models.TextField(unique_for_date=activity_date,
