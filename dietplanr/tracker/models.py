@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
-from panel.models import UserProfile
+
+from panel.models import ClientProfile
 
 
 class Activity(models.Model):
@@ -22,7 +23,7 @@ class Activity(models.Model):
     activity_date = models.DateField(unique=True, default=now)
     title = models.TextField(unique_for_date=activity_date,
                              max_length=40, choices=ACTIVITY_CHOICES)
-    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(ClientProfile, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title

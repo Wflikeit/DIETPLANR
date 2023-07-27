@@ -31,11 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'panel.apps.PanelConfig',
     'chat.apps.ChatConfig',
     'meal_plan.apps.MealplanConfig',
     'payments.apps.PaymentsConfig',
     'tracker.apps.TrackerConfig',
-    'panel.apps.PanelConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,3 +126,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'panel.CustomUser'
+

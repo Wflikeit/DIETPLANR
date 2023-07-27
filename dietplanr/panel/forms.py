@@ -1,21 +1,21 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import DietitianProfile, UserProfile, Appointment
+from .models import DietitianProfile, ClientProfile, Appointment
 
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = UserProfile
-        fields = ['date_of_birth', 'photo', 'full_name',
-                  'age', 'gender', 'City', 'Country']
+        model = ClientProfile
+        fields = ['age']
 
 
 class DietitianProfileForm(forms.ModelForm):
     class Meta:
         model = DietitianProfile
-        fields = ['date_of_birth', 'photo', 'full_name',
-                  'age', 'gender', 'City', 'Country']
+        fields = ['user', 'specialty',
+                  'experience', 'nutritional_philosophy',
+                  'some_more']
 
 
 class AppointmentForm(forms.ModelForm):
