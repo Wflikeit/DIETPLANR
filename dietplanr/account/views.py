@@ -26,7 +26,6 @@ def view_panel(request):
     return render(request, "account/dietitian_panel.html",
                   {"current_date": datetime.now(),
                    "current_day_num": current_day_num,
-                   "weekday_num": weekday_of_start,
                    "selected_year": selected_year,
                    "selected_month": selected_month,
                    "years": range(2023, 2028),
@@ -35,3 +34,7 @@ def view_panel(request):
                    "prev_days": prev_days,
                    "days": range(1, last_day + 1),
                    "next_days": next_days})
+
+
+def view_landing_page(request):
+    return render(request, "account/landing_page.html")

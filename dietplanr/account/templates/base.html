@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5e1f2a52bc.js" crossorigin="anonymous"></script>
+    <script src="{% static "js/chat.js" %}" defer></script>
     {% block stylesheets %}{% endblock %}
     {% block scripts %}{% endblock %}
 </head>
@@ -22,6 +24,83 @@
 
         {% endblock %}
     </div>
+    <div class="chat-wrapper">
+        <div id="chat">
+            <div class="chat-settings">
+                <div class="option-dropdown">
+                    <div class="dropdown">
+                        Adjust chat
+                        <i class="fa-solid fa-angle-down"></i>
+                    </div>
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        Accusantium alias animi dolor dolores doloribus eos expedita fugit illum minima nihil non, odit officia porro repellat repudiandae saepe sunt, velit veritatis.
+                    </div>
+                </div>
+            </div>
+            <div class="chat">
+                <div class="messages" id="messages">
+                    <div class="message left">
+                        <span>leftttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</span>
+                    </div>
+                    <div class="message left">
+                        <span>left</span>
+                    </div>
+                    <div class="message left">
+                        <span>left</span>
+                    </div>
+                    <div class="message left">
+                        <span>left</span>
+                    </div>
+                    <div class="message right">
+                        <span>rightttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</span>
+                    </div>
+                    <div class="message right">
+                        <span>right</span>
+                    </div>
+                    <div class="message right">
+                        <span>right</span>
+                    </div>
+                    <div class="message left">
+                        <span>left</span>
+                    </div>
+                    <div class="message right">
+                        <span>right</span>
+                    </div>
+                    <div class="message left">
+                        <span>left</span>
+                    </div>
+                    <div class="message right">
+                        <span>right</span>
+                    </div><div class="message left">
+                        <span>left</span>
+                    </div>
+                    <div class="message right">
+                        <span>right</span>
+                    </div><div class="message left">
+                        <span>left</span>
+                    </div>
+                    <div class="message right">
+                        <span>right</span>
+                    </div><div class="message left">
+                        <span>left</span>
+                    </div>
+                    <div class="message right">
+                        <span>right</span>
+                    </div>
+                </div>
+                <div class="message-form">
+                    <i class="fa-solid fa-file"></i>
+                    <i class="fa-regular fa-image"></i>
+                    <div class="message-input">
+                        <i class="fa-solid fa-face-smile"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <i class="fa-regular fa-message fa-2xl" id="chat-icon"></i>
+    </div>
+
     <footer>
         <div>
             <p>            
@@ -46,7 +125,5 @@
             <button class="register">REGISTER</button>
         </div>
     </footer>
-
-
 </body>
 </html>

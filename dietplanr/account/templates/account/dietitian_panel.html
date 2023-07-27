@@ -4,7 +4,7 @@
 {% block stylesheets %}<link href="{% static "css/dietitian_panel_clients.css" %}" rel="stylesheet">{% endblock %}
 {% block scripts %}<script src={% static "js/dietitian_panel.js" %} defer></script>{% endblock %}
 {% block content %}
-<div class="container">
+    <div class="container">
         <nav class="sidebar">
             <div class="active" data-tab>clients</div>
             <div data-tab>calendar</div>
@@ -262,8 +262,103 @@
             </div>
         </div>
         <div class="my_recipes-container" data-container>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Proteins</th>
+                        <th>Carbs</th>
+                        <th>Fats</th>
+                        <th>Allergens</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                    <tr>
+                        <td>lasagne</td>
+                        <td>20g</td>
+                        <td>45g</td>
+                        <td>24g</td>
+                        <td>xxx</td>
+                        <td><button class="personalize-btn">Personalize</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="settings-container" data-container>
+            <form>
+                <label for="first_name">First name</label>
+                <input type="text" name="first_name">
+                <label for="last_name">Last name</label>
+                <input type="text" name="last_name">
+                <label for="image">Image</label>
+                <input type="image" name="image">
+                <button type="submit">SUBMIT</button>
+            </form>
         </div>
     </div>
 {% endblock %}
