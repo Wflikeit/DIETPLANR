@@ -11,7 +11,7 @@ class ClientProfileAdmin(admin.ModelAdmin):
 
 @admin.register(DietitianProfile)
 class DietitianProfileAdmin(admin.ModelAdmin):
-    list_display = ['get_full_name', 'specialty', 'experience', 'nutritional_philosophy', 'some_more']
+    list_display = ['user_id', 'get_full_name', 'specialty', 'experience', 'nutritional_philosophy', 'some_more']
 
     list_filter = ['user', 'specialty',
                    'experience', 'nutritional_philosophy',
@@ -36,7 +36,7 @@ class AppointmentAdmin(admin.ModelAdmin):
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ['email', 'first_name', 'last_name',
                     'is_active', 'is_staff', 'is_dietitian',
-                    'is_client']
+                    'is_client', 'id']
     list_filter = ['email', 'first_name', 'last_name',
                    'is_active', 'is_staff', 'is_dietitian',
                    'is_client']
