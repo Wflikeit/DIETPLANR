@@ -21,40 +21,41 @@ body{
     width: 100%;
     height: fit-content;
     z-index: 100;
-    & a{
-        text-decoration: none;
-        padding: 0.5rem;
-        color: black;
-    }
+}
+.navbar a{
+    text-decoration: none;
+    padding: 0.5rem;
+    color: black;
 }
 footer{
-    > *{
-        padding: 2.5rem;
-        font-weight: bold;
-    }
-    :nth-child(2){
-        display: grid;
-        grid-template-columns: auto auto;
-        /* justify-content: space-around; */
-        .register{
-            height: fit-content;
-            width: fit-content;
-            outline: none;
-            border: none;
-            font-weight: bold;
-            background-color: #FFCF15;
-            padding: 0.75rem;
-            border-radius: 100rem;
-            margin-left: 25%;
-            cursor: pointer;
-        }
-    }
     border-radius: 0 1rem 0 0;
     background-color: rgba(255,255,255,0.95);
     margin-top: auto;
     display: flex;
     justify-content: space-around;
     width: 70%;
+}
+footer > *{
+    padding: 2.5rem;
+    font-weight: bold;
+}
+footer :nth-child(2){
+    display: grid;
+    grid-template-columns: auto auto;
+    /* justify-content: space-around; */
+
+}
+footer :nth-child(2) .register{
+    height: fit-content;
+    width: fit-content;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    background-color: #FFCF15;
+    padding: 0.75rem;
+    border-radius: 100rem;
+    margin-left: 25%;
+    cursor: pointer;
 }
 .chat-wrapper{
     position: fixed;
@@ -177,11 +178,11 @@ i.fa-message.active:hover::before{
     }
     footer{
         flex-direction: column;
-        :nth-child(2){
-            grid-template-columns: auto;
-            .register{
-                margin-left: 0;
-            }
-        }
+    }
+    footer:nth-child(2){
+        grid-template-columns: auto;
+    }
+    footer:nth-child(2) .register{
+        margin-left: 0;
     }
 }
