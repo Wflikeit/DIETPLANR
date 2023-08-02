@@ -31,12 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'account.apps.AccountConfig',
+    'panel.apps.PanelConfig',
     'chat.apps.ChatConfig',
     'meal_plan.apps.MealplanConfig',
     'payments.apps.PaymentsConfig',
-    'tracker.apps.TrackerConfig'
-    '',
+    'tracker.apps.TrackerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -127,3 +126,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'panel.CustomUser'
+LOGIN_URL = '/panel/account/login/'
+LOGIN_REDIRECT_URL = '/panel/'
+LOGOUT_URL = 'panel/account/logout'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # lub inny silnik sesji
+
