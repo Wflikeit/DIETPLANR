@@ -5,8 +5,8 @@ from .models import ClientProfile, DietitianProfile, Appointment, CustomUser
 
 @admin.register(ClientProfile)
 class ClientProfileAdmin(admin.ModelAdmin):
-    list_display = ['age', 'dietitian']
-    list_filter = ['age', 'dietitian']
+    list_display = ['dietitian']
+    list_filter = ['dietitian']
 
 
 @admin.register(DietitianProfile)

@@ -1,19 +1,29 @@
+import uuid
 from datetime import timedelta
 
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
 
 class UserProfileManager(BaseUserManager):
+
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('Adres email jest wymagany')
+
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)
+
+        if password:
+            user.password = make_password(password)
+        user.set_password(user.password)
+
         user.save(using=self._db)
         return user
 
@@ -46,7 +56,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     City = models.CharField(max_length=40)
     Country = models.CharField(max_length=40)
     photo = models.ImageField(upload_to='user/%Y/%m/%d/',
-                              blank=True, unique=True)
+                              blank=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
     full_name = models.CharField(max_length=40, blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
@@ -75,13 +85,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
-
-    # def clean(self):
-    #     if self.is_client and not self.client_profile:
-    #         raise ValidationError(_("Jako klient musisz mieć przypisanego profilu klienta."))
-    #
-    #     if self.is_dietitian and not self.dietitian_profile:
-    #         raise ValidationError(_("Jako dietetyk musisz mieć przypisanego profilu dietetyka."))
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return self.email
@@ -90,8 +94,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class DietitianProfile(models.Model):
     user = models.OneToOneField(CustomUser,
                                 on_delete=models.CASCADE,
-                                primary_key=True,
-                                default=0)
+                                primary_key=True)
     specialty = models.CharField(max_length=40, blank=True)
     experience = models.CharField(max_length=100, blank=True)
     nutritional_philosophy = models.CharField(max_length=40, blank=True)
@@ -104,17 +107,22 @@ class DietitianProfile(models.Model):
 
 
 class ClientProfile(models.Model):
-    user = models.OneToOneField(CustomUser,
-                                on_delete=models.CASCADE,
-                                primary_key=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
 
-    age = models.PositiveSmallIntegerField()
+    # age = models.PositiveSmallIntegerField()
     dietitian = models.ForeignKey(DietitianProfile,
                                   on_delete=models.SET_NULL,
                                   null=True, blank=True,
-                                  related_name='dietitian_profile',
-                                  default=0)
+                                  related_name='dietitian_profile')
 
+    # @receiver(post_save, sender=CustomUser)  # add this
+    # def create_user_profile(sender, instance, created, **kwargs):
+    #     if created:
+    #         ClientProfile.objects.create(user=instance)
+    #
+    # @receiver(post_save, sender=CustomUser)  # add this
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.Clk.save()
     def __str__(self):
         return self.user.full_name
 

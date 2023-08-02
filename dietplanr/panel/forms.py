@@ -8,7 +8,7 @@ from django.conf import settings
 class ClientProfileForm(forms.ModelForm):
     class Meta:
         model = ClientProfile
-        fields = ['age', 'dietitian']
+        fields = ['dietitian']
 
 
 class DietitianProfileForm(forms.ModelForm):
@@ -29,26 +29,25 @@ class AppointmentForm(forms.ModelForm):
 
 
 class UserAccountForm(forms.ModelForm):
-    # password = forms.CharField(label='Password',
-    #                            widget=forms.PasswordInput)
-    # password2 = forms.CharField(label='Password',
-    #                             widget=forms.PasswordInput)
+    age = forms.IntegerField(label='Age', required=False, initial=None)  # Dodaj pole "age" do formularza
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'first_name', 'last_name',
-                  'is_active', 'is_staff', 'is_dietitian',
-                  'is_client', 'gender', 'City', 'Country',
-                  'photo', 'slug', 'full_name', 'date_of_birth']
-    # 'password', 'password2'
-    # def clean_password2(self):
-    #     cd = self.cleaned_data
-    #     if cd['password'] != cd['password2']:
-    #         raise forms.ValidationError('Password don\'t match.')
-    #     return cd['password2']
-    #
-    # def clean_email(self):
-    #     data = self.cleaned_data['email']
-    #     if User.objects.filter(email=data).exists():
-    #         raise forms.ValidationError('Email already in use')
-    #     return data
+        fields = ['email', 'password', 'first_name', 'last_name',
+                  'is_dietitian', 'is_client', 'gender',
+                  'City', 'Country', 'photo', 'full_name',
+                  'date_of_birth']
+
+    def save_age(self, user):  # Metoda do zapisywania wartości "age" w modelu ClientProfile
+        age = self.cleaned_data.get('age')
+        if age:
+            client_profile, created = ClientProfile.objects.get_or_create(user=user)
+            client_profile.age = age
+            client_profile.save()
+
+    # def clean_date_of_birth(self):
+    #     cleaned_data = super().clean()
+    #     date_of_birth = cleaned_data.get('date_of_birth')
+    #     if date_of_birth and date_of_birth >= timezone.now().date():
+    #         raise ValidationError('Data urodzin nie może być w przyszłości.')
+    #     return date_of_birth
