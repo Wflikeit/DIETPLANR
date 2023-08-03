@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if user.is_authenticated %}
+    <p>Witaj, {{ user.first_name }}!</p>
+    <a href="{% url 'panel:logout' %}">Wyloguj się</a>
+    {% if user.is_client %}
+        <a href="{% url 'panel:user_edit_profile' %}">
+            <button type="button">Create a client profile</button>
+        </a>
+        <a href="{% url 'panel:login' %}">
+            <button type="button">Log in again</button>
+        </a>
+    {% endif %}
+{% else %}
+    <p>Nie jesteś zalogowany.</p>
+    <!-- Tutaj możesz dodać link do logowania -->
+{% endif %}
+
+</body>
+</html>
