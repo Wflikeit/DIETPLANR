@@ -5,11 +5,11 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 # Create your views here.
 from .forms import AppointmentForm, ClientProfileForm, DietitianProfileForm, UserAccountForm
-from .models import DietitianProfile, CustomUser, ClientProfile
+from .models import DietitianProfile, CustomUser, ClientProfile, Appointment
 
 
 def get_proper_template(request, dietitian_template, client_template, profile_required):
@@ -37,6 +37,32 @@ class Home(LoginRequiredMixin, View):
                                        client_template='panel/client_home.html',
                                        profile_required=False)
         return render(request, template)
+
+
+class DisplayDietitianProfile(LoginRequiredMixin, DetailView):
+    template_name = 'panel/dietitian_profile.html'
+    context_object_name = 'dietitian'
+
+    def get_object(self, queryset=None):
+        # Pobierz dietetyka na podstawie przekazanego sluga
+        profile_slug = self.kwargs.get('dietitian_slug')
+        profile_account = get_object_or_404(CustomUser, slug=profile_slug)
+        dietitian_profile = get_object_or_404(DietitianProfile, user=profile_account)
+        return dietitian_profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        dietitian_profile = self.get_object()
+
+        # Pobierz klientów powiązanych z danym dietetykiem
+        clients = ClientProfile.objects.filter(dietitian=dietitian_profile)
+        appointments = Appointment.objects.filter(dietitian_profile=dietitian_profile)
+
+        context.update(dietitian_profile.user.get_user_data())
+        context['appointments'] = appointments
+        context['clients'] = clients
+        context['dietitian_profile'] = dietitian_profile
+        return context
 
 
 class CreateEventView(ListView):

@@ -7,7 +7,8 @@ from .views import (ClientProfileEditView,
                     CreateAppointmentView,
                     ManageClientsView,
                     EditAccount,
-                    Home)
+                    Home,
+                    DisplayDietitianProfile)
 
 app_name = 'panel'
 urlpatterns = [
@@ -20,5 +21,6 @@ urlpatterns = [
     path('clients/', ManageClientsView.as_view(), name='show_clients'),
     path('login/', LoginView.as_view(), name='login'),  # Przekierowanie na AppLoginView dla logowania
     path('account/logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
+    path('dietitians/<slug:dietitian_slug>', DisplayDietitianProfile.as_view(), name='show_clients'),
 
 ]

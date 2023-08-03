@@ -67,6 +67,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             self.full_name = f'{self.first_name}+{self.last_name}'
         super(CustomUser, self).save(*args, **kwargs)
 
+    def get_user_data(self):
+        user_data = {
+            'name': self.full_name,
+            'photo': self.photo.url if self.photo else None,
+            'city': self.City,
+            'country': self.Country,
+        }
+        return user_data
+
     objects = UserProfileManager()
     groups = models.ManyToManyField(
         Group,
