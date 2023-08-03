@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.views import View
@@ -12,8 +12,28 @@ from .forms import AppointmentForm, ClientProfileForm, DietitianProfileForm, Use
 from .models import DietitianProfile, CustomUser, ClientProfile
 
 
-def show_my_profile(request):
-    return render(request, 'panel/profile.html', {'username': request.user.first_name})
+def get_proper_template(request, dietitian_template, client_template, dietitan_required, client_required):
+    dietitian_mixin = DietitianRequiredMixin()
+    client_mixin = ClientRequiredMixin()
+    if dietitan_required:
+        dietitian_mixin.test_func()
+    if dietitan_required:
+        dietitian_mixin.test_func()
+
+    if request.user.is_dietitian and not request.user.is_client:
+        return render(request, dietitian_template, {'username': request.user.first_name})
+    elif request.user.is_client and not request.user.is_dietitian:
+        return render(request, client_template, {'username': request.user.first_name})
+    else:
+        return render(request, 'panel/user_account_edit.html', {'username': request.user.first_name})
+
+
+class Home(LoginRequiredMixin, View):
+    def get(self, request):
+        return get_proper_template(request,
+                                   dietitian_template='panel/client_home.html',
+                                   client_template='panel/dietitian_home.html',
+                                   profile_required=False)
 
 
 class CreateEventView(ListView):
@@ -96,15 +116,6 @@ class DietitianRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
 
 # def get_account_or_404(request, profile_slug, is_dietitian=False, is_client=False):
-def get_account_or_404(request, is_dietitian=False, is_client=False):
-    user = get_object_or_404(CustomUser,
-                             is_dietitian=is_dietitian,
-                             is_client=is_client)
-    if user == request.user:
-        return user
-    else:
-        raise Http404("Użytkownik nie ma uprawnień do edycji tego profilu.")
-
 
 class ClientRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
@@ -188,10 +199,24 @@ class DietitianProfileEditView(DietitianRequiredMixin, View):
 
 
 class ManageClientsView(DietitianRequiredMixin, ListView):
-    # model = Client
+    model = ClientProfile
     template_name = 'panel/list_of_clients.html'
+    context_object_name = 'clients'
 
     def get_queryset(self):
-        # TODO return only clients of current dietitian
+        # TODO return only clients of the current dietitian
         qs = super().get_queryset()
-        return qs.filter().filter(dietitian=self.request.user)
+        dietitian_profile = get_object_or_404(DietitianProfile, user=self.request.user)
+        return qs.filter(dietitian=dietitian_profile)
+
+
+class ManageCalendar(DietitianRequiredMixin, ListView):
+    model = ClientProfile
+    template_name = 'panel/list_of_clients.html'
+    context_object_name = 'clients'
+
+    def get_queryset(self):
+        # TODO return only clients of the current dietitian
+        qs = super().get_queryset()
+        dietitian_profile = get_object_or_404(DietitianProfile, user=self.request.user)
+        return qs.filter(dietitian=dietitian_profile)

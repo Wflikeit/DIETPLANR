@@ -6,11 +6,12 @@ from .views import (ClientProfileEditView,
                     DietitianProfileEditView,
                     CreateAppointmentView,
                     ManageClientsView,
-                    EditAccount)
+                    EditAccount,
+                    Home)
 
 app_name = 'panel'
 urlpatterns = [
-    path('', views.show_my_profile, name='home'),
+    path('', Home.as_view(), name='home'),
     path('user/edit-profile/', ClientProfileEditView.as_view(), name='user_edit_profile'),
     path('dietitian/edit-profile/', DietitianProfileEditView.as_view(), name='edit_profile'),
     path('account/edit', EditAccount.as_view(), name='edit_account'),
