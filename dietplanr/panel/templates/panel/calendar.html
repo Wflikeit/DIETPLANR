@@ -1,0 +1,21 @@
+{% if user.dietitianprofile %}
+
+
+{% elif user.clientprofile %}
+
+
+{% endif %}
+{% for client in clients %}
+    <p>{{ client }}</p>
+{% endfor %}
+
+<p>{{ name }}</p>
+
+<p>
+<h1>Appointments:</h1>
+</p>
+{% for appointment in appointments %}
+    <p>{{ appointment }} {{ appointment.date }} {{ appointment.event_duration }}</p>
+
+{% endfor %}
+

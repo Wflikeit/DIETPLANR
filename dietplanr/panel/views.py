@@ -44,19 +44,20 @@ class DisplayDietitianProfile(LoginRequiredMixin, DetailView):
     context_object_name = 'dietitian'
 
     def get_object(self, queryset=None):
-        # Pobierz dietetyka na podstawie przekazanego sluga
         profile_slug = self.kwargs.get('dietitian_slug')
         profile_account = get_object_or_404(CustomUser, slug=profile_slug)
         dietitian_profile = get_object_or_404(DietitianProfile, user=profile_account)
         return dietitian_profile
 
+    def get_clients_and_appointments(self, dietitian_profile):
+        clients = ClientProfile.objects.filter(dietitian=dietitian_profile)
+        appointments = Appointment.objects.filter(dietitian_profile=dietitian_profile)
+        return clients, appointments
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         dietitian_profile = self.get_object()
-
-        # Pobierz klientów powiązanych z danym dietetykiem
-        clients = ClientProfile.objects.filter(dietitian=dietitian_profile)
-        appointments = Appointment.objects.filter(dietitian_profile=dietitian_profile)
+        clients, appointments = self.get_clients_and_appointments(dietitian_profile)
 
         context.update(dietitian_profile.user.get_user_data())
         context['appointments'] = appointments
@@ -77,7 +78,7 @@ class OwnerEditMixin:
 
 class ManageRecipesView(ListView):
     # model = Client
-    template_name = 'panel/list_of_clients.html'
+    template_name = 'panel/dietitian_panel.html'
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -87,7 +88,7 @@ class ManageRecipesView(ListView):
 
 class ManageSettings(ListView):
     # model = Client
-    template_name = 'panel/list_of_clients.html'
+    template_name = 'panel/dietitian_panel.html'
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -182,21 +183,29 @@ class ClientRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
 
 class ClientProfileEditView(ClientRequiredMixin, View):
     form_class = ClientProfileForm
+    template_name = 'panel/user_profile_edit.html'
+
+    def get_client_profile(self):
+        return get_object_or_404(ClientProfile, user=self.request.user)
 
     def get(self, request):
         print('Zalogowany użytkownik:', request.user)
-        client_profile = ClientProfile.objects.get(user=self.request.user)
+        client_profile = self.get_client_profile()
         form = self.form_class(instance=client_profile)
-        return render(request, 'panel/user_profile_edit.html', {'form': form})
+        return render(request, self.template_name, {'form': form})
 
-    def post(self, request):
-        client_profile = get_object_or_404(ClientProfile, user=request.user)
-        form = ClientProfileForm(request.POST, instance=client_profile)
+    def save_form(self, form):
+        client_profile = self.get_client_profile()
         if form.is_valid():
             form.save()
-            return redirect('panel:home')
+            return True
+        return False
 
-        return render(request, 'panel/user_profile_edit.html', {'form': form})
+    def post(self, request):
+        form = self.form_class(request.POST, instance=self.get_client_profile())
+        if self.save_form(form):
+            return redirect('panel:home')
+        return render(request, self.template_name, {'form': form})
 
 
 class CreateAppointmentView(View):
@@ -243,23 +252,42 @@ class DietitianProfileEditView(DietitianRequiredMixin, View):
 
 class ManageClientsView(DietitianRequiredMixin, ListView):
     model = ClientProfile
-    template_name = 'panel/list_of_clients.html'
+    template_name = 'panel/dietitian_panel.html'
     context_object_name = 'clients'
 
     def get_queryset(self):
-        # TODO return only clients of the current dietitian
         qs = super().get_queryset()
         dietitian_profile = get_object_or_404(DietitianProfile, user=self.request.user)
         return qs.filter(dietitian=dietitian_profile)
 
 
-class ManageCalendar(DietitianRequiredMixin, ListView):
-    model = ClientProfile
-    template_name = 'panel/list_of_clients.html'
-    context_object_name = 'clients'
+class CalendarAppointmentsMixin:
+    def get_appointments(self, user):
+        if hasattr(user, 'dietitianprofile'):
+            dietitian_profile = user.dietitianprofile
+            return dietitian_profile.get_dietitian_appointments()
+
+        elif hasattr(user, 'clientprofile'):
+            client_profile = user.clientprofile
+            return client_profile.get_client_appointments()
+
+        return redirect('panel:edit_account')
+
+
+class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
+    template_name = 'panel/calendar.html'  # Zastąp 'twoj_szablon.html' odpowiednią nazwą szablonu
+    context_object_name = 'appointments'  # Zmieniona nazwa zmiennej w kontekście
 
     def get_queryset(self):
-        # TODO return only clients of the current dietitian
-        qs = super().get_queryset()
-        dietitian_profile = get_object_or_404(DietitianProfile, user=self.request.user)
-        return qs.filter(dietitian=dietitian_profile)
+        return self.get_appointments(self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        if hasattr(user, 'dietitianprofile'):
+            dietitian_profile = user.dietitianprofile
+            context.update(dietitian_profile.user.get_user_data())
+            context['dietitian_profile'] = dietitian_profile
+
+        return context

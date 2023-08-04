@@ -112,6 +112,9 @@ class DietitianProfile(models.Model):
     def __str__(self):
         return self.user.full_name
 
+    def get_dietitian_appointments(self):
+        return Appointment.objects.filter(dietitian_profile=self)
+
 
 class ClientProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
@@ -132,6 +135,9 @@ class ClientProfile(models.Model):
     #     instance.Clk.save()
     def __str__(self):
         return self.user.full_name
+
+    def get_client_appointments(self):
+        return Appointment.objects.filter(client_profile=self)
 
 
 class Appointment(models.Model):

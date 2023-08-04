@@ -1,14 +1,14 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from . import views
 from .views import (ClientProfileEditView,
                     DietitianProfileEditView,
                     CreateAppointmentView,
                     ManageClientsView,
                     EditAccount,
                     Home,
-                    DisplayDietitianProfile)
+                    DisplayDietitianProfile,
+                    ManageCalendar)
 
 app_name = 'panel'
 urlpatterns = [
@@ -22,5 +22,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),  # Przekierowanie na AppLoginView dla logowania
     path('account/logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
     path('dietitians/<slug:dietitian_slug>', DisplayDietitianProfile.as_view(), name='show_clients'),
+    path('calendar/', ManageCalendar.as_view(), name='show_calendar'),
 
 ]
