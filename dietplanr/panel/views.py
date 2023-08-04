@@ -1,42 +1,23 @@
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView, DetailView
 
+from dietplanr.utils import ClientRequiredMixin, DietitianRequiredMixin
 # Create your views here.
 from .forms import AppointmentForm, ClientProfileForm, DietitianProfileForm, UserAccountForm
 from .models import DietitianProfile, CustomUser, ClientProfile, Appointment
 
 
-def get_proper_template(request, dietitian_template, client_template, profile_required):
-    dietitian_mixin = DietitianRequiredMixin()
-    client_mixin = ClientRequiredMixin()
-
-    dietitian_profile = client_profile = False
-
-    if profile_required:
-        dietitian_profile = dietitian_mixin.has_dietitian_profile()
-        client_profile = client_mixin.has_client_profile()
-
-    if (request.user.is_dietitian and not request.user.is_client) or dietitian_profile:
-        return dietitian_template
-    elif (request.user.is_client and not request.user.is_dietitian) or client_profile:
-        return client_template
-    else:
-        raise HttpResponseNotFound
-
-
 class Home(LoginRequiredMixin, View):
+    template_name = 'panel/home.html'
+
     def get(self, request):
-        template = get_proper_template(request,
-                                       dietitian_template='panel/dietitian_home.html',
-                                       client_template='panel/client_home.html',
-                                       profile_required=False)
-        return render(request, template)
+        return render(request, self.template_name)
 
 
 class DisplayDietitianProfile(LoginRequiredMixin, DetailView):
@@ -126,61 +107,6 @@ class EditAccount(View):
         return render(request, self.template_name, {'form': form})
 
 
-class DietitianRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
-    def test_func(self):
-        if self.request.user.is_dietitian and not self.request.user.is_client:
-            try:
-                dietitian_profile = DietitianProfile.objects.get(user=self.request.user)
-                return True
-            except DietitianProfile.DoesNotExist:
-                return False
-        return False
-
-    def handle_no_permission(self):
-        print('Użytkownik nie ma profilu klienta.')
-        print(self.request.user.id)
-        dietitian_profile = ClientProfile.objects.create(user=self.request.user)
-        if dietitian_profile:
-            return redirect("panel:client_update_form")
-        return redirect('panel:home')
-
-    def has_dietitian_profile(self):
-        try:
-            dietitian_profile = DietitianProfile.objects.get(user=self.request.user)
-            return True
-        except DietitianProfile.DoesNotExist:
-            return False
-
-
-# def get_account_or_404(request, profile_slug, is_dietitian=False, is_client=False):
-
-class ClientRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
-    def test_func(self):
-        if self.request.user.is_client and not self.request.user.is_dietitian:
-            try:
-                # Sprawdzamy, czy użytkownik ma profil klienta
-                client_profile = ClientProfile.objects.get(user=self.request.user)
-                return True
-            except ClientProfile.DoesNotExist:
-                return False
-        return False
-
-    def handle_no_permission(self):
-        print('Użytkownik nie ma profilu klienta.')
-        print(self.request.user.id)
-        client_profile = ClientProfile.objects.create(user=self.request.user)
-        if client_profile:
-            redirect("panel:user_edit_profile")
-        return redirect('panel:home')
-
-    def has_client_profile(self):
-        try:
-            client_profile = ClientProfile.objects.get(user=self.request.user)
-            return True
-        except ClientProfile.DoesNotExist:
-            return False
-
-
 class ClientProfileEditView(ClientRequiredMixin, View):
     form_class = ClientProfileForm
     template_name = 'panel/user_profile_edit.html'
@@ -267,11 +193,8 @@ class CalendarAppointmentsMixin:
             dietitian_profile = user.dietitianprofile
             return dietitian_profile.get_dietitian_appointments()
 
-        elif hasattr(user, 'clientprofile'):
-            client_profile = user.clientprofile
-            return client_profile.get_client_appointments()
-
-        return redirect('panel:edit_account')
+        else:
+            return user.get_user_appointments()
 
 
 class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):

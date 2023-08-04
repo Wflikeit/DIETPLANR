@@ -76,6 +76,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         }
         return user_data
 
+    def get_user_appointments(self):
+        return Appointment.objects.filter(user_profile=self)
+
     objects = UserProfileManager()
     groups = models.ManyToManyField(
         Group,

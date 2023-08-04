@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Witaj, {{ user.first_name }}!</p>
+<button type="button">Log in again</button>
+<a href="{% url 'panel:logout' %}">Wyloguj się</a>
+<a href="{% url 'panel:user_edit_profile' %}">
+    <button type="button">Create a client profile</button>
+</a>
+<a href="{% url 'panel:show_calendar' %}">
+    <button type="button">Calendar</button>
+</a>
+<a href="{% url 'panel:login' %}"></a>
+
+{% if user.is_client %}
+
+    <a href="{% url 'tracker:register_activity' %}">
+        <button type="button">Register activity</button>
+    </a>
+{% elif user.is_dietitian %}
+    <a href="{% url 'panel:show_clients' %}">
+        <button type="button">Clients</button>
+    </a>
+
+
+
+
+{% endif %}
+
+</body>
+</html>

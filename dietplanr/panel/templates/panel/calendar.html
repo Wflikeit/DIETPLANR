@@ -1,21 +1,22 @@
 {% if user.dietitianprofile %}
 
+    {% for client in clients %}
+        <p>{{ client }}</p>
+    {% endfor %}
 
 {% elif user.clientprofile %}
 
 
 {% endif %}
-{% for client in clients %}
-    <p>{{ client }}</p>
-{% endfor %}
 
 <p>{{ name }}</p>
 
-<p>
 <h1>Appointments:</h1>
-</p>
+
 {% for appointment in appointments %}
     <p>{{ appointment }} {{ appointment.date }} {{ appointment.event_duration }}</p>
 
 {% endfor %}
-
+<a href="{% url 'panel:home' %}">
+    <button type="button">Home</button>
+</a>
