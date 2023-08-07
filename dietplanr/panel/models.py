@@ -4,8 +4,6 @@ from datetime import timedelta
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.utils.text import slugify
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
@@ -69,6 +67,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             self.full_name = f'{self.first_name}+{self.last_name}'
         super(CustomUser, self).save(*args, **kwargs)
 
+    def get_user_data(self):
+        user_data = {
+            'name': self.full_name,
+            'photo': self.photo.url if self.photo else None,
+            'city': self.City,
+            'country': self.Country,
+        }
+        return user_data
+
+    def get_user_appointments(self):
+        return Appointment.objects.filter(user_profile=self)
+
     objects = UserProfileManager()
     groups = models.ManyToManyField(
         Group,
@@ -105,6 +115,9 @@ class DietitianProfile(models.Model):
     def __str__(self):
         return self.user.full_name
 
+    def get_dietitian_appointments(self):
+        return Appointment.objects.filter(dietitian_profile=self)
+
 
 class ClientProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
@@ -125,6 +138,9 @@ class ClientProfile(models.Model):
     #     instance.Clk.save()
     def __str__(self):
         return self.user.full_name
+
+    def get_client_appointments(self):
+        return Appointment.objects.filter(client_profile=self)
 
 
 class Appointment(models.Model):

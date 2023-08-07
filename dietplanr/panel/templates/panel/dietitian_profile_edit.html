@@ -1,0 +1,25 @@
+{% extends 'dietitian_panel_base.html' %}
+{% load static %}
+{% block title %}Settings{% endblock %}
+{% block additional_stylesheets %}<link href="{% static "css/dietitian_profile_edit.css" %}" rel="stylesheet">{% endblock %}
+{% block information %}
+    <div class="settings-container" data-container>
+        <form>
+            <label for="first_name">First name</label>
+            <input type="text" name="first_name">
+            <label for="last_name">Last name</label>
+            <input type="text" name="last_name">
+            <label for="image">Image</label>
+            <input type="image" name="image">
+            <button type="submit">SUBMIT</button>
+        </form>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Save">
+        </form>
+        <a href="{% url 'panel:home' %}">
+            <button type="button">Home</button>
+        </a>
+    </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Log-in{% endblock title %}
+{% block content %}
+  <h1>Log-in</h1>
+  {% if form.errors %}
+    <p>
+      Twoje dane logowania są nieprawidłowe.
+      Spróbuj ponownie.
+      {{ form.errors }}
+    </p>
+  {% else %}
+    <p>
+      Proszę, użyj poniższego formularza do logowania.
+      <p>Jeśli nie masz jeszcze konta, <a href="{% url "panel:registration" %}">załóż je tutaj</a></p>
+    </p>
+  {% endif %}
+  <div class="login-form">
+    <form action="{% url 'panel:login' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+      <input type="hidden" name="next" value="{{ next }}"/>
+      <p><input type="submit" value="Log in"></p>  <!-- Poprawiony przycisk Log in -->
+      <a href="{% url 'panel:registration' %}"><button type="button">Registration</button></a>
+
+
+    </form>
+  </div>
+{% endblock content %}

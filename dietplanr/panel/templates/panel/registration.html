@@ -1,0 +1,19 @@
+{#{% extends 'base.html' %}#}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <input type="submit" value="register">
+    </form>
+    {% if user.is_authenticated %}
+        <a href="{% url 'panel:home' %}"><button type="button">Save changes</button></a>
+
+    {% else %}
+    <!-- Przycisk rejestracji jako klient -->
+<a href="{% url 'panel:registration' %}?is_client=True">Zarejestruj jako klient</a>
+
+<!-- Przycisk rejestracji jako dietetyk -->
+<a href="{% url 'panel:registration' %}?is_dietitian=True">Zarejestruj jako dietetyk</a>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+.clients-container{
+    height: 100%;
+    overflow-y: scroll;
+    background-color: hsla(230, 100%, 65%, 50%);
+    border-radius: 1rem;
+}
+table{
+        border-collapse: collapse;
+        width: 100%;
+        overflow: hidden;
+}
+thead tr{
+            background-color: hsla(214, 60%, 60%,80%);
+            text-align: left;
+}
+th, td{
+    padding: 0.5rem;
+}
+tbody tr{
+    border-bottom: 1px solid hsla(0, 0%, 50%, 0.5);
+}
+tbody tr.active-row{
+    color:hsla(214, 75%, 20%,80%);
+    font-weight: bold;
+}
+tbody tr:nth-of-type(even){
+    background-color: hsla(0, 0%, 90%, 0.5);
+}

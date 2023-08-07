@@ -1,0 +1,23 @@
+{% for client in clients %}
+    <p>{{ client }}</p>
+{% endfor %}
+{% with dietitian_profile as prof %}
+    <div id="dietitian_info">
+        <p>{{ prof.specialty }}</p>
+        <p>{{ prof.experience }}</p>
+        <p>{{ prof.nutritional_philosophy }}</p>
+        <p>{{ prof.some_more }}</p>
+        <p>{{ dietitian_name }}</p>
+        <p>{{ name }}</p>
+        <p>{{ country }}</p>
+        <p>{{ city }}</p>
+        <p>
+            <h1>Appointments:</h1>
+        </p>
+        {% for appointment in appointments %}
+            <p>{{ appointment }}  {{ appointment.date }}  {{ appointment.event_duration }}</p>
+
+        {% endfor %}
+
+    </div>
+{% endwith %}

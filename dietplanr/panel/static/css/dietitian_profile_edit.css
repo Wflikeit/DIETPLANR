@@ -1,0 +1,26 @@
+.settings-container{
+    display: grid;
+    height: 100%;
+    background-color: hsla(230, 100%, 65%, 50%);
+    border-radius: 1rem;
+    grid-template-columns: repeat(4,auto);
+}
+.settings-container form{
+    grid-column: 2/3;
+}
+.settings-container form label{
+    display: block;
+    margin-top: 1rem;
+}
+.settings-container form input[type="image"]{
+    display: block;
+}
+.settings-container form button{
+    outline: none;
+    border: none;
+    font-weight: bold;
+    background-color: rgba(81, 108, 252,70%);
+    padding: 0.5rem;
+    border-radius: 100rem;
+    cursor: pointer;
+}
