@@ -12,95 +12,65 @@
     {% block scripts %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar">
-        <a href="">Product</a>
-        <a href="">Features</a>
-        <a href="">Our dietitians</a>
-        <a href="">FAQ</a>
-        <a href="">Sign up</a>
-    </nav>
-    <div id="content">
-        {% block content %}
+<nav class="navbar">
+    <a href="">Product</a>
+    <a href="">Features</a>
+    <a href="">Our dietitians</a>
+    <a href="">FAQ</a>
+    <a href="">Sign up</a>
+</nav>
+<div id="content">
+    {% block content %}
 
-        {% endblock %}
-    </div>
-    <div class="chat-wrapper">
-        <div id="chat">
-            <div class="chat-settings">
-                <div class="option-dropdown">
-                    <div class="dropdown">
-                        Adjust chat
-                        <i class="fa-solid fa-angle-down"></i>
-                    </div>
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        Accusantium alias animi dolor dolores doloribus eos expedita fugit illum minima nihil non, odit officia porro repellat repudiandae saepe sunt, velit veritatis.
-                    </div>
+    {% endblock %}
+</div>
+<div class="chat-wrapper">
+    <div id="chat">
+        <div class="chat-settings">
+            <div class="option-dropdown">
+                <div class="dropdown">
+                    Adjust chat
+                    <i class="fa-solid fa-angle-down"></i>
                 </div>
-            </div>
-            <div class="chat">
-                <div class="messages" id="messages">
-                    <div class="message left">
-                        <span>leftttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</span>
-                    </div>
-                    <div class="message left">
-                        <span>left</span>
-                    </div>
-                    <div class="message left">
-                        <span>left</span>
-                    </div>
-                    <div class="message left">
-                        <span>left</span>
-                    </div>
-                    <div class="message right">
-                        <span>rightttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</span>
-                    </div>
-                    <div class="message right">
-                        <span>right</span>
-                    </div>
-                    <div class="message right">
-                        <span>right</span>
-                    </div>
-                    <div class="message left">
-                        <span>left</span>
-                    </div>
-                    <div class="message right">
-                        <span>right</span>
-                    </div>
-                    <div class="message left">
-                        <span>left</span>
-                    </div>
-                    <div class="message right">
-                        <span>right</span>
-                    </div><div class="message left">
-                        <span>left</span>
-                    </div>
-                    <div class="message right">
-                        <span>right</span>
-                    </div><div class="message left">
-                        <span>left</span>
-                    </div>
-                    <div class="message right">
-                        <span>right</span>
-                    </div><div class="message left">
-                        <span>left</span>
-                    </div>
-                    <div class="message right">
-                        <span>right</span>
-                    </div>
-                </div>
-                <div class="message-form">
-                    <i class="fa-solid fa-file"></i>
-                    <i class="fa-regular fa-image"></i>
-                    <div class="message-input">
-                        <i class="fa-solid fa-face-smile"></i>
-                    </div>
+                <div class="content">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Accusantium alias animi dolor dolores doloribus eos expedita fugit illum minima nihil non, odit
+                    officia porro repellat repudiandae saepe sunt, velit veritatis.
                 </div>
             </div>
         </div>
-        <i class="fa-regular fa-message fa-2xl" id="chat-icon"></i>
-    </div>
+        <div class="chat">
+            <div class="mb-2">
+                <textarea class="form-control custom-chat-log" id="chatLog" readonly></textarea>
+            </div>
+{#            <div class="form-control custom-chat-log" id="chatLog" readonly>#}
+{#            </div>#}
+{#   TODO find better structure to display messages         #}
 
+            <div class="message-form">
+                <i class="fa-solid fa-file"></i>
+                <i class="fa-regular fa-image"></i>
+                <div class="message-input ">
+                    <i class="fa-solid fa-face-smile"></i>
+                    <div id="chatMessageInput">
+                        <div class="input-group">
+                            <input type="text" class="form-control message-input" id="chatMessageInput"
+                                   placeholder="Enter your chat message">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" id="chatMessageSend" style="display: none;"
+                                        type="button">Send
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <i class="fa-regular fa-message fa-2xl" id="chat-icon"></i>
+</div>
+{% if not user.is_authenticated %}
     <footer>
         <div>
             <p>
@@ -125,5 +95,6 @@
             <button class="register">REGISTER</button>
         </div>
     </footer>
+{% endif %}
 </body>
 </html>

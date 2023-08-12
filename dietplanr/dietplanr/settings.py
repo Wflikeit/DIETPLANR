@@ -27,10 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ASGI_APPLICATION = "dietplanr.asgi.application"
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'panel.apps.PanelConfig',
     'chat.apps.ChatConfig',
     'meal_plan.apps.MealplanConfig',
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +86,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'TEST': {
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
 }
 
@@ -135,3 +142,16 @@ AUTHENTICATION_BACKENDS = [
 ]
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # lub inny silnik sesji
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)]
+        },
+    },
+}
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',  # Możesz wybrać inny mechanizm uwierzytelniania
+    ),
+}

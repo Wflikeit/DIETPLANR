@@ -214,3 +214,4 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
             context['dietitian_profile'] = dietitian_profile
 
         return context
+
