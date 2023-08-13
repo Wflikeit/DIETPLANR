@@ -152,6 +152,6 @@ CHANNEL_LAYERS = {
 }
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',  # Możesz wybrać inny mechanizm uwierzytelniania
+        'rest_framework.authentication.SessionAuthentication',
     ),
 }

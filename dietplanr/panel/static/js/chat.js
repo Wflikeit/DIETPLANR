@@ -15,6 +15,7 @@ const chat_container = document.getElementById("chat");
 const chat_settings_container = chat_container.getElementsByClassName("chat-settings")[0];
 const chat_settings_dropdowns = Array.from(chat_settings_container.getElementsByClassName("option-dropdown"));
 
+
 let user_inbox = "ced270ee-1f3d-4f9a-93c0-836736e81c7b"
 chat_settings_dropdowns.forEach(dropdown => {
     dropdown.getElementsByClassName("dropdown")[0].addEventListener("click", function () {
@@ -41,8 +42,7 @@ chatMessageInput.onkeyup = function (e) {
 chatMessageSend.onclick = function () {
     if (chatMessageInput.value.length === 0) return;
     chatSocket.send(JSON.stringify({
-        "message": chatMessageInput.value,
-        "user_inbox": user_inbox,  // Twój typ komunikatu
+        "message": chatMessageInput.value, "user_inbox": user_inbox,  // Twój typ komunikatu
 
     }));
     chatMessageInput.value = "";
@@ -66,7 +66,6 @@ function connect() {
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         console.log(data);
-        loadConversations()
 
 
         switch (data.type) {
@@ -96,62 +95,66 @@ function connect() {
 }
 
 connect();
-// chat.js
 
 let offset = 0; // Zmienna do śledzenia ofsetu wiadomości
 let user_slug = 'admin-admin'; // Zmienna do śledzenia ofsetu wiadomości
 
-async function fetchMessagesFromServer() {
+
+async function loadConversations() {
+    let conversations_array = [];
     try {
-        console.log('response')
-        const response = await fetch(`/chat/api/get-messages/${user_slug}/${offset}`);
-        console.log('data')
+        const response = await fetch(`/chat/api/get-conversations/${user_slug}/${offset}`, {
+            credentials: 'same-origin' // lub 'include'
+        });
         const data = await response.json();
-        console.log(data)
+        console.log('hiiiiiiiii')
         console.log(data.results)
+        data.results.forEach(element => {
+            conversations_array.push(element)
+        })
+        console.log('petla')
+        conversations_array.forEach(element => {
+            console.log(element)
+            element.messages.forEach(element => {
+                messages_array.push(element)
+            })
+        })
+
+        console.log('messages.array')
+
+        messages_array.forEach(element => {
+            console.log(element)
+        })
+        await loadMoreMessages()
         return data.results;
     } catch (error) {
         console.error("Błąd podczas pobierania wiadomości:", error);
         return [];
     }
+
 }
 
+
 async function loadMoreMessages() {
-    const messages = await fetchMessagesFromServer();
-    messages.forEach(message => {
+    messages_array.forEach(message => {
         addMessageToChatLog(message.content);
         console.log(message)
     });
-    offset += messages.length;
+    // offset += messages_array.length;
 }
 
 // Funkcja do dodawania wiadomości do chatLog
+
 function addMessageToChatLog(message) {
     chatLog.value += message + "\n";
 }
 
 // Obsługa przewijania i ładowania nowych wiadomości
+
 chatLog.addEventListener('scroll', function () {
     if (chatLog.scrollTop === 0) {
         loadMoreMessages();
     }
 });
-
 // Inicjalne pobranie wiadomości
-loadMoreMessages();
-
-async function loadConversations() {
-    try {
-        const response = await fetch(`/chat/api/get-conversations/${user_slug}/${offset}`);
-        const data = await response.json();
-        console.log(data)
-        console.log('hiiiiiiiii')
-        console.log(data.results)
-        return data.results;
-    } catch (error) {
-        console.error("Błąd podczas pobierania wiadomości:", error);
-        return [];
-    }
-
-}
-
+loadConversations()
