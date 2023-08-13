@@ -56,10 +56,10 @@
                         {{ day }}
                     {% for appointment in appointments %}
                         {% if appointment.date.year == selected_year and appointment.date.month == selected_month and appointment.date.day == day %}
-                            <div class="appointment" data-value="{{ appointment.pk }}" data-appointment>
-                                <div class="time" data-value="{{ appointment.pk }}">14:30</div>
-                                <div class="title" data-value="{{ appointment.pk }}">{{ appointment.title }}</div>
-                                <div class="duration" data-value="{{ appointment.pk }}">Duration: {{ appointment.event_duration }}</div>
+                            <div class="appointment" data-value="{{ appointment.date }}" data-appointment>
+                                <div class="time" data-value="{{ appointment.date }}">14:30</div>
+                                <div class="title" data-value="{{ appointment.date }}">{{ appointment.title }}</div>
+                                <div class="duration" data-value="{{ appointment.date }}">Duration: {{ appointment.event_duration }}</div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -76,7 +76,7 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
             {% for appointment in appointments %}
-                <div data-value="{{ appointment.pk }}" class="d-none" data-dialog-content>{{ appointment.title }}</div>
+                <div data-value="{{ appointment.date }}" class="d-none" data-dialog-content>{{ appointment.title }}</div>
             {% endfor %}
             <input type="text">
             <button type="submit">SUBMIT</button>

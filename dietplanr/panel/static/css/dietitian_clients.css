@@ -1,28 +1,41 @@
 .clients-container{
     height: 100%;
-    overflow-y: scroll;
-    background-color: hsla(230, 100%, 65%, 50%);
+    /*overflow-y: scroll;*/
+    /*background-color: hsla(230, 100%, 65%, 50%);*/
+    background-color: #F2F2F4;
     border-radius: 1rem;
 }
 table{
-        border-collapse: collapse;
-        width: 100%;
-        overflow: hidden;
+    /*border-collapse: collapse;*/
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+    padding: 1rem;
+    padding-top: 0;
+    width: 100%;
+    overflow: hidden;
+}
+tr :first-child{
+    border-radius: 1rem 0 0 1rem;
+}
+tr :last-child{
+    border-radius: 0 1rem 1rem 0;
 }
 thead tr{
-            background-color: hsla(214, 60%, 60%,80%);
-            text-align: left;
+    /*background-color: hsla(214, 60%, 60%,80%);*/
+    background-color: #6ED1DC;
+    text-align: left;
 }
 th, td{
     padding: 0.5rem;
 }
 tbody tr{
     border-bottom: 1px solid hsla(0, 0%, 50%, 0.5);
+    background-color: #E2E2EB;
 }
 tbody tr.active-row{
     color:hsla(214, 75%, 20%,80%);
     font-weight: bold;
 }
-tbody tr:nth-of-type(even){
-    background-color: hsla(0, 0%, 90%, 0.5);
-}
+/*tbody tr:nth-of-type(even){*/
+/*    background-color: hsla(0, 0%, 90%, 0.5);*/
+/*}*/

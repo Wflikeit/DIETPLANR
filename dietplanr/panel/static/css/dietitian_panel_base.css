@@ -8,20 +8,21 @@
 /*    display: none;*/
 /*}*/
 .container{
-    padding: 0 1rem;
     display: grid;
     grid-template-columns: 10% 1fr 10%;
-    gap: 1rem;
-    background-color: rgba(255,255,255,0.7);
-    padding: 1rem;
+    /*gap: 1rem;*/
+    /*background-color: rgba(255,255,255,0.7);*/
+    background-color: hsla(260, 84%, 63%, 0.3);
+    /*padding: 1rem;*/
     height: 70vh;
 }
 .sidebar{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-radius: 1rem;
-    background-color: hsla(214, 95%, 50%, 60%);
+    gap: 3rem;
+    /*border-radius: 1rem;*/
+    /*background-color: hsla(214, 95%, 50%, 60%);*/
 }
 .sidebar a{
     padding: 1rem;

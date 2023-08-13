@@ -167,7 +167,7 @@ class DietitianProfileEditView(DietitianRequiredMixin, View):
     def get(self, request):
         dietitian_profile = DietitianProfile.objects.get(user=request.user)
         form = self.form_class(instance=dietitian_profile)
-        return render(request, 'panel/dietitian_profile_edit.html', {'form': form})
+        return render(request, 'panel/dietitian_profile_edit.html', {'form': form, "url_path": request.path})
 
     def post(self, request):
         dietitian_profile = get_object_or_404(DietitianProfile, user=request.user)
@@ -176,7 +176,7 @@ class DietitianProfileEditView(DietitianRequiredMixin, View):
             form.save()
             print('saceeeeee')
             return redirect('panel:home')
-        return render(request, 'panel/dietitian_profile_edit.html', {'form': form})
+        return render(request, 'panel/dietitian_profile_edit.html', {'form': form, "url_path": request.path})
 
 
 class ManageClientsView(DietitianRequiredMixin, ListView):
@@ -188,7 +188,10 @@ class ManageClientsView(DietitianRequiredMixin, ListView):
         qs = super().get_queryset()
         dietitian_profile = get_object_or_404(DietitianProfile, user=self.request.user)
         return qs.filter(dietitian=dietitian_profile)
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['url_path'] = self.request.path
+        return context
 
 class CalendarAppointmentsMixin:
     def get_appointments(self, user):
@@ -218,7 +221,8 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
         prev_days = range(last_day_prev_month - weekday_of_start + 1, last_day_prev_month + 1)
         next_days = range(1, 42 - last_day - weekday_of_start + 1)
         return render(request, "panel/calendar.html",
-                      {"current_date": datetime.now(),
+                      {'url_path': request.path,
+                       "current_date": datetime.now(),
                        "current_day_num": current_day_num,
                        "selected_year": selected_year,
                        "selected_month": selected_month,
@@ -241,7 +245,8 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
         prev_days = range(last_day_prev_month - weekday_of_start + 1, last_day_prev_month + 1)
         next_days = range(1, 42 - last_day - weekday_of_start + 1)
         return render(request, "panel/calendar.html",
-                      {"current_date": datetime.now(),
+                      {'url_path': request.path,
+                       "current_date": datetime.now(),
                        "current_day_num": current_day_num,
                        "selected_year": selected_year,
                        "selected_month": selected_month,
@@ -254,7 +259,6 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-
         if hasattr(user, 'dietitianprofile'):
             dietitian_profile = user.dietitianprofile
             context.update(dietitian_profile.user.get_user_data())

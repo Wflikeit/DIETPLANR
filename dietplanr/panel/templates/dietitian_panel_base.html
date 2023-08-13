@@ -12,10 +12,10 @@
 {% block content %}
     <div class="container">
         <nav class="sidebar">
-            <a class="active" href="{% url 'panel:show_clients' %}">Clients</a>
+            <a {% if url_path == '/panel/clients/' %} class="active" {% endif %} href="{% url 'panel:show_clients' %}">Clients</a>
             <a href="{% url 'panel:show_recipes' %}">Recipes</a>
-            <a href="{% url 'panel:show_calendar' %}">Calendar</a>
-            <a href="{% url 'panel:edit_profile' %}">Settings</a>
+            <a {% if url_path == '/panel/calendar/' %} class="active" {% endif %} href="{% url 'panel:show_calendar' %}">Calendar</a>
+            <a  {% if url_path == '/panel/dietitian/edit-profile/' %} class="active" {% endif %} href="{% url 'panel:edit_profile' %}">Settings</a>
         </nav>
         {% block information %}
         {% endblock %}
