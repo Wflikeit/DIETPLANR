@@ -23,6 +23,7 @@ chat_settings_dropdowns.forEach(dropdown => {
 chatIcon.addEventListener("click", function () {
     this.classList.toggle("active");
     chat_container.classList.toggle("active");
+
 })
 
 // const roomName = JSON.parse(document.getElementById('roomName').textContent);
@@ -65,6 +66,8 @@ function connect() {
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         console.log(data);
+        loadConversations()
+
 
         switch (data.type) {
             case "chat_message":
@@ -126,7 +129,7 @@ function addMessageToChatLog(message) {
 }
 
 // Obsługa przewijania i ładowania nowych wiadomości
-chatLog.addEventListener('scroll', function() {
+chatLog.addEventListener('scroll', function () {
     if (chatLog.scrollTop === 0) {
         loadMoreMessages();
     }
@@ -134,4 +137,22 @@ chatLog.addEventListener('scroll', function() {
 
 // Inicjalne pobranie wiadomości
 loadMoreMessages();
+
+async function loadConversations() {
+    try {
+        const response = await fetch(`/chat/api/get-conversations/${user_slug}/${offset}`);
+        const data = await response.json();
+        console.log(data)
+        console.log('hiiiiiiiii')
+        console.log(data.results)
+        return data.results;
+    } catch (error) {
+        console.error("Błąd podczas pobierania wiadomości:", error);
+        return [];
+    }
+
+}
+
+
+
 
