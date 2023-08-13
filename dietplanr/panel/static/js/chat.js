@@ -15,6 +15,7 @@ const chat_container = document.getElementById("chat");
 const chat_settings_container = chat_container.getElementsByClassName("chat-settings")[0];
 const chat_settings_dropdowns = Array.from(chat_settings_container.getElementsByClassName("option-dropdown"));
 
+let user_inbox = "ced270ee-1f3d-4f9a-93c0-836736e81c7b"
 chat_settings_dropdowns.forEach(dropdown => {
     dropdown.getElementsByClassName("dropdown")[0].addEventListener("click", function () {
         dropdown.getElementsByClassName("content")[0].classList.toggle("active");
@@ -25,9 +26,6 @@ chatIcon.addEventListener("click", function () {
     chat_container.classList.toggle("active");
 
 })
-
-// const roomName = JSON.parse(document.getElementById('roomName').textContent);
-// console.log(roomName)
 
 
 // focus 'chatMessageInput' when user opens the page
@@ -44,6 +42,8 @@ chatMessageSend.onclick = function () {
     if (chatMessageInput.value.length === 0) return;
     chatSocket.send(JSON.stringify({
         "message": chatMessageInput.value,
+        "user_inbox": user_inbox,  // Twój typ komunikatu
+
     }));
     chatMessageInput.value = "";
 };
@@ -103,7 +103,9 @@ let user_slug = 'admin-admin'; // Zmienna do śledzenia ofsetu wiadomości
 
 async function fetchMessagesFromServer() {
     try {
+        console.log('response')
         const response = await fetch(`/chat/api/get-messages/${user_slug}/${offset}`);
+        console.log('data')
         const data = await response.json();
         console.log(data)
         console.log(data.results)
@@ -152,7 +154,4 @@ async function loadConversations() {
     }
 
 }
-
-
-
 

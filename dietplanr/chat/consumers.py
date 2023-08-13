@@ -1,6 +1,9 @@
 import json
 
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+
+from .models import Message, Conversation
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -14,6 +17,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.chat_active = self.scope['url_route']['kwargs']['chat_active']
         self.user = self.scope['user']
+
         if not self.user_inbox:
             self.user_inbox = 'default'
         if self.chat_active:
@@ -34,48 +38,67 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # receive message from Websocket
     async def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        print(text_data_json)
         print(self.user)
 
         if not self.user.is_authenticated:  # new
             print('dupa')
             return  # new
-        if message.startswith('/pm '):
-            split = message.split(' ', 2)
-            target = split[1]
-            target_msg = split[2]
-
-            # send private message to the target
-            await self.channel_layer.group_send(
-                f'inbox_{target}',
-                {
-                    'type': 'private_message',
-                    'user': self.user.first_name,
-                    'message': target_msg,
-                }
-            )
-            # send private message delivered to the user
-            await self.send(json.dumps({
-                'type': 'private_message_delivered',
-                'target': target,
-                'message': target_msg,
-            }))
-            # await self.save_message(message)
-            return
+        # if message.startswith('/pm '):
+        #     split = message.split(' ', 2)
+        #     target = split[1]
+        #     target_msg = split[2]
+        #
+        #     # send private message to the target
+        #     await self.channel_layer.group_send(
+        #         f'inbox_{target}',
+        #         {
+        #             'type': 'private_message',
+        #             'user': self.user.first_name,
+        #             'message': target_msg,
+        #         }
+        #     )
+        #     # send private message delivered to the user
+        #     await self.send(json.dumps({
+        #         'type': 'private_message_delivered',
+        #         'target': target,
+        #         'message': target_msg,
+        #     }))
+        #     # await self.save_message(message)
+        #     return
 
         # await self.save_message(message)
         # send message to room group
-        await self.channel_layer.group_send(
-            self.user_inbox, {'type': 'chat_message',
-                              'user': self.user.first_name,
-                              'message': message}
-        )
+        message = text_data_json.get('message')
+        user_inbox = text_data_json.get('user_inbox')
+        if message and user_inbox:
+            await self.save_message(message=message,
+                                    inbox=user_inbox)
+            await self.channel_layer.group_send(
+                self.user_inbox, {'type': 'chat_message',
+                                  'user': self.user.first_name,
+                                  'message': message}
+            )
 
     async def chat_message(self, event):
         # message = event['message']
         # send message to Websocket
         # await self.send(text_data=json.dumps({'message': message}))
         await self.send(text_data=json.dumps(event))
+
+    async def save_message(self, message, inbox):
+        inbox1 = await self.get_conversation(inbox)
+        await database_sync_to_async(Message.objects.create)(
+            sender=self.user,
+            content=message,
+            is_private=True,
+            conversation=inbox1
+        )
+
+    @database_sync_to_async
+    def get_conversation(self, inbox):
+        conversation = Conversation.objects.get(user1=self.user, user2=inbox)
+        return conversation
 
     def private_message(self, event):
         self.send(text_data=json.dumps(event))
