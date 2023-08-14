@@ -230,9 +230,13 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
 
         prev_days = range(last_day_prev_month - weekday_of_start + 1, last_day_prev_month + 1)
         next_days = range(1, 42 - last_day - weekday_of_start + 1)
+        current_month = datetime.now().month
+        month_name = calendar.month_name[current_month]
 
         context = {
             "current_date": datetime.now(),
+            "current_year": datetime.now().year,
+            "current_month": month_name,
             "current_day_num": current_day_num,
             "selected_year": selected_year,
             "selected_month": selected_month,

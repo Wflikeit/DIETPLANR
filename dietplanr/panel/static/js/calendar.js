@@ -6,46 +6,68 @@ const dialog = document.querySelector("[data-dialog]");
 const dialogContent = document.querySelectorAll("[data-dialog-content]");
 appointments.forEach(appointment => {
     appointment.addEventListener("click", e => {
-        dialogContent.forEach(element =>{
-            if(element.dataset.value === e.target.dataset.value) {
+        dialogContent.forEach(element => {
+            if (element.dataset.value === e.target.dataset.value) {
                 element.classList.remove("d-none");
-            }
-            else element.classList.add("d-none");
+            } else element.classList.add("d-none");
         })
         dialog.showModal();
     })
 })
-const yearSelect = document.querySelector('select[name="year"]');
 
-// const monthsList = JSON.parse('{{ months|safe }}');
 
-const monthSelect = document.querySelector('select[name="month"]');
 const calendar = document.querySelector('.calendar'); // Tutaj należy uzupełnić odpowiedni selektor dla elementu, w którym wyświetlasz kalendarz
 const originalCalendarContent = calendar.innerHTML;
-yearSelect.addEventListener('input', function() {
-    // for chrome works input instead of 'change'
-    var selectedYear = yearSelect.value;
-    console.log('Obecnie wybrany rok:', selectedYear);
-    if (selectedYear === '2023') {
-        // Wyświetl listę miesięcy zamiast dni
-        const yearsList = ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033', '2034'];
-        calendar.innerHTML = yearsList.map(year => `<div>${year}</div>`).join('');
-    }else {
-        // Powrót do oryginalnej zawartości diva z dniami
-        calendar.innerHTML = originalCalendarContent;
+
+// Pobieranie referencji do divów
+const buttonContainer = document.getElementById("button-container");
+const monthButton = document.getElementById("month-button");
+const yearButton = document.getElementById("year-button");
+const tenYearsButton = document.getElementById("ten-years-button");
+
+// Ustawienie początkowych stylów
+monthButton.style.display = "block";
+yearButton.style.display = "none";
+
+// Funkcja do zmiany widoczności divów
+function toggleButtons() {
+    if (monthButton.style.display === "block") {
+        monthButton.style.display = "none";
+        yearButton.style.display = "block";
+        tenYearsButton.style.display = "none";
+    } else if (yearButton.style.display === "block") {
+        yearButton.style.display = "none";
+        tenYearsButton.style.display = "block";
+    } else {
+        monthButton.style.display = "block";
+        yearButton.style.display = "none";
+        tenYearsButton.style.display = "none";
     }
-});
-monthSelect.addEventListener('input', function() {
-    var selectedMonth = monthSelect.value; // Pobierz wartość wybranego roku
-    console.log('Wybrany miesiac:', selectedMonth);
+}
+
+// Dodawanie obsługi kliknięcia w kontenerze przycisków
+buttonContainer.addEventListener("click", toggleButtons);
+monthButton.addEventListener("click", function () {
+    // var selectedMonth = monthSelect.value; // Pobierz wartość wybranego roku
+    // console.log('Wybrany miesiac:', selectedMonth);
     // Tutaj możesz wykonać inne operacje na wybranym roku
-    if (selectedMonth === '1') {
-        // Wyświetl listę miesięcy zamiast dni
-        const monthsList = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
-        calendar.innerHTML = monthsList.map(month => `<div>${month}</div>`).join('');
-    }else {
-        // Powrót do oryginalnej zawartości diva z dniami
-        calendar.innerHTML = originalCalendarContent;
-    }});
+    // if (selectedMonth === '1') {
+    // Wyświetl listę miesięcy zamiast dni
+    const monthsList = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+    calendar.innerHTML = monthsList.map(month => `<div>${month}</div>`).join('');
+
+    // }else {
+    // Powrót do oryginalnej zawartości diva z dniami
+});
+tenYearsButton.addEventListener("click", function () {
+    calendar.innerHTML = originalCalendarContent;
+
+});
+yearButton.addEventListener("click", function () {
+    const yearsList = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031'];
+    calendar.innerHTML = yearsList.map(year => `<div>${year}</div>`).join('');
+
+});
+
 
 

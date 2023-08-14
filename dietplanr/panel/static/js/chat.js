@@ -8,7 +8,6 @@ let chatMessageSend = document.querySelector("#chatMessageSend");
 // const messages = Array.from(messages_container.querySelectorAll(".message"));
 let messages_array = [];
 
-
 const chatIcon = document.getElementById("chat-icon");
 const chat_container = document.getElementById("chat");
 const chat_settings_container = chat_container.getElementsByClassName("chat-settings")[0];
@@ -27,9 +26,6 @@ chatIcon.addEventListener("click", function () {
     chat_container.classList.toggle("active");
 
 })
-
-// const roomName = JSON.parse(document.getElementById('roomName').textContent);
-// console.log(roomName)
 
 
 // focus 'chatMessageInput' when user opens the page
@@ -121,7 +117,7 @@ let user_slug = 'dietetyk-fratczak'; // Zmienna do śledzenia ofsetu wiadomości
 async function loadConversations() {
     let conversations_array = [];
     try {
-        const response = await fetch(`/chat/api/get-conversations/${user_slug}/${offset}`);
+        const response = await fetch(`/chat/api/get-conversations/${offset}`);
         const data = await response.json();
         let conv_messages = [];
         data.results.forEach(element => {
@@ -154,6 +150,7 @@ async function loadConversations() {
         console.error("Błąd podczas pobierania wiadomości:", error);
         return [];
     }
+
 }
 
 
@@ -182,11 +179,11 @@ function addMessageToChatLog(index, message, conversations_array) {
 }
 
 // Obsługa przewijania i ładowania nowych wiadomości
+
 chatLog.addEventListener('scroll', function () {
     if (chatLog.scrollTop === 0) {
         loadMoreMessages();
     }
 });
-
 // Inicjalne pobranie wiadomości
 loadConversations()

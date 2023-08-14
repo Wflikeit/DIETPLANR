@@ -66,7 +66,7 @@ footer :nth-child(2) .register{
     align-items: end;
     z-index: 300;
 }
-#chat {
+#chat{
     display: none;
 }
 #chat.active{
@@ -127,7 +127,7 @@ footer :nth-child(2) .register{
 }
 .chat .custom-chat-log > div > .message{
     width: 60%;
-    margin-top: 1rem;
+    margin-top: 0.3rem;
 }
 .chat .custom-chat-log > div > .message span{
     display: inline-block;
