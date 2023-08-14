@@ -19,8 +19,8 @@ class MessageSerializer(ModelSerializer):
 
 
 class ConversationSerializer(ModelSerializer):
-    messages = SerializerMethodField()
-    user2_data = SerializerMethodField()
+    messages = SerializerMethodField()  # Dodaj to pole
+    user2_data = SerializerMethodField()  # Dodaj to pole
 
     class Meta:
         model = Conversation
@@ -34,22 +34,23 @@ class ConversationSerializer(ModelSerializer):
     def get_user2_data(self, conversation):
         user2 = conversation.user2
         user1 = conversation.user1
-        current_user = self.context['request'].user
-        print(f'current_user:{current_user}')
-        print(f'user1:{user1}')
-        print(f'user2:{user2}')
-
-        if current_user == user2 or current_user == user1:
-            if current_user == user2:
-                user_data = {
-                    'name': user2.full_name,
-                    'photo': user2.photo.url if user2.photo else None
-                }
-            else:
-                user_data = {
-                    'name': user1.full_name,
-                    'photo': user1.photo.url if user1.photo else None
-                }
+        print(f"self.context['request'].user: {self.context['request'].user}")
+        print(f'user1:{user1}\nuser2:{user2}')
+        if self.context['request'].user == user1:
+            print('sukces')
+            user_data = {
+                'name': user2.full_name,
+                'photo': user2.photo.url if user2.photo else None
+            }
             return user_data
-        return None  # Jeśli bieżący użytkownik nie jest uczestnikiem konwersacji, zwracamy None
+        elif self.context['request'].user == user2:
+            user_data = {
+                'name': user1.full_name,
+                'photo': user1.photo.url if user1.photo else None
+            }
+            return user_data
+        return {
+                'name': "error",
+                'photo': "error"
+            }
 
