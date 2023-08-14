@@ -38,4 +38,6 @@ class ConversationsView(generics.ListAPIView):
         user = CustomUser.objects.get(slug=user_slug)
 
         print(user)
-        return Conversation.objects.filter(user1=user)
+
+        return Conversation.objects.filter(user1=user) | Conversation.objects.filter(user2=user)
+

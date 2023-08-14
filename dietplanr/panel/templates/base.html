@@ -38,31 +38,22 @@
                     officia porro repellat repudiandae saepe sunt, velit veritatis.
                 </div>
             </div>
+
+        </div>
+        <div class="conversations" id="conversations">
+
         </div>
         <div class="chat">
-            <div class="mb-2">
-                <textarea class="form-control custom-chat-log" id="chatLog" readonly></textarea>
+            <div class="custom-chat-log" id="chatLog">
             </div>
-{#            <div class="form-control custom-chat-log" id="chatLog" readonly>#}
-{#            </div>#}
-{#   TODO find better structure to display messages         #}
 
             <div class="message-form">
                 <i class="fa-solid fa-file"></i>
                 <i class="fa-regular fa-image"></i>
                 <div class="message-input ">
+                            <input type="text" class="form-control message-input" id="chatMessageInput" placeholder="Enter your chat message">
+                                <button class="btn btn-success" id="chatMessageSend" style="display: none;" type="button"></button>
                     <i class="fa-solid fa-face-smile"></i>
-                    <div id="chatMessageInput">
-                        <div class="input-group">
-                            <input type="text" class="form-control message-input" id="chatMessageInput"
-                                   placeholder="Enter your chat message">
-                            <div class="input-group-append">
-                                <button class="btn btn-success" id="chatMessageSend" style="display: none;"
-                                        type="button">Send
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
             </div>
