@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheets %}
+    <link href="{% static "css/dietitian_panel_base.css" %}" rel="stylesheet">
+    {% block additional_stylesheets %}
+    {% endblock %}
+{% endblock %}
+{% block scripts %}
+    {% block additional_scripts %}
+    {% endblock %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <nav class="sidebar">
+            <a class="active" href="{% url 'panel:show_clients' %}">Clients</a>
+{#            <a href="{% url 'panel:show_recipes' %}">Recipes</a>#}
+            <a href="{% url 'panel:show_calendar' %}">Calendar</a>
+            <a href="{% url 'panel:edit_profile' %}">Settings</a>
+        </nav>
+        {% block information %}
+        {% endblock %}
+    </div>
+{% endblock %}

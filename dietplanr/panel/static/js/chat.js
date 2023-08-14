@@ -10,6 +10,7 @@ let chatMessageSend = document.querySelector("#chatMessageSend");
 // const messages = Array.from(messages_container.querySelectorAll(".message"));
 let messages_array = [];
 
+
 const chatIcon = document.getElementById("chat-icon");
 const chat_container = document.getElementById("chat");
 const chat_settings_container = chat_container.getElementsByClassName("chat-settings")[0];
@@ -97,13 +98,13 @@ function connect() {
 connect();
 
 let offset = 0; // Zmienna do śledzenia ofsetu wiadomości
-let user_slug = 'admin-admin'; // Zmienna do śledzenia ofsetu wiadomości
+// let user_slug = 'admin-admin'; // Zmienna do śledzenia ofsetu wiadomości
 
 
 async function loadConversations() {
     let conversations_array = [];
     try {
-        const response = await fetch(`/chat/api/get-conversations/${user_slug}/${offset}`, {
+        const response = await fetch(`/chat/api/get-conversations/${offset}`, {
             credentials: 'same-origin' // lub 'include'
         });
         const data = await response.json();

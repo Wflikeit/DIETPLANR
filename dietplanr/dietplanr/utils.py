@@ -45,9 +45,10 @@ class DietitianRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def handle_no_permission(self):
         print('Użytkownik nie ma profilu klienta.')
         print(self.request.user.id)
-        dietitian_profile = ClientProfile.objects.create(user=self.request.user)
-        if dietitian_profile:
-            return redirect("panel:client_update_form")
+        if self.request.user.is_dietitian and not self.request.user.is_client:
+            dietitian_profile = ClientProfile.objects.create(user=self.request.user)
+            if dietitian_profile:
+                return redirect("panel:client_update_form")
         return redirect('panel:home')
 
     def has_dietitian_profile(self):

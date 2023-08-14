@@ -34,10 +34,8 @@ class ConversationsView(generics.ListAPIView):
     template_name = 'chat/list.html'
 
     def get_queryset(self):
-        user_slug = self.kwargs.get('user_slug')
-        user = CustomUser.objects.get(slug=user_slug)
 
-        print(user)
+        user = self.request.user
+        print(self.request.user)
 
         return Conversation.objects.filter(user1=user) | Conversation.objects.filter(user2=user)
-
