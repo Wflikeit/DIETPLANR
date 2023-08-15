@@ -1,4 +1,4 @@
-// chat/static/chat.js
+// chat/static/chat.jsa
 
 let chatLog = document.querySelector("#chatLog");
 let chatMessageInput = document.querySelector("#chatMessageInput");
@@ -134,7 +134,7 @@ let user_slug = 'dietetyk-fratczak'; // Zmienna do śledzenia ofsetu wiadomości
 
 async function loadConversations() {
     try {
-        const response = await fetch(`/chat/api/get-conversations/${user_slug}/${offset}`);
+        const response = await fetch(`/chat/api/get-conversations/${offset}`);
         const data = await response.json();
         let conv_messages = [];
         let last_message_text = null;
