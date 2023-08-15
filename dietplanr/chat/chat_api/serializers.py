@@ -27,8 +27,8 @@ class ConversationSerializer(ModelSerializer):
         fields = ['messages', 'user2_data']
 
     def get_messages(self, conversation):
-        messages = Message.objects.filter(conversation=conversation)  # Pobierz wiadomości dla tej konwersacji
-        serializer = MessageSerializer(messages, many=True)  # Serializuj wiadomości
+        messages = Message.objects.filter(conversation=conversation)
+        serializer = MessageSerializer(messages, many=True)
         return serializer.data
 
     def get_user2_data(self, conversation):

@@ -129,7 +129,7 @@ let user_slug = 'dietetyk-fratczak'; // Zmienna do śledzenia ofsetu wiadomości
 
 async function loadConversations() {
     try {
-        const response = await fetch(`/chat/api/get-conversations/${user_slug}/${offset}`);
+        const response = await fetch(`/chat/api/get-conversations/${offset}`);
         const data = await response.json();
         let conv_messages = [];
         data.results.forEach(element => {

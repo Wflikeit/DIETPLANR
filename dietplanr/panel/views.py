@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,6 +8,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import ListView, DetailView
+import calendar
+from datetime import datetime
 
 from dietplanr.utils import ClientRequiredMixin, DietitianRequiredMixin
 # Create your views here.
@@ -198,11 +202,55 @@ class CalendarAppointmentsMixin:
 
 
 class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
-    template_name = 'panel/calendar.html'  # Zastąp 'twoj_szablon.html' odpowiednią nazwą szablonu
-    context_object_name = 'appointments'  # Zmieniona nazwa zmiennej w kontekście
+    template_name = 'panel/calendar.html'
+    context_object_name = 'appointments'
 
     def get_queryset(self):
         return self.get_appointments(self.request.user)
+
+    def get(self, request):
+        return self._handle_calendar_request(request)
+
+    def post(self, request):
+        return self._handle_calendar_request(request)
+
+    def _handle_calendar_request(self, request):
+        selected_year = int(request.POST.get('year', datetime.now().year))
+        selected_month = int(request.POST.get('month', datetime.now().month))
+        current_day_num = datetime.now().day
+        first_day = datetime(selected_year, selected_month, 1)
+        weekday_of_start = first_day.weekday()
+        last_day = calendar.monthrange(selected_year, selected_month)[1]
+        prev_month = selected_month - 1 if selected_month > 1 else 12
+        last_day_prev_month = calendar.monthrange(selected_year, prev_month)[1]
+
+        months = {i: month_name for i, month_name in enumerate(calendar.month_name) if i != 0}
+        years_range = range(2023, 2028)
+        weekdays = calendar.day_name
+
+        prev_days = range(last_day_prev_month - weekday_of_start + 1, last_day_prev_month + 1)
+        next_days = range(1, 42 - last_day - weekday_of_start + 1)
+        current_month = datetime.now().month
+        month_name = calendar.month_name[current_month]
+
+        context = {
+            "current_date": datetime.now(),
+            "current_year": datetime.now().year,
+            "current_month": month_name,
+            "current_day_num": current_day_num,
+            "selected_year": selected_year,
+            "selected_month": selected_month,
+            "years": years_range,
+            "months": months,
+            "weekdays": weekdays,
+            "prev_days": prev_days,
+            "days": range(1, last_day + 1),
+            "next_days": next_days,
+            "appointments": self.get_queryset(),
+
+        }
+
+        return render(request, "panel/calendar.html", context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -8,6 +8,5 @@ router.register(r'get-messages', MessagesView, basename='messages')
 router.register(r'get-conversations', ConversationsView, basename='conversations')
 
 urlpatterns = [
-    path('get-messages/<slug:user_slug>/<int:offset>/', MessagesView.as_view(), name='get-messages'),
-    path('get-conversations/<slug:user_slug>/<int:offset>/', ConversationsView.as_view(), name='get-conversations'),
+    path('get-conversations/<int:offset>/', ConversationsView.as_view(), name='get-conversations'),
 ]
