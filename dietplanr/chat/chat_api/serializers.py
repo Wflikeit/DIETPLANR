@@ -24,7 +24,7 @@ class ConversationSerializer(ModelSerializer):
 
     class Meta:
         model = Conversation
-        fields = ['user2', 'messages', 'user2_data']
+        fields = ['messages', 'user2_data']
 
     def get_messages(self, conversation):
         messages = Message.objects.filter(conversation=conversation)
@@ -40,17 +40,20 @@ class ConversationSerializer(ModelSerializer):
             print('sukces')
             user_data = {
                 'name': user2.full_name,
+                'id': user2.id,
                 'photo': user2.photo.url if user2.photo else None
             }
             return user_data
         elif self.context['request'].user == user2:
             user_data = {
                 'name': user1.full_name,
+                'id': user1.id,
                 'photo': user1.photo.url if user1.photo else None
             }
             return user_data
         return {
                 'name': "error",
+                'id': "error",
                 'photo': "error"
             }
 
