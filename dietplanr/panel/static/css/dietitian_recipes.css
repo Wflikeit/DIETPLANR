@@ -1,0 +1,42 @@
+.clients-container, .my_recipes-container{
+    height: 100%;
+    overflow-y: scroll;
+    background-color: hsla(230, 100%, 65%, 50%);
+    border-radius: 1rem;
+}
+.personalize-btn{
+            height: fit-content;
+            width: fit-content;
+            outline: none;
+            border: none;
+            font-weight: bold;
+            background-color: #FFCF15;
+            padding: 0.5rem;
+            border-radius: 1rem;
+            margin-left: 25%;
+        }
+.personalize-btn:hover{
+    cursor: pointer;
+}
+table{
+        border-collapse: collapse;
+        width: 100%;
+        overflow: hidden;
+}
+thead tr{
+            background-color: hsla(214, 60%, 60%,80%);
+            text-align: left;
+}
+th, td{
+    padding: 0.5rem;
+}
+tbody tr{
+    border-bottom: 1px solid hsla(0, 0%, 50%, 0.5);
+}
+tbody tr.active-row{
+    color:hsla(214, 75%, 20%,80%);
+    font-weight: bold;
+}
+tbody tr:nth-of-type(even){
+    background-color: hsla(0, 0%, 90%, 0.5);
+}

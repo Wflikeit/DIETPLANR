@@ -12,6 +12,7 @@ import calendar
 from datetime import datetime
 
 from dietplanr.utils import ClientRequiredMixin, DietitianRequiredMixin
+from recipes.models import Recipe
 # Create your views here.
 from .forms import AppointmentForm, ClientProfileForm, DietitianProfileForm, UserAccountForm
 from .models import DietitianProfile, CustomUser, ClientProfile, Appointment
@@ -62,13 +63,15 @@ class OwnerEditMixin:
 
 
 class ManageRecipesView(ListView):
-    # model = Client
-    template_name = 'panel/dietitian_panel.html'
+    model = Recipe
+    template_name = 'panel/recipes_list.html'
+    context_object_name = 'recipes'
 
     def get_queryset(self):
         qs = super().get_queryset()
+
         # TODO return only recipes of current dietitian
-        # return qs.filter()
+        return qs.filter(author=self.request.user)
 
 
 class ManageSettings(ListView):

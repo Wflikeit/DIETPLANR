@@ -1,0 +1,66 @@
+.calendar-container{
+    background-color: hsla(230, 100%, 65%, 50%);
+    border-radius: 1rem 1rem 0 0;
+    height: 100%;
+    /*overflow-y: hidden;*/
+    display: grid;
+    grid-template-rows: 5fr 5fr 90fr;
+    row-gap: 0.5rem;
+    padding-top: 0.5rem;
+}
+.calendar-container header, .calendar-container form{
+    margin-left: 0.5rem;
+}
+.calendar-container .calendar{
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    grid-template-rows: auto repeat(6,16%);
+    height: 100%;
+    align-content: start;
+}
+.calendar-container .calendar div.current_day{
+    color: red;
+}
+.calendar-container .calendar > div:not(.weekday){
+    background-color: white;
+    border: 1px solid gray;
+    overflow-y: scroll;
+}
+.calendar-container .calendar > div > .appointment{
+    min-height: 100%;
+    /*width: 100%;*/
+    margin: 2%;
+    color: white;
+    background-color: red;
+    cursor: pointer;
+    word-wrap: break-word;
+}
+.calendar-container .calendar > div > .appointment .time{
+    font-size: small;
+}
+.calendar-container .calendar > div > .appointment .title, .calendar-container .calendar > div > .appointment .duration{
+    text-align: center;
+}
+.calendar-container .calendar div.diff_days{
+    opacity: 70%;
+}
+.d-none{
+    display: none;
+}
+dialog{
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+dialog button[formmethod="dialog"]{
+    outline: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+dialog input{
+    background: gray;
+}
+dialog::backdrop{
+    background-color: rgba(0,0,0,30%);
+}

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'chat.apps.ChatConfig',
     'meal_plan.apps.MealplanConfig',
     'payments.apps.PaymentsConfig',
+    'recipes.apps.RecipesConfig',
     'tracker.apps.TrackerConfig',
     'django.contrib.admin',
     'django.contrib.auth',

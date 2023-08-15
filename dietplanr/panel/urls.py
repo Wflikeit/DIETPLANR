@@ -8,7 +8,8 @@ from .views import (ClientProfileEditView,
                     EditAccount,
                     Home,
                     DisplayDietitianProfile,
-                    ManageCalendar)
+                    ManageCalendar,
+                    ManageRecipesView)
 
 app_name = 'panel'
 urlpatterns = [
@@ -23,5 +24,6 @@ urlpatterns = [
     path('account/logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
     path('dietitians/<slug:dietitian_slug>', DisplayDietitianProfile.as_view(), name='show_clients'),
     path('calendar/', ManageCalendar.as_view(), name='show_calendar'),
+    path('recipes/', ManageRecipesView.as_view(), name='show_recipes'),
 
 ]
