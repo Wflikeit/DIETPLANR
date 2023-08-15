@@ -101,6 +101,9 @@ footer :nth-child(2) .register{
     font-size: small;
     white-space: nowrap;
 }
+.conversations .conversation .last-message.unread{
+    font-weight: bold;
+}
 .chat-settings{
     height: 400px;
     width: 200px;

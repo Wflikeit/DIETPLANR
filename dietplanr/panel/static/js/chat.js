@@ -8,13 +8,12 @@ let chatMessageSend = document.querySelector("#chatMessageSend");
 // const messages = Array.from(messages_container.querySelectorAll(".message"));
 let messages_array = [];
 let conversations_array = [];
-let last_message_of_conversation_array = [];
 // let counts = [];
 
 
 const chatIcon = document.getElementById("chat-icon");
 const chat_container = document.getElementById("chat");
-const chat_settings_container = chat_container.getElementsByClassName("chat-settings")[0];
+const chat_settings_container = chat_container.querySelector(".chat-settings");
 const chat_settings_dropdowns = Array.from(chat_settings_container.getElementsByClassName("option-dropdown"));
 const conversations_container = document.getElementById("conversations");
 let current_conversation;
@@ -52,7 +51,6 @@ chatMessageSend.onclick = function () {
 };
 
 let chatSocket = null;
-
 function connect() {
     chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat_active/");
     chatSocket.onopen = function (e) {
@@ -71,22 +69,29 @@ function connect() {
 
         switch (data.type) {
             case "chat_message":
-                console.log(data);
                 let message_div = document.createElement("div");
                 let span = document.createElement("span");
+                let Class = null
+                let who = null;
                 message_div.classList.add("message");
                 span.innerHTML = data.message;
                 message_div.appendChild(span);
-                console.log(conversations_array);
-                const Class = conversations_array.some(item => item.user2_data.name === data.user) ? "left" : "right";
                 // console.log(data.user_id);
+                if(conversations_array.some(item => item.user2_data.id === data.user_id)){
+                    Class = "left";
+                    const chat_link = chat_links.find(item => item.dataset.value == data.user_id);
+                    chatLog.children.item(chat_links.indexOf(chat_link)).appendChild(message_div);
+                    who = data.user + ": ";
+                    chat_link.querySelector(".last-message").innerHTML = who + data.message;
+                    if(!chat_link.classList.contains("active"))
+                        chat_link.querySelector(".last-message").classList.add("unread");
+                }else{
+                    Class = "right";
+                    chatLog.children.item(current_conversation.index).appendChild(message_div)
+                    who = "Ty: "
+                    chat_links[current_conversation.index].querySelector(".last-message").innerHTML = who + data.message;
+                }
                 message_div.classList.add(Class);
-                try{
-                    chatLog.children.item(current_conversation.index).appendChild(message_div);
-                }
-                catch (error){
-                    console.log(error);
-                }
                 break;
             case "private_message":
                 message_div = document.createElement("div");
@@ -132,14 +137,16 @@ async function loadConversations() {
         const response = await fetch(`/chat/api/get-conversations/${user_slug}/${offset}`);
         const data = await response.json();
         let conv_messages = [];
+        let last_message_text = null;
         data.results.forEach(element => {
             conversations_array.push(element)
         })
         conversations_array.forEach((element, index) => {
             conv_messages = [];
+            last_message_text = null;
             element.messages.forEach((message, index) => {
                 conv_messages.push(message);
-                if(index === element.messages.length - 1) last_message_of_conversation_array.push(message);
+                if(index === element.messages.length - 1) last_message_text = message;
             })
             messages_array.push(conv_messages);
             const conv_wrapper = document.createElement("div");
@@ -148,17 +155,23 @@ async function loadConversations() {
             const name = document.createElement("div");
             const message_name_wrapper = document.createElement("div");
             conv_wrapper.classList.add("conversation");
+            conv_wrapper.dataset.value = element.user2_data.id;
             icon.classList.add("fa-regular", "fa-user");
             last_message.classList.add("last-message");
             name.classList.add("name");
             name.innerHTML = element.user2_data.name;
-            last_message.innerHTML = "Wiadomość";
+            if(last_message_text != null) {
+                const who = element.user2_data.id == last_message_text.sender ? element.user2_data.name + ": " : "Ty: ";
+                if(element.user2_data.id == last_message_text.sender) last_message.classList.add("unread");
+                last_message.innerHTML = who + last_message_text.content;
+            }
             message_name_wrapper.append(name, last_message);
             conv_wrapper.append(icon, message_name_wrapper);
             chat_links.push(conv_wrapper);
             conv_wrapper.addEventListener("click", function (e){
                 chat_links.forEach(link => link.classList.remove("active"));
                 this.classList.add("active");
+                this.querySelector(".last-message").classList.remove("unread");
                 const index = chat_links.indexOf(this);
                 current_conversation = {index: chat_links.indexOf(this)};
                 Array.from(chatLog.children).forEach(div => div.classList.remove("active"));
