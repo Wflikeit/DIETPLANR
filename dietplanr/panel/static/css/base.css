@@ -77,8 +77,29 @@ footer :nth-child(2) .register{
     width: 200px;
     background-color: hsla(0, 0%, 86%,50%);
 }
-.conversations a.active{
-    color: red;
+.conversations .conversation{
+    height: 4rem;
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.5rem;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: rgba(255,255,255, 20%);
+    transition: 500ms;
+}
+.conversations .conversation.active{
+    background-color: rgba(255,255,255, 40%);
+}
+.conversations .conversation:hover{
+    background-color: rgba(255,255,255, 40%);
+}
+.conversations .conversation i{
+    font-size: 2rem;
+}
+.conversations .conversation .last-message{
+    font-size: small;
+    white-space: nowrap;
 }
 .chat-settings{
     height: 400px;
@@ -127,7 +148,7 @@ footer :nth-child(2) .register{
 }
 .chat .custom-chat-log > div > .message{
     width: 60%;
-    margin-top: 1rem;
+    margin-top: 0.3rem;
 }
 .chat .custom-chat-log > div > .message span{
     display: inline-block;

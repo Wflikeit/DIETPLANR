@@ -74,8 +74,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             #                         receiver_id=receiver_id)
             await self.channel_layer.group_send(
                 self.chat_group, {'type': 'chat_message',
-                                    'user': self.user.first_name,
-                                    'message': message}
+                                  'user': self.user.full_name,
+                                  'message': message}
             )
 
     async def chat_message(self, event):
