@@ -1,4 +1,4 @@
-// chat/static/chat.js
+// chat/static/chat.jsa
 
 let chatLog = document.querySelector("#chatLog");
 let chatMessageInput = document.querySelector("#chatMessageInput");
