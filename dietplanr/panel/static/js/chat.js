@@ -51,6 +51,7 @@ chatMessageSend.onclick = function () {
 };
 
 let chatSocket = null;
+
 function connect() {
     chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat_active/");
     chatSocket.onopen = function (e) {
@@ -77,30 +78,21 @@ function connect() {
                 span.innerHTML = data.message;
                 message_div.appendChild(span);
                 // console.log(data.user_id);
-                if(conversations_array.some(item => item.user2_data.id === data.user_id)){
+                if (conversations_array.some(item => item.user2_data.id === data.user_id)) {
                     Class = "left";
                     const chat_link = chat_links.find(item => item.dataset.value == data.user_id);
                     chatLog.children.item(chat_links.indexOf(chat_link)).appendChild(message_div);
                     who = data.user + ": ";
                     chat_link.querySelector(".last-message").innerHTML = who + data.message;
-                    if(!chat_link.classList.contains("active"))
+                    if (!chat_link.classList.contains("active"))
                         chat_link.querySelector(".last-message").classList.add("unread");
-                }else{
+                } else {
                     Class = "right";
                     chatLog.children.item(current_conversation.index).appendChild(message_div)
                     who = "Ty: "
                     chat_links[current_conversation.index].querySelector(".last-message").innerHTML = who + data.message;
                 }
                 message_div.classList.add(Class);
-                break;
-            case "private_message":
-                message_div = document.createElement("div");
-                span = document.createElement("span");
-                message_div.classList.add("message");
-                span.innerHTML = "PM to " + data.target + ": " + data.message;
-                message_div.appendChild(span);
-                message_div.classList.add("right");
-                chatLog.children.item(current_conversation.index).appendChild(message_div);
                 break;
             case "private_message_delivered":
                 message_div = document.createElement("div");
@@ -146,7 +138,7 @@ async function loadConversations() {
             last_message_text = null;
             element.messages.forEach((message, index) => {
                 conv_messages.push(message);
-                if(index === element.messages.length - 1) last_message_text = message;
+                if (index === element.messages.length - 1) last_message_text = message;
             })
             messages_array.push(conv_messages);
             const conv_wrapper = document.createElement("div");
@@ -160,15 +152,15 @@ async function loadConversations() {
             last_message.classList.add("last-message");
             name.classList.add("name");
             name.innerHTML = element.user2_data.name;
-            if(last_message_text != null) {
+            if (last_message_text != null) {
                 const who = element.user2_data.id == last_message_text.sender ? element.user2_data.name + ": " : "Ty: ";
-                if(element.user2_data.id == last_message_text.sender) last_message.classList.add("unread");
+                if (element.user2_data.id == last_message_text.sender) last_message.classList.add("unread");
                 last_message.innerHTML = who + last_message_text.content;
             }
             message_name_wrapper.append(name, last_message);
             conv_wrapper.append(icon, message_name_wrapper);
             chat_links.push(conv_wrapper);
-            conv_wrapper.addEventListener("click", function (e){
+            conv_wrapper.addEventListener("click", function (e) {
                 chat_links.forEach(link => link.classList.remove("active"));
                 this.classList.add("active");
                 this.querySelector(".last-message").classList.remove("unread");
@@ -194,7 +186,7 @@ async function loadMoreMessages() {
         // let counter = 0;
         let messages_block = document.createElement("div");
         chatLog.appendChild(messages_block);
-        messages.forEach(message =>{
+        messages.forEach(message => {
             addMessageToChatLog(index, message);
             // counter++;
         })

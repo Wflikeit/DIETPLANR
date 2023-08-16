@@ -43,36 +43,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if not self.user.is_authenticated:  # new
             print('dupa')
             return  # new
-        # if message.startswith('/pm '):
-        #     split = message.split(' ', 2)
-        #     target = split[1]
-        #     target_msg = split[2]
-        #
-        #     # send private message to the target
-        #     await self.channel_layer.group_send(
-        #         f'inbox_{target}',
-        #         {
-        #             'type': 'private_message',
-        #             'user': self.user.first_name,
-        #             'message': target_msg,
-        #         }
-        #     )
-        #     # send private message delivered to the user
-        #     await self.send(json.dumps({
-        #         'type': 'private_message_delivered',
-        #         'target': target,
-        #         'message': target_msg,
-        #     }))
-        #     # await self.save_message(message)
-        #     return
-
-        # await self.save_message(message)
-        # send message to room group
         message = text_data_json.get('message')
         receiver_id = text_data_json.get('user_inbox')
         if message and receiver_id:
-            # await self.save_message(message=message,
-            #                         receiver_id=receiver_id)
             await self.channel_layer.group_send(
                 self.user_id, {'type': 'chat_message',
                                'user': self.user.full_name,
@@ -86,11 +59,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                               'message': message}
             )
 
-
     async def chat_message(self, event):
-        # message = event['message']
-        # send message to Websocket
-        # await self.send(text_data=json.dumps({'message': message}))
         await self.send(text_data=json.dumps(event))
 
     # async def save_message(self, message, receiver_id):
