@@ -61,8 +61,8 @@ footer :nth-child(2) .register{
     position: fixed;
     bottom: 3rem;
     right: 3rem;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: end;
     z-index: 300;
 }
@@ -70,12 +70,16 @@ footer :nth-child(2) .register{
     display: none;
 }
 #chat.active{
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 2fr 3fr;
+}
+#chat.conv-active .chat{
+    overflow: unset;
 }
 .conversations{
     height: 400px;
-    width: 200px;
-    background-color: hsla(0, 0%, 86%,50%);
+    /*width: 200px;*/
+    background-color: #95A7EB;
 }
 .conversations .conversation{
     height: 4rem;
@@ -106,7 +110,7 @@ footer :nth-child(2) .register{
 }
 .chat-settings{
     height: 400px;
-    width: 200px;
+    /*width: 200px;*/
     background-color: hsl(0, 0%, 86%);
     border-radius: 1rem 0 0 1rem;
     overflow-x: hidden;
@@ -131,11 +135,14 @@ footer :nth-child(2) .register{
 }
 .chat{
     height: 400px;
-    width: 300px;
+    /*width: 300px;*/
     background-color: white;
     display: grid;
     grid-template-rows: 1fr auto;
     border-radius: 0 1rem 1rem 0;
+    overflow: hidden;
+    transition: overflow 500ms;
+
 }
 .chat .custom-chat-log{
     background-color: #82A0CC;
@@ -172,8 +179,8 @@ footer :nth-child(2) .register{
     text-align: right;
 }
 .chat .message-form{
-    display: flex;
-    justify-content: start;
+    display: grid;
+    grid-auto-flow: column;
     align-items: center;
     padding: 1rem;
     gap: 0.25rem;

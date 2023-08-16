@@ -176,6 +176,7 @@ async function loadConversations() {
                 current_conversation = {index: chat_links.indexOf(this)};
                 Array.from(chatLog.children).forEach(div => div.classList.remove("active"));
                 chatLog.children.item(index).classList.add("active");
+                chat_container.classList.add("conv-active");
             })
             conversations_container.appendChild(conv_wrapper);
         })
