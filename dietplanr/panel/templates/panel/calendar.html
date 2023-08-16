@@ -8,28 +8,6 @@
             defer
             data-month></script>{% endblock %}
 {% block information %}
-    {#    {% if user.dietitianprofile %}#}
-    {##}
-    {#        {% for client in clients %}#}
-    {#            <p>{{ client }}</p>#}
-    {#        {% endfor %}#}
-    {##}
-    {#    {% elif user.clientprofile %}#}
-    {##}
-    {##}
-    {#    {% endif %}#}
-    {##}
-    {#    <p>{{ name }}</p>#}
-    {##}
-    {#    <h1>Appointments:</h1>#}
-    {##}
-    {#    {% for appointment in appointments %}#}
-    {#        <p>{{ appointment }} {{ appointment.date }} {{ appointment.event_duration }}</p>#}
-    {##}
-    {#    {% endfor %}#}
-    {#    <a href="{% url 'panel:home' %}">#}
-    {#        <button type="button">Home</button>#}
-    {#    </a>#}
     <div class="calendar-container" data-container>
         <header>
             <div class="button" id="button-container">

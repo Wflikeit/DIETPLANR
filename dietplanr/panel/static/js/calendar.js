@@ -55,18 +55,19 @@ monthButton.addEventListener("click", function () {
     // Wyświetl listę miesięcy zamiast dni
     const monthsList = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
     calendar.innerHTML = monthsList.map(month => `<div>${month}</div>`).join('');
+    calendar.classList.add("different-form");
 
     // }else {
     // Powrót do oryginalnej zawartości diva z dniami
 });
 tenYearsButton.addEventListener("click", function () {
     calendar.innerHTML = originalCalendarContent;
-
+    calendar.classList.remove("different-form");
 });
 yearButton.addEventListener("click", function () {
     const yearsList = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031'];
     calendar.innerHTML = yearsList.map(year => `<div>${year}</div>`).join('');
-
+    calendar.classList.add("different-form");
 });
 
 

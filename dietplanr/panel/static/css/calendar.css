@@ -1,12 +1,11 @@
 .calendar-container{
     background-color: hsla(230, 100%, 65%, 50%);
     border-radius: 1rem 1rem 0 0;
-    height: 100%;
-    /*overflow-y: hidden;*/
     display: grid;
-    /*grid-template-rows: 5fr 5fr 90fr;*/
+    grid-template-rows: auto 1fr;
     row-gap: 0.5rem;
     padding-top: 0.5rem;
+    /*height: 70vh;*/
 }
 .calendar-container header, .calendar-container form{
     margin-left: 0.5rem;
@@ -14,8 +13,29 @@
 .calendar-container .calendar{
     display: grid;
     grid-template-columns: repeat(7,1fr);
-    grid-template-rows: auto repeat(6,auto);
+    grid-template-rows: auto repeat(6,1fr);
     align-content: start;
+}
+.calendar-container .calendar.different-form{
+    grid-template-rows: repeat(3,1fr);
+    grid-template-columns: repeat(4,1fr);
+}
+.calendar-container .calendar.different-form > div{
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: none !important;
+    overflow-y: unset !important;
+    background-color: rgba(255,255,255,30%) !important;
+    height: 12rem !important;
+    aspect-ratio: 1;
+    place-self: center;
+    cursor: pointer;
+}
+.calendar-container .calendar.different-form > div:hover{
+    scale: 1.2;
+    background-color: rgba(255,255,255,50%) !important;
+    transition: 500ms;
 }
 .calendar-container .calendar div.current_day{
     color: red;
