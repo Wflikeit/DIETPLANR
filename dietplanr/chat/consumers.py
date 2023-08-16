@@ -11,17 +11,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user = None
         self.user_inbox = None
         self.chat_group = 'chat'
+        self.user_id = None
 
     async def connect(self):
         self.chat_active = self.scope['url_route']['kwargs']['chat_active']
         self.user = self.scope['user']
-
+        self.user_id = str(self.user.id)
         # if not self.user_inbox:
         #     self.user_inbox = 'default'
         if self.chat_active:
             if self.user.is_authenticated:
                 # self.user_inbox = f'inbox_{self.user.first_name}'  # new
-                await self.channel_layer.group_add(self.chat_group, self.channel_name)
+                await self.channel_layer.group_add(self.user_id, self.channel_name)
                 await self.accept()
                 print('done')
         else:
@@ -31,7 +32,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         # Leave the room group
         if self.user.is_authenticated:
-            await self.channel_layer.group_discard(self.chat_group, self.channel_name)
+            await self.channel_layer.group_discard(self.user_id, self.channel_name)
 
     # receive message from Websocket
     async def receive(self, text_data=None, bytes_data=None):
@@ -73,10 +74,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # await self.save_message(message=message,
             #                         receiver_id=receiver_id)
             await self.channel_layer.group_send(
-                self.chat_group, {'type': 'chat_message',
-                                  'user': self.user.full_name,
-                                  'message': message}
+                self.user_id, {'type': 'chat_message',
+                               'user': self.user.full_name,
+                               'user_id': str(self.user.id),
+                               'message': message}
             )
+            await self.channel_layer.group_send(
+                receiver_id, {'type': 'chat_message',
+                              'user': self.user.full_name,
+                              'user_id': str(self.user.id),
+                              'message': message}
+            )
+
 
     async def chat_message(self, event):
         # message = event['message']
