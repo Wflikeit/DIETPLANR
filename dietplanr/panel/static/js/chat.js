@@ -18,7 +18,7 @@ const chat_settings_dropdowns = Array.from(chat_settings_container.getElementsBy
 const conversations_container = document.getElementById("conversations");
 let current_conversation;
 let chat_links = [];
-let user_inbox = "ced270ee-1f3d-4f9a-93c0-836736e81c7b"
+let user_inbox = "ced270ee-1f3d-4f9a-93c0-836736e81c7b";
 chat_settings_dropdowns.forEach(dropdown => {
     dropdown.getElementsByClassName("dropdown")[0].addEventListener("click", function () {
         dropdown.getElementsByClassName("content")[0].classList.toggle("active");
@@ -44,7 +44,7 @@ chatMessageInput.onkeyup = function (e) {
 chatMessageSend.onclick = function () {
     if (chatMessageInput.value.length === 0) return;
     chatSocket.send(JSON.stringify({
-        "message": chatMessageInput.value, "user_inbox": user_inbox,  // Twój typ komunikatu
+        "message": chatMessageInput.value, "user_inbox": chat_links[current_conversation.index].dataset.value,  // Twój typ komunikatu
 
     }));
     chatMessageInput.value = "";
@@ -66,7 +66,7 @@ function connect() {
     };
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
-
+        console.log(data);
         switch (data.type) {
             case "chat_message":
                 let message_div = document.createElement("div");
