@@ -62,7 +62,7 @@ class OwnerEditMixin:
         return super().form_valid(form)
 
 
-class ManageRecipesView(ListView):
+class ManageRecipesView(DietitianRequiredMixin, ListView):
     model = Recipe
     template_name = 'panel/recipes_list.html'
     context_object_name = 'recipes'

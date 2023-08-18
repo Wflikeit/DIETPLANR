@@ -153,8 +153,8 @@ async function loadConversations() {
             name.classList.add("name");
             name.innerHTML = element.user2_data.name;
             if (last_message_text != null) {
-                const who = element.user2_data.id == last_message_text.sender ? element.user2_data.name + ": " : "Ty: ";
-                if (element.user2_data.id == last_message_text.sender) last_message.classList.add("unread");
+                const who = element.user2_data.id === last_message_text.sender ? element.user2_data.name + ": " : "Ty: ";
+                if (element.user2_data.id === last_message_text.sender) last_message.classList.add("unread");
                 last_message.innerHTML = who + last_message_text.content;
             }
             message_name_wrapper.append(name, last_message);

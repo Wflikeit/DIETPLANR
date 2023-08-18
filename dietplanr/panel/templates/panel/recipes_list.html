@@ -1,97 +1,124 @@
 {% extends 'dietitian_panel_base.html' %}
 {% load static %}
 {% block title %}Recipes{% endblock %}
-{% block additional_stylesheets %}<link href="{% static "css/dietitian_recipes.css" %}" rel="stylesheet">{% endblock %}
+{% block additional_stylesheets %}
+    <link href="{% static "css/dietitian_recipes.css" %}" rel="stylesheet">{% endblock %}
+{% block additional_scripts %}
+    <script src="{% static "js/recipes.js" %}" defer></script>
+
+{% endblock %}
 {% block information %}
     <div class="my_recipes-container">
         <table>
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Proteins</th>
-                    <th>Carbs</th>
-                    <th>Fats</th>
-                    <th>Allergens</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>Name</th>
+                <th>Proteins</th>
+                <th>Carbs</th>
+                <th>Fats</th>
+                <th>Allergens</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                {% for recipe in recipes %}
-                    <tr>
-                        <td>{{ recipe }}</td>
-                        <td>20g</td>
-                        <td>45g</td>
-                        <td>24g</td>
-                        <td>xxx</td>
-                        <td><button class="personalize-btn">Personalize</button></td>
-                    </tr>
-                {% endfor %}
+            {% for recipe in recipes %}
+                <tr>
+                    <td>{{ recipe }}</td>
+                    <td>20g</td>
+                    <td>45g</td>
+                    <td>24g</td>
+                    <td>xxx</td>
+                    <td>
+                        <button class="personalize-btn" data-recipe-id="{{ recipe.id }}">Personalize</button>
+                    </td>
+
+                </tr>
+                <div id="getText" style="display: none; ">
+                    Personalize Recipe
+                </div>
+            {% endfor %}
 
 
-                <tr>
-                    <td>lasagne</td>
-                    <td>20g</td>
-                    <td>45g</td>
-                    <td>24g</td>
-                    <td>xxx</td>
-                    <td><button class="personalize-btn">Personalize</button></td>
-                </tr>
-                <tr>
-                    <td>lasagne</td>
-                    <td>20g</td>
-                    <td>45g</td>
-                    <td>24g</td>
-                    <td>xxx</td>
-                    <td><button class="personalize-btn">Personalize</button></td>
-                </tr>
-                <tr>
-                    <td>lasagne</td>
-                    <td>20g</td>
-                    <td>45g</td>
-                    <td>24g</td>
-                    <td>xxx</td>
-                    <td><button class="personalize-btn">Personalize</button></td>
-                </tr>
-                <tr>
-                    <td>lasagne</td>
-                    <td>20g</td>
-                    <td>45g</td>
-                    <td>24g</td>
-                    <td>xxx</td>
-                    <td><button class="personalize-btn">Personalize</button></td>
-                </tr>
-                <tr>
-                    <td>lasagne</td>
-                    <td>20g</td>
-                    <td>45g</td>
-                    <td>24g</td>
-                    <td>xxx</td>
-                    <td><button class="personalize-btn">Personalize</button></td>
-                </tr>
-                <tr>
-                    <td>lasagne</td>
-                    <td>20g</td>
-                    <td>45g</td>
-                    <td>24g</td>
-                    <td>xxx</td>
-                    <td><button class="personalize-btn">Personalize</button></td>
-                </tr>
-                <tr>
-                    <td>lasagne</td>
-                    <td>20g</td>
-                    <td>45g</td>
-                    <td>24g</td>
-                    <td>xxx</td>
-                    <td><button class="personalize-btn">Personalize</button></td>
-                </tr>
-                <tr>
-                    <td>lasagne</td>
-                    <td>20g</td>
-                    <td>45g</td>
-                    <td>24g</td>
-                    <td>xxx</td>
-                    <td><button class="personalize-btn">Personalize</button></td>
-                </tr>
+            <tr>
+                <td>lasagne</td>
+                <td>20g</td>
+                <td>45g</td>
+                <td>24g</td>
+                <td>xxx</td>
+                <td>
+                    <button class="personalize-btn">Personalize</button>
+                </td>
+            </tr>
+            <tr>
+                <td>lasagne</td>
+                <td>20g</td>
+                <td>45g</td>
+                <td>24g</td>
+                <td>xxx</td>
+                <td>
+                    <button class="personalize-btn">Personalize</button>
+                </td>
+            </tr>
+            <tr>
+                <td>lasagne</td>
+                <td>20g</td>
+                <td>45g</td>
+                <td>24g</td>
+                <td>xxx</td>
+                <td>
+                    <button class="personalize-btn">Personalize</button>
+                </td>
+            </tr>
+            <tr>
+                <td>lasagne</td>
+                <td>20g</td>
+                <td>45g</td>
+                <td>24g</td>
+                <td>xxx</td>
+                <td>
+                    <button class="personalize-btn">Personalize</button>
+                </td>
+            </tr>
+            <tr>
+                <td>lasagne</td>
+                <td>20g</td>
+                <td>45g</td>
+                <td>24g</td>
+                <td>xxx</td>
+                <td>
+                    <button class="personalize-btn">Personalize</button>
+                </td>
+            </tr>
+            <tr>
+                <td>lasagne</td>
+                <td>20g</td>
+                <td>45g</td>
+                <td>24g</td>
+                <td>xxx</td>
+                <td>
+                    <button class="personalize-btn">Personalize</button>
+                </td>
+            </tr>
+            <tr>
+                <td>lasagne</td>
+                <td>20g</td>
+                <td>45g</td>
+                <td>24g</td>
+                <td>xxx</td>
+                <td>
+                    <button class="personalize-btn">Personalize</button>
+                </td>
+            </tr>
+            <tr>
+                <td>lasagne</td>
+                <td>20g</td>
+                <td>45g</td>
+                <td>24g</td>
+                <td>xxx</td>
+                <td>
+                    <button class="personalize-btn">Personalize</button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

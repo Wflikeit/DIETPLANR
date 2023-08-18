@@ -24,5 +24,6 @@ urlpatterns = [
     path('chat/', include('chat.urls', namespace='chat')),
     path('panel/', include('panel.urls', namespace='panel')),
     path('tracker/', include('tracker.urls', namespace='tracker')),
+    path('api/', include('api.urls', namespace='api')),
     path('', render),
 ]
