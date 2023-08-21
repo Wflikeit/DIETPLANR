@@ -1,4 +1,4 @@
-// chat/static/chat.jsa
+// chat/static/chat.jsaa
 function makeNewChatElem() {
     const div = document.createElement("div");
     const i = document.createElement("i");
