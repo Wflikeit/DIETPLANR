@@ -17,16 +17,19 @@ class AppointmentsView(generics.ListAPIView):
     # pagination_class = ConversationsPagination
 
     def get_queryset(self):
-        return DietitianProfile.get_dietitian_appointments(
-            self.request.user.dietitianprofile) | ClientProfile.get_client_appointments(self.request.user.clientprofile)
+        user1 = DietitianProfile.objects.get(user=self.request.user)
+        user2 = ClientProfile.objects.get(user=self.request.user)
+        if user1: return user1.get_dietitian_appointments()
+        if user2: return user2.get_client_appointments()
 
 
-class RecipesView(generics.ListCreateAPIView):
+class RecipesView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PersonalizeRecipeSerializer
+    lookup_field = 'id'
 
     # pagination_class = ConversationsPagination
 
     def get_queryset(self):
-        recipe_id = self.kwargs.get('recipe_id')
+        recipe_id = self.kwargs.get('id')
 
         return Recipe.objects.filter(id=recipe_id)

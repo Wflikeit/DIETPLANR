@@ -19,6 +19,7 @@
                 <th>Allergens</th>
                 <th></th>
             </tr>
+            <meta name="csrf-token" content="{{ csrf_token }}">
             </thead>
             <tbody>
             {% for recipe in recipes %}

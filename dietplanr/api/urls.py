@@ -7,6 +7,6 @@ router = DefaultRouter()
 router.register(r'get-appointments', AppointmentsView, basename='appointments')
 
 urlpatterns = [
-    path('get-appointments/<int:offset>/', AppointmentsView.as_view(), name='get_appointments'),
-    path('personalise-reicipe/<int:recipe_id>', RecipesView.as_view(), name='personalize_recipes'),
+    path('get-appointments', AppointmentsView.as_view(), name='get_appointments'),
+    path('personalise-reicipe/<int:id>', RecipesView.as_view(), name='personalize_recipes'),
 ]

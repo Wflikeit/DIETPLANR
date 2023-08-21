@@ -1,6 +1,3 @@
-console.log("Sanity check from calendar.js.");
-
-
 const appointments = document.querySelectorAll("[data-appointment]");
 const dialog = document.querySelector("[data-dialog]");
 const dialogContent = document.querySelectorAll("[data-dialog-content]");
@@ -54,7 +51,7 @@ monthButton.addEventListener("click", function () {
     // if (selectedMonth === '1') {
     // Wyświetl listę miesięcy zamiast dni
     const monthsList = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
-    calendar.innerHTML = monthsList.map(month => `<div>${month}</div>`).join('');
+    calendar.innerHTML = monthsList.map(month => `<div class="month">${month}</div>`).join('');
     calendar.classList.add("different-form");
 
     // }else {
@@ -66,9 +63,12 @@ tenYearsButton.addEventListener("click", function () {
 });
 yearButton.addEventListener("click", function () {
     const yearsList = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031'];
-    calendar.innerHTML = yearsList.map(year => `<div>${year}</div>`).join('');
+    calendar.innerHTML = yearsList.map(year => `<div class="year">${year}</div>`).join('');
     calendar.classList.add("different-form");
 });
-
-
-
+const response = fetch(`/api/get-appointments`)
+    .then(response => response.json())
+    .then(data => {
+        // Handle the data here
+        console.log(data);
+    });

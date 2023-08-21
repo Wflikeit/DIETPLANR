@@ -23,5 +23,4 @@ class Message(models.Model):
 
     def get_content(self):
         return self.content
-# class PrivateChat
 # Create your models here.

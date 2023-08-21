@@ -140,7 +140,7 @@ class ClientProfile(models.Model):
         return self.user.full_name
 
     def get_client_appointments(self):
-        return Appointment.objects.filter(client_profile=self)
+        return Appointment.objects.filter(user_profile=self)
 
 
 class Appointment(models.Model):

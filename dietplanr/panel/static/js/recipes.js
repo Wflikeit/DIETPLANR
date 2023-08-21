@@ -1,6 +1,6 @@
-var personalizeButtons = document.querySelectorAll('.personalize-btn');
-var getTextDiv = document.getElementById('getText');
-var createdDiv = null;
+let personalizeButtons = document.querySelectorAll('.personalize-btn');
+let getTextDiv = document.getElementById('getText');
+let createdDiv = null;
 
 personalizeButtons.forEach(function (button) {
         button.onclick = function () {
@@ -29,48 +29,49 @@ personalizeButtons.forEach(function (button) {
                         // Handle the data here
 
 
-                        data.forEach(function (info) {
-                            console.log(info)
-                            for (var key in info) {
-                                if (info.hasOwnProperty(key)) {
-                                    let nameLabel = document.createElement('label');
-                                    nameLabel.id = 'name-label'
-                                    nameLabel.textContent = key;
-                                    form.appendChild(nameLabel);
-                                    let input = document.createElement('input');
-                                    input.type = 'text';
-                                    input.value = info[key]
-                                    input.name = key;
-                                    // input.placeholder = key;
-                                    form.appendChild(input);
-                                }
+                        for (let key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                let nameLabel = document.createElement('label');
+                                nameLabel.id = 'name-label'
+                                nameLabel.textContent = key;
+                                nameLabel.style.display = 'block'
+                                form.appendChild(nameLabel);
+
+                                let input = document.createElement('input');
+                                input.type = 'text';
+                                input.value = data[key]; // Set the value from the data object
+                                input.name = key;
+                                input.style.display = 'block'
+                                form.appendChild(input);
                             }
-                            // console.log(inputName)
-                            let submitButton = document.createElement('button');
-                            submitButton.type = "submit";
-                            submitButton.textContent = "Submit";
-                            form.appendChild(submitButton);
-                            form.onsubmit = async function (event) {
-                                event.preventDefault(); // Prevent default form submission
+                        }
+                        // console.log(inputName)
+                        let submitButton = document.createElement('button');
+                        submitButton.type = "submit";
+                        submitButton.textContent = "Submit";
+                        form.appendChild(submitButton);
+                        form.onsubmit = async function (event) {
+                            event.preventDefault(); // Prevent default form submission
+                            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                            const headers = new Headers();
+                            headers.append('X-CSRFToken', csrfToken);
+                            const formData = new FormData(form);
+                            try {
+                                const response = await fetch(`/api/personalise-reicipe/${recipeId}`, {
+                                    method: 'PATCH',
+                                    headers: headers,
+                                    body: formData
+                                });
 
-                                const formData = new FormData(form);
-                                try {
-                                    const response = await fetch('/api/personalise-reicipe/${recipeId}', {
-                                        method: 'POST',
-                                        body: formData
-                                    });
-
-                                    if (response.ok) {
-                                        console.log('Form submitted successfully');
-                                    } else {
-                                        console.error('Form submission failed');
-                                    }
-                                } catch (error) {
-                                    console.error('Error while submitting form:', error);
+                                if (response.ok) {
+                                    console.log('Form submitted successfully');
+                                } else {
+                                    console.error('Form submission failed');
                                 }
+                            } catch (error) {
+                                console.error('Error while submitting form:', error.message);
                             }
-                        });
-
+                        }
                     });
 
 
@@ -79,23 +80,8 @@ personalizeButtons.forEach(function (button) {
                 document.body.appendChild(div);
                 createdDiv = div;
             }
-        }
-        ;
+        };
     }
 )
 ;
-// console.log(data[0]); // You can inspect the data in the browser's console
-
-
-// var nameLabel = document.createElement('label');
-// nameLabel.id = 'name-label'
-// nameLabel.textContent = "Name:";
-// form.appendChild(nameLabel);
-//
-// var inputName = document.createElement('input');
-// inputName.type = "text";
-// inputName.id = "inputName";
-// inputName.name = "name";
-// inputName.required = true;
-// form.appendChild(inputName);
 
