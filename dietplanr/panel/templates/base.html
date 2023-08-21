@@ -13,53 +13,57 @@
 </head>
 <body>
 <nav class="navbar">
-    <a href="">Product</a>
-    <a href="">Features</a>
-    <a href="">Our dietitians</a>
-    <a href="">FAQ</a>
-    <a href="">Sign up</a>
+    <i class="fa-solid fa-bars" id="bars"></i>
+    <div class="list-wrapper" id="list-wrapper">
+        <ul>
+            <li><a href="">Product</a></li>
+            <li><a href="">Features</a></li>
+            <li><a href="">Our dietitians</a></li>
+            <li><a href="">FAQ</a></li>
+            <li><a href="">Sign up</a></li>
+        </ul>
+    </div>
+    <div class="last">
+        {% if user.is_authenticated %}
+            <div class="chat-list">
+                <i class="fa-regular fa-message fa-lg" id="chat-icon"></i>
+                <div class="conversations d-none" id="conversations"></div>
+            </div>
+        {% endif %}
+        <ul class="user-action" id="user-action">
+            <a class="user-box">
+                <i class="fa-regular fa-user fa-lg"></i>
+                <div class="name">
+                    {% if user.is_authenticated %}
+                        {{ user.first_name }}
+                        <span class="d-none" id="user_id">{{ user.id }}</span>
+                    {% else %}
+                        Guest
+                    {% endif %}
+                </div>
+                <i class="fa-solid fa-angle-down fa-sm"></i>
+            </a>
+            <ul class="action-list d-none">
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'panel:logout' %}">Wyloguj się</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'panel:login' %}">Zaloguj się</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'panel:registration' %}">Rejestracja</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </ul>
+    </div>
 </nav>
 <div id="content">
     {% block content %}
 
     {% endblock %}
-</div>
-<div class="chat-wrapper">
-    <div id="chat">
-        <div class="chat-settings">
-            <div class="option-dropdown">
-                <div class="dropdown">
-                    Adjust chat
-                    <i class="fa-solid fa-angle-down"></i>
-                </div>
-                <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Accusantium alias animi dolor dolores doloribus eos expedita fugit illum minima nihil non, odit
-                    officia porro repellat repudiandae saepe sunt, velit veritatis.
-                </div>
-            </div>
-
-        </div>
-        <div class="conversations" id="conversations">
-        </div>
-        <div class="chat">
-            <div class="custom-chat-log" id="chatLog">
-            </div>
-
-            <div class="message-form">
-                <i class="fa-solid fa-file"></i>
-                <i class="fa-regular fa-image"></i>
-                <div class="message-input ">
-                    <input type="text" class="form-control message-input" id="chatMessageInput"
-                           placeholder="Enter your chat message">
-                    <button class="btn btn-success" id="chatMessageSend" style="display: none;" type="button"></button>
-                    <i class="fa-solid fa-face-smile"></i>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <i class="fa-regular fa-message fa-2xl" id="chat-icon"></i>
 </div>
 {% if not user.is_authenticated %}
     <footer>
