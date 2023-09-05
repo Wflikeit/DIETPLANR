@@ -1,61 +1,476 @@
-.clients-container, .my_recipes-container{
+.clients-container, .my_recipes-container {
     height: 100%;
     overflow-y: scroll;
     background-color: hsla(230, 100%, 65%, 50%);
     border-radius: 1rem;
 }
-.personalize-btn{
-            height: fit-content;
-            width: fit-content;
-            outline: none;
-            border: none;
-            font-weight: bold;
-            background-color: #FFCF15;
-            padding: 0.5rem;
-            border-radius: 1rem;
-            margin-left: 25%;
-        }
-.personalize-btn:hover{
+
+.personalize-btn {
+    height: fit-content;
+    width: fit-content;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    background-color: #FFCF15;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    margin-left: 25%;
+}
+
+.personalize-btn:hover {
     cursor: pointer;
 }
-table{
-        border-collapse: collapse;
-        width: 100%;
-        overflow: hidden;
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    overflow: hidden;
 }
-thead tr{
-            background-color: hsla(214, 60%, 60%,80%);
-            text-align: left;
+
+thead tr {
+    background-color: hsla(214, 60%, 60%, 80%);
+    text-align: left;
 }
-th, td{
+
+th, td {
     padding: 0.5rem;
 }
-tbody tr{
+
+tbody tr {
     border-bottom: 1px solid hsla(0, 0%, 50%, 0.5);
 }
-tbody tr.active-row{
-    color:hsla(214, 75%, 20%,80%);
+
+tbody tr.active-row {
+    color: hsla(214, 75%, 20%, 80%);
     font-weight: bold;
 }
-tbody tr:nth-of-type(even){
+
+tbody tr:nth-of-type(even) {
     background-color: hsla(0, 0%, 90%, 0.5);
 }
-.created-div {
-    background-color: lightgray;
-    padding: 10px;
-    border: 1px solid gray;
-    color: black;
-    width: 20%;
+
+
+#recipe-form-wrapper {
+    box-shadow: rgba(17, 17, 26, 0.3) 0 0 4rem;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    padding: 10px;
+    border: 1px solid gray;
+    color: black;
+    width: fit-content;
+    border-radius: 1rem;
+    background-color: #FFCF15;
+    min-width: 70%;
+}
+
+
+#recipe-form-wrapper h1 {
+    display: inline-block;
+
+}
+
+#recipe-form {
+    background-color: beige;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    border: 4px solid rgb(200, 200, 200);
+
+    border-radius: 10px;
+
+    justify-content: center; /* Center content horizontally */
+}
+
+
+#recipe-form-wrapper::backdrop {
+    animation: fade-in 0.5s ease forwards;
+
+}
+
+@keyframes fade-in {
+    from {
+        background-color: transparent;
+    }
+    to {
+        background-color: rgb(60 205 255 / 60%);
+    }
+}
+
+
+#recipe-form label:hover {
+    background-color: hsla(214, 95%, 50%, 60%);
+    border-radius: 0.2rem;
+    box-shadow: inset 0 0 1.6em -0.6em hsl(214deg 100% 11.68%);
+
+}
+
+#recipe-form fieldset {
+    display: flex;
+    width: inherit;
+    flex-direction: column;
+    justify-content: center;
+    border: none;
+}
+
+.long-inputs-fields input {
+    max-width: 100%;
+    font-size: 100%;
+    padding: 0.8em;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    border-radius: 20px;
+}
+
+.long-input:not(:placeholder-shown) + label {
+    transform: translate(10%, -66%) scale(0.9);
+    background-color: beige;
+    border-radius: 0.3em;
+    padding: 0.1em;
+}
+
+
+[class^='input-group'] {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 2em 0 0 0;
+    min-width: 70%;
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+    max-height: min-content;
+}
+@media only screen and (min-width: 1900px) {
+    [class^='input-group'] {
+        min-width:55%;
+    }
+}
+
+
+
+[class^='input-group'] input, textarea, .ingredients-wrapper, select {
+    font-size: 100%;
+    padding: .8em;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: transparent;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 1em;
     display: flex;
     flex-direction: column;
+    cursor: auto;
+}
+
+[class^='input-group'] label {
+    font-size: 100%;
+    position: absolute;
+    left: 0;
+    padding: 0.8em;
+    margin-left: 0.5em;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: rgb(100, 100, 100);
+    top: 0.15em;
+}
+
+[class^='input-group'] input:not(:placeholder-shown) + label {
+    transform: translateY(-50%) scale(0.9);
+    margin: 0 0 0 1.3em;
+    padding: 0.4em;
+    background-color: beige;
+}
+
+[class^='input-group'] input:focus {
+    border-color: rgb(150, 150, 200);
+}
+
+
+[class^="checkbox-wrapper-"],
+#short-inputs > .input-group
+{
+    display: flex;
+    margin-bottom: 0.5em;
+    margin-left: 20%;
+}
+
+[class^="checkbox-wrapper-"] a {
+    position: relative;
+    top: 20%;
+    height: fit-content;
+    margin-left: 10px;
+}
+
+[class^="checkbox-wrapper-"] input {
+    position: absolute;
+    opacity: 0;
+}
+
+[class^="checkbox-wrapper-"] input:checked + label svg path {
+    stroke-dashoffset: 0;
+
+}
+
+[class^="checkbox-wrapper-"] input:focus + label {
+    transform: scale(1.03);
+
+}
+
+[class^="checkbox-wrapper-"] input + label {
+    display: block;
+    border: 2px solid rgb(200, 200, 200);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+[class^="checkbox-wrapper-"] input + label:active {
+    transform: scale(1.05);
+    border-radius: 12px;
+
+}
+
+[class^="checkbox-wrapper-"] input + label svg {
+    pointer-events: none;
+    padding: 5%;
+
+}
+
+[class^="checkbox-wrapper-"] input + label svg path {
+    fill: none;
+    stroke: rgb(0 0 0);
+    stroke-width: 4px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 101;
+    transition: all 250ms cubic-bezier(1, 0, .37, .91);
+
+}
+
+#short-inputs {
+    align-items: flex-start;
+}
+
+#long-inputs-fields {
     align-items: center;
 }
 
-.created-div form {
-    margin-top: 10px;
+#recipe-macros {
+    grid-column: 1/3;
+    font-size: 1.1em;
+    font-weight: 400;
+    margin: 0 0 0 1em;
+
+}
+
+.recipe-form > button {
+    grid-column: 2/3;
+    margin-left: auto;
+    width: 35%;
+    margin-right: 2%;
+    margin-bottom: 3%;
+}
+
+.recipe-form > button:hover {
+    /* background-color:red; */
+}
+
+.recipe-form > button {
+    background: hsla(214, 95%, 50%, 60%);
+    color: white;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 0.9em;
+    border: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 0 1.6em -0.6em hsl(214deg 100% 11.68%);
+    overflow: hidden;
+    position: relative;
+    height: 2.6em;
+    padding: 0.35em 3.3em 0.35em 1.2em;
+    max-width: 140px;
+    margin-right: 10%;
+}
+
+.recipe-form > button .icon {
+    background: beige;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2em;
+    width: 2em;
+    border-radius: 0.7em;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em hsl(214deg 100% 83.8%);
+    right: 0.3em;
+    transition: all 0.3s;
+}
+
+.recipe-form > button:hover .icon {
+    width: calc(100% - 0.6em);
+}
+
+.recipe-form > button .icon svg {
+    width: 1.1em;
+    transition: transform 0.3s;
+    color: #7b52b9;
+}
+
+.recipe-form > button:hover .icon svg {
+    transform: translateX(0.1em);
+}
+
+.recipe-form > button:active .icon {
+    transform: scale(0.95);
+}
+
+#recipe-form-wrapper h3 {
+    margin: 0 0 0.5em 0;
+}
+
+.input-group textarea:first-of-type {
     width: 100%;
+    height: 13em;
+    resize: none;
+}
+
+.long-inputs-fields .input-group:first-child {
+    max-width: fit-content;
+    resize: none;
+
+}
+
+.long-inputs-fields .input-group:last-child {
+    margin-bottom: 1em;
+}
+
+.ingredients-container {
+    overflow: auto;
+    height: 100%;
+    max-height: 10vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#input-ingredients {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /* position: relative; */
+    background-color: beige;
+}
+
+.ingredients-container .icon {
+    display: inherit;
+    /* background-color:red; */
+}
+
+.ingredient {
+    display: flex;
+    justify-content: space-between;
+    width: inherit;
+    height: fit-content;
+    align-items: center;
+    margin: 0 0 0.3em 0;
+    border: 2px solid transparent;
+    border-radius: 6px;
+
+
+}
+
+.ingredient .icon {
+}
+
+.ingredient svg {
+    fill: rgb(200, 200, 200);
+    transition: fill 0.2s;
+
+
+}
+
+.ingredient svg:hover {
+    fill: red;
+
+}
+
+.ingredient:hover {
+    border-color: rgb(200, 200, 200);
+
+}
+
+.ingredient .text {
+    margin-left: .4em;
+}
+
+/* width */
+.ingredients-container::-webkit-scrollbar,
+textarea::-webkit-scrollbar {
+    width: 10px;
+
+}
+
+/* Handle */
+.ingredients-container::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+
+}
+
+/* Handle on hover */
+.ingredients-container::-webkit-scrollbar-thumb:hover,
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.ingredients-container::-webkit-scrollbar-button,
+textarea::-webkit-scrollbar-button {
+    display: none;
+}
+
+.input-group-summary {
+    display: inline;
+    margin-top: 1em;
+    grid-column: 1/3;
+    align-content: center;
+    justify-content: center;
+    min-width:80%;
+
+}
+
+#input-summary {
+    width: 100%;
+    height: 8em;
+    resize: none;
+}
+#line {
+ background-color:rgb(200, 200, 200);
+ display: block;
+    padding-top:.3em;
+    grid-row: 3;
+    grid-column:1/3;
+    margin: 1em 1em
+
+}
+@media only screen and (max-width: 1250px) {
+    #recipe-form {
+        display:flex;
+        flex-direction:column;
+    }
+    #short-inputs .input-group{
+        width: -webkit-fill-available;
+        margin-left: 10%;
+        margin-top: 10%;
+    }
+    #short-inputs [class^="checkbox-wrapper-"]:first-child{
+            margin-top: 5%;
+
+    }
 }

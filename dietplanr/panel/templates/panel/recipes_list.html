@@ -5,10 +5,12 @@
     <link href="{% static "css/dietitian_recipes.css" %}" rel="stylesheet">{% endblock %}
 {% block additional_scripts %}
     <script src="{% static "js/recipes.js" %}" defer></script>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
 
 {% endblock %}
 {% block information %}
-    <div class="my_recipes-container">
+    <section class="my_recipes-container">
         <table>
             <thead>
             <tr>
@@ -19,7 +21,6 @@
                 <th>Allergens</th>
                 <th></th>
             </tr>
-            <meta name="csrf-token" content="{{ csrf_token }}">
             </thead>
             <tbody>
             {% for recipe in recipes %}
@@ -90,37 +91,117 @@
                     <button class="personalize-btn">Personalize</button>
                 </td>
             </tr>
-            <tr>
-                <td>lasagne</td>
-                <td>20g</td>
-                <td>45g</td>
-                <td>24g</td>
-                <td>xxx</td>
-                <td>
-                    <button class="personalize-btn">Personalize</button>
-                </td>
-            </tr>
-            <tr>
-                <td>lasagne</td>
-                <td>20g</td>
-                <td>45g</td>
-                <td>24g</td>
-                <td>xxx</td>
-                <td>
-                    <button class="personalize-btn">Personalize</button>
-                </td>
-            </tr>
-            <tr>
-                <td>lasagne</td>
-                <td>20g</td>
-                <td>45g</td>
-                <td>24g</td>
-                <td>xxx</td>
-                <td>
-                    <button class="personalize-btn">Personalize</button>
-                </td>
-            </tr>
             </tbody>
         </table>
-    </div>
+    </section>
+    <dialog id="recipe-form-wrapper" active="False">
+        <h3 id="recipe-form-title">
+
+        </h3>
+        <form id="recipe-form" class="recipe-form">
+            <fieldset id="short-inputs">
+                <div class="checkbox-wrapper-cheap">
+                    <input type="checkbox" id="input-cheap">
+                    <label for="input-cheap" style="--size: 30px">
+                        <svg viewBox="0,0,50,50">
+                            <path d="M5 30 L 20 45 L 45 5"></path>
+                        </svg>
+                    </label>
+                </div>
+                <div class="checkbox-wrapper-dairyFree">
+                    <input type="checkbox" id="input-dairyFree">
+                    <label for="input-dairyFree" style="--size: 30px">
+                        <svg viewBox="0,0,50,50">
+                            <path d="M5 30 L 20 45 L 45 5"></path>
+                        </svg>
+                    </label>
+                </div>
+                <div class="checkbox-wrapper-ketogenic">
+                    <input type="checkbox" id="input-ketogenic">
+                    <label for="input-ketogenic" style="--size: 30px">
+                        <svg viewBox="0,0,50,50">
+                            <path d="M5 30 L 20 45 L 45 5"></path>
+                        </svg>
+                    </label>
+                </div>
+                <div class="checkbox-wrapper-vegetarian">
+                    <input type="checkbox" id="input-vegetarian">
+                    <label for="input-vegetarian" style="--size: 30px">
+                        <svg viewBox="0,0,50,50">
+                            <path d="M5 30 L 20 45 L 45 5"></path>
+                        </svg>
+                    </label>
+                </div>
+                <div class="checkbox-wrapper-vegan">
+                    <input type="checkbox" id="input-vegan">
+                    <label for="input-vegan" style="--size: 30px">
+                        <svg viewBox="0,0,50,50">
+                            <path d="M5 30 L 20 45 L 45 5"></path>
+                        </svg>
+                    </label>
+                </div>
+                <div class="checkbox-wrapper-finished">
+                    <input type="checkbox" id="input-finished">
+                    <label for="input-finished" style="--size: 30px">
+                        <svg viewBox="0,0,50,50">
+                            <path d="M5 30 L 20 45 L 45 5"></path>
+                        </svg>
+                    </label>
+                </div>
+                <div class="checkbox-wrapper-is_personalised">
+                    <input type="checkbox" id="input-is_personalised">
+                    <label for="input-is_personalised" style="--size: 30px">
+                        <svg viewBox="0,0,50,50">
+                            <path d="M5 30 L 20 45 L 45 5"></path>
+                        </svg>
+                    </label>
+                </div>
+                <div class="input-group">
+                    <select class="long-input" id="dropdown-input"></select>
+                    <label for="dropdown-input" class="label-long"></label>
+                </div>
+            </fieldset>
+            <fieldset id="long-inputs-fields" class="long-inputs-fields">
+                <div class="input-group">
+                    <textarea id="input-instructions" class="long-input" placeholder=" "></textarea>
+                    <label for="input-instructions" class="label-long"></label>
+
+                </div>
+                <div class="input-group">
+                    <div class="ingredients-wrapper">
+                        <div class="input-ingredients-wrapper">
+                            <label for="input-ingredients">ingredients</label>
+                            <input id="input-ingredients" placeholder="ingredient">
+                        </div>
+                        <div class="ingredients-container">
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </fieldset>
+            <div class="input-group-summary">
+                <textarea id="input-summary" class="long-input" placeholder=" "></textarea>
+                <label for="input-summary" class="label-long"></label>
+
+            </div>
+            <p id="line"></p>
+            <p id="recipe-macros">
+
+            </p>
+            <button class="cssbuttons-io-button"> save
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                        <path fill="currentColor"
+                              d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
+                    </svg>
+                </div>
+            </button>
+
+        </form>
+
+    </dialog>
 {% endblock %}

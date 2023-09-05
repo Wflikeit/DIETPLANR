@@ -118,7 +118,7 @@ function connect() {
     }
 }
 
-connect();
+// connect();
 
 let offset = 0; // Zmienna do śledzenia ofsetu wiadomości
 let user_slug = 'dietetyk-fratczak'; // Zmienna do śledzenia ofsetu wiadomości
