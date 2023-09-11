@@ -20,6 +20,7 @@ personalizeButtons.forEach((button) => {
 function closeModal() {
     recipeForm.classList.remove("modal");
     recipeForm.close();
+
 }
 
 function openModal(recipeId) {
@@ -28,6 +29,7 @@ function openModal(recipeId) {
         .then(response => response.json())
         .then(data => {
             updateFormFields(data);
+            console.log(data)
         });
 }
 
@@ -77,8 +79,6 @@ function updateMacroFields(macrosData) {
 
 function updateDropdownField(key, values) {
     const selectElement = document.getElementById('dropdown-input');
-    const selectLabel = document.querySelector(`label[for="${selectElement.id}"]`);
-    selectLabel.textContent = key;
     selectElement.innerHTML = '';
     values.forEach((value) => {
         const option = document.createElement('option');
@@ -93,7 +93,6 @@ function updateTextField(key, value) {
     const label = document.querySelector(`label[for="${input.id}"]`);
     label.style.display = 'inline';
     input.style.display = 'inline';
-    label.textContent = key;
     input.value = value;
 }
 

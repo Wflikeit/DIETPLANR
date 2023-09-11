@@ -27,3 +27,15 @@ urlpatterns = [
     path('recipes/', ManageRecipesView.as_view(), name='show_recipes'),
 
 ]
+
+
+
+
+
+
+
+
+
+
+
+
