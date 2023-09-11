@@ -6,16 +6,17 @@
     {% endblock %}
 {% endblock %}
 {% block scripts %}
+    <script src="{% static "js/dietitian_panel_base.js" %}" defer></script>
     {% block additional_scripts %}
     {% endblock %}
 {% endblock %}
 {% block content %}
     <div class="container">
-        <nav class="sidebar">
-            <a class="active" href="{% url 'panel:show_clients' %}">Clients</a>
-            <a href="{% url 'panel:show_recipes' %}">Recipes</a>
-            <a href="{% url 'panel:show_calendar' %}">Calendar</a>
-            <a href="{% url 'panel:edit_profile' %}">Settings</a>
+        <nav class="sidebar" data-sidebar>
+            <a href="{% url 'panel:show_clients' %}" data-sidebar-link>Clients</a>
+            <a href="{% url 'panel:show_recipes' %}" data-sidebar-link>Recipes</a>
+            <a href="{% url 'panel:show_calendar' %}" data-sidebar-link>Calendar</a>
+            <a href="{% url 'panel:edit_profile' %}" data-sidebar-link>Settings</a>
         </nav>
         {% block information %}
         {% endblock %}

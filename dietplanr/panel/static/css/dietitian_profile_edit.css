@@ -1,0 +1,76 @@
+.settings-container {
+    height: 100%;
+    background-color: hsla(214, 95%, 50%, 60%);
+    border-radius: 1rem;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.settings-container form {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    align-content: center;
+    justify-items: center;
+    row-gap: 3rem;
+    height: 100%;
+}
+
+.settings-container form label {
+    display: block;
+}
+
+.settings-container form button[type="submit"] {
+    padding: 0.5rem;
+    border-radius: 1rem;
+    background: black;
+    color: white;
+    cursor: pointer;
+    opacity: 85%;
+    transition: 500ms;
+}
+
+.home-link {
+    width: fit-content;
+    margin: 1rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    background: black;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 85%;
+    transition: 500ms;
+}
+
+.home-link:hover, .settings-container form button[type="submit"]:hover{
+    scale: 1.2;
+    opacity: 100%;
+}
+
+textarea{
+    resize: none;
+    min-height: 15ch;
+    border-radius: 0.5rem;
+}
+
+input{
+    border-radius: 0.5rem;
+}
+
+@media (max-width: 1050px) {
+    .settings-container form{
+        grid-template-columns: repeat(3, auto);
+    }
+}
+
+@media (max-width: 768px) {
+    .settings-container form{
+        grid-template-columns: repeat(2, auto);
+    }
+}
+
+@media (max-width: 576px) {
+    .settings-container form{
+        grid-template-columns: auto;
+    }
+}
