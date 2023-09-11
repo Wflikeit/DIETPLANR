@@ -10,6 +10,8 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 import calendar
 from datetime import datetime
+from itertools import groupby
+from operator import attrgetter
 
 from dietplanr.utils import ClientRequiredMixin, DietitianRequiredMixin
 from recipes.models import Recipe
@@ -235,7 +237,18 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
         next_days = range(1, 42 - last_day - weekday_of_start + 1)
         current_month = datetime.now().month
         month_name = calendar.month_name[current_month]
+        appointments = self.get_queryset()
+        print("Appointments: ")
+        sorted_appointments = sorted(appointments, key=attrgetter("date"))
+        grouped_appointments = []
+        for date, group in groupby(sorted_appointments, key=lambda app: app.date.date()):
+            grouped_appointments.append(list(group))
 
+        # Print the grouped appointments
+        for group in grouped_appointments:
+            print("Appointments on:", group[0].date.date())
+            for appointment in group:
+                print("  Time:", appointment.date.time())
         context = {
             "current_date": datetime.now(),
             "current_year": datetime.now().year,
@@ -249,8 +262,7 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
             "prev_days": prev_days,
             "days": range(1, last_day + 1),
             "next_days": next_days,
-            "appointments": self.get_queryset(),
-
+            "grouped_appointments": grouped_appointments,
         }
 
         return render(request, "panel/calendar.html", context)

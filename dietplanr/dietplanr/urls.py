@@ -22,8 +22,7 @@ from django.views import View
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include('chat.urls', namespace='chat')),
-    path('panel/', include('panel.urls', namespace='panel')),
+    path('', include('panel.urls', namespace='panel')),
     path('tracker/', include('tracker.urls', namespace='tracker')),
     path('api/', include('api.urls', namespace='api')),
-    path('', render),
 ]

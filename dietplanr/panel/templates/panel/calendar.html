@@ -3,6 +3,7 @@
 {% block title %}Calendar{% endblock %}
 {% block additional_stylesheets %}
     <link href="{% static "css/calendar.css" %}" rel="stylesheet">{% endblock %}
+<meta name="csrf-token" content="{{ csrf_token }}">
 {% block additional_scripts %}
     <script src="{% static "js/calendar.js" %}"
             defer
@@ -10,70 +11,102 @@
 {% block information %}
     <div class="calendar-container" data-container>
         <header>
-            <div class="button" id="button-container">
-                <div class="button month-button" id="month-button">
-                    <button>{{ current_month }} {{ current_year }}</button>
-                </div>
-                <div class="button year-button" id="year-button" style="display: none;">
-                    <button>{{ current_year }}</button>
-                </div>
-                <div class="button ten-years-button" id="ten-years-button" style="display: none;">
-                    <button>2020-2030</button>
-                </div>
+            <div id="selected_year" class="d-none">{{ selected_year }}</div>
+            <div id="selected_month" class="d-none">{{ selected_month }}</div>
+            <div class="button-container">
+                <button class="month-button" id="month-button">{{ current_month }} {{ current_year }}</button>
+                <button class="year-button" id="year-button" style="display: none;">{{ current_year }}</button>
+                <button class="ten-years-button" id="ten-years-button" style="display: none;">2020-2030</button>
+            </div>
+            <div class="arrows-wrapper">
+                <i class="fa-solid fa-angle-up" id="arrow-up"></i>
+                <i class="fa-solid fa-angle-down" id="arrow-down"></i>
             </div>
         </header>
-{#                <form action="{% url 'panel:show_calendar' %}" method="POST">#}
-{#                    {% csrf_token %}#}
-{#                    <select name="year">#}
-{#                        {% for year in years %}#}
-{#                            <option value="{{ year }}" {% if year == selected_year %} selected {% endif %}>{{ year }}</option>#}
-{#                        {% endfor %}#}
-{#                    </select>#}
-{#                    <select name="month">#}
-{#                        {% for number, month in months.items %}#}
-{#                            <option value="{{ number }}" {% if number == selected_month %}#}
-{#                                    selected {% endif %}>{{ month }}</option>#}
-{#                        {% endfor %}#}
-{#                    </select>#}
-{#                    <button type="submit">SUBMIT</button>#}
-{#                </form>#}
+        {#                <form action="{% url 'panel:show_calendar' %}" method="POST">#}
+        {#                    {% csrf_token %}#}
+        {#                    <select name="year">#}
+        {#                        {% for year in years %}#}
+        {#                            <option value="{{ year }}" {% if year == selected_year %} selected {% endif %}>{{ year }}</option>#}
+        {#                        {% endfor %}#}
+        {#                    </select>#}
+        {#                    <select name="month">#}
+        {#                        {% for number, month in months.items %}#}
+        {#                            <option value="{{ number }}" {% if number == selected_month %}#}
+        {#                                    selected {% endif %}>{{ month }}</option>#}
+        {#                        {% endfor %}#}
+        {#                    </select>#}
+        {#                    <button type="submit">SUBMIT</button>#}
+        {#                </form>#}
 
-        <div class="calendar">
+        <div class="calendar from-up">
             {% for weekday in weekdays %}
                 <div class="weekday">{{ weekday }}</div>
             {% endfor %}
             {% for day in prev_days %}
-                <div class="diff_days">{{ day }}</div>
+                <div class="diff_day" data-prev-day="{{ day }}">{{ day }}</div>
             {% endfor %}
             {% for day in days %}
-                <div {% if selected_year == current_date.year and selected_month == current_date.month and day == current_day_num %}class="current_day"{% endif %}>
+                <div data-day="{{ day }}"
+                     class="day{% if selected_year == current_date.year and selected_month == current_date.month and day == current_day_num %} current_day{% endif %}">
                     {{ day }}
-                    {% for appointment in appointments %}
-                        {% if appointment.date.year == selected_year and appointment.date.month == selected_month and appointment.date.day == day %}
-                            <div class="appointment" data-value="{{ appointment.pk }}" data-appointment>
-                                <div class="time" data-value="{{ appointment.pk }}">14:30</div>
-                                <div class="title" data-value="{{ appointment.pk }}">{{ appointment.title }}</div>
-                                <div class="duration" data-value="{{ appointment.pk }}">
-                                    Duration: {{ appointment.event_duration }}</div>
-                            </div>
-                        {% endif %}
+                    {% for group in grouped_appointments %}
+                        {% for appointment in group %}
+                            {% if appointment.date.year == selected_year and appointment.date.month == selected_month and appointment.date.day == day %}
+                                {% if group|length > 1 %}
+                                    <div class="appointment-count-container" data-count="{{ group|length }}">
+                                        <div class="appointment-count">
+                                            {% if forloop.first %}
+                                                Appointment count: {{ group|length }}
+                                            {% endif %}
+                                        </div>
+                                        <div class="content d-none">
+                                            <div class="appointment"
+                                                 data-appointment="{{ appointment.date.date }}">
+                                                <div class="time">{{ appointment.date.time }}</div>
+                                                <div class="title"
+                                                >{{ appointment.title }}</div>
+                                                <div class="duration">
+                                                    Duration: {{ appointment.event_duration }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% elif group|length == 1 %}
+                                    <div class="appointment"
+                                         data-appointment="{{ appointment.date.date }}">
+                                        <div class="time"
+                                        >{{ appointment.date.time }}</div>
+                                        <div class="title"
+                                        >{{ appointment.title }}</div>
+                                        <div class="duration">
+                                            Duration: {{ appointment.event_duration }}</div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
                 </div>
             {% endfor %}
             {% for day in next_days %}
-                <div class="diff_days">{{ day }}</div>
+                <div class="diff_day" data-next-day="{{ day }}">{{ day }}</div>
             {% endfor %}
         </div>
+
     </div>
-    <dialog data-dialog>
+    <dialog class="appointment-dialog" data-appointment-dialog>
         <form method="POST">
             <button formmethod="dialog" type="submit">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            {% for appointment in appointments %}
-                <div data-value="{{ appointment.pk }}" class="d-none" data-dialog-content>{{ appointment.title }}</div>
-            {% endfor %}
-            <input type="text">
+            <div class="content">
+                {% for group in grouped_appointments %}
+                    {% for appointment in group %}
+                        <div class="d-none"
+                             data-dialog-content="{{ appointment.date.date }}">{{ appointment.title }}</div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <input type="text" name="text">
             <button type="submit">SUBMIT</button>
         </form>
     </dialog>

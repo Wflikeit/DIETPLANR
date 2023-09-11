@@ -10,8 +10,8 @@ class AppointmentSerializer(ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['user2_data']
-        # fields = '__all__'
+        fields = ['user2_data', 'date', 'event_duration', 'title']
+        # fields = 'all'
 
     def get_user2_data(self, appointment):
         user2 = appointment.user_profile
@@ -21,6 +21,7 @@ class AppointmentSerializer(ModelSerializer):
         print(f'user1:{user1}\nuser2:{user2}\n user: {self.context["request"].user}')
         if self.context['request'].user == user1:
             print('sukces11')
+            print(appointment.date.time)
             user_data = {
                 'name': user2.full_name,
                 'id': user2.id,
