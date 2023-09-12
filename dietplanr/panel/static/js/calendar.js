@@ -26,11 +26,11 @@ const arrowUp = document.getElementById("arrow-up");
 const arrowDown = document.getElementById("arrow-down");
 const monthsList = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
+const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 monthButton.style.display = "block";
 yearButton.style.display = "none";
 
 function makeCalendar(year, month_num) {
-    const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const calendar = document.createElement("div");
     calendar.classList.add("calendar");
     const last_day_prev_month = new Date(new Date(year, month_num - 1, 1));
@@ -67,6 +67,7 @@ function makeCalendar(year, month_num) {
                 appointment_count.innerHTML = `Appointment count: ${count}`;
             } else {
                 day.append(dragged_elem);
+                dragged_elem = null;
             }
 
         })
@@ -158,67 +159,7 @@ monthButton.addEventListener("click", function () {
     calendar.classList.add("different-form");
     calendar.querySelectorAll(".month").forEach(month => {
         month.addEventListener("click", function () {
-            let calendar_elem = null;
-            fetch(`/api/get-appointments`)
-                .then(response => response.json())
-                .then(data => {
-                    const groupedAppointments = {};
-                    for (const appointment of data) {
-                        const appointmentDate = new Date(appointment.date);
-                        const key = appointmentDate.toISOString().split('T')[0];
-                        if (!groupedAppointments[key]) {
-                            groupedAppointments[key] = [];
-                        }
-                        groupedAppointments[key].push(appointment);
-                    }
-                    calendar_elem = makeCalendar(selectedYear, this.dataset.number);
-                    selectedMonth = parseInt(this.dataset.number);
-                    dialog_content_div.innerHTML = "";
-                    const days = calendar_elem.querySelectorAll(".day");
-                    for (const key in groupedAppointments) {
-                        const groupDate = new Date(key);
-                        const group = groupedAppointments[key];
-                        for (const appointment of group) {
-                            const day = Array.from(days).find(day => selectedYear === groupDate.getFullYear() && selectedMonth - 1 === groupDate.getMonth() && parseInt(day.innerHTML) === groupDate.getDate());
-                            if (day) {
-                                if (group.length === 1) {
-                                    const appointment_div = makeAppointment(appointment, key);
-                                    day.append(appointment_div);
-                                } else if (group.indexOf(appointment) === 0) {
-                                    const count_container = document.createElement("div");
-                                    count_container.classList.add("appointment-count-container");
-                                    count_container.setAttribute("data-count", group.length);
-                                    const appointment_count_div = document.createElement("div");
-                                    appointment_count_div.innerHTML = `Appointment count: ${group.length}`;
-                                    appointment_count_div.classList.add("appointment-count");
-                                    appointment_count_div.addEventListener("click", function () {
-                                        content_div.classList.remove("d-none");
-                                    })
-                                    const content_div = document.createElement("div");
-                                    content_div.classList.add("content", "d-none");
-                                    for (const appointment_item of group) {
-                                        const appointment_div = makeAppointment(appointment_item, key);
-                                        content_div.append(appointment_div);
-                                    }
-                                    count_container.append(appointment_count_div, content_div);
-                                    day.append(count_container);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    calendar_elem.classList.add("from-up");
-                    calendar.remove();
-                    calendar = calendar_elem;
-                    calendar_container.append(calendar);
-                    originalCalendarContent = calendar.innerHTML;
-                    yearButton.style.display = "none";
-                    tenYearsButton.style.display = "none";
-                    monthButton.innerHTML = `${monthsList[selectedMonth - 1]}-${selectedYear}`;
-                    yearButton.innerHTML = `${selectedYear}`;
-                    monthButton.style.display = "block";
-                });
-
+            prepareCalendarContainer(this, 1)
         });
     });
     monthButton.style.display = "none";
@@ -249,19 +190,18 @@ yearButton.addEventListener("click", function () {
     tenYearsButton.style.display = "block";
 });
 arrowUp.addEventListener("click", function () {
-    let direction = 'up'
-    prepareCalendarContainer(direction);
+    let direction = 'up';
+    prepareCalendarContainer(direction, 0);
 })
 arrowDown.addEventListener("click", function () {
-    let direction = 'down'
-    prepareCalendarContainer(direction);
+    let direction = 'down';
+    prepareCalendarContainer(direction, 0);
 
 })
 
 
-function prepareCalendarContainer(direction) {
+function prepareCalendarContainer(param, is_month) {
     let calendar_elem = null;
-
     fetch(`/api/get-appointments`)
         .then(response => response.json())
         .then(data => {
@@ -274,19 +214,27 @@ function prepareCalendarContainer(direction) {
                 }
                 groupedAppointments[key].push(appointment);
             }
-            let newMonth;
-            let newYear;
-            if (direction === 'up') {
-                newYear = selectedMonth < 12 ? selectedYear : selectedYear + 1;
-                newMonth = selectedMonth < 12 ? selectedMonth + 1 : 1;
-            } else if (direction === 'down') {
-                newYear = selectedMonth > 1 ? selectedYear : selectedYear - 1;
-                newMonth = selectedMonth > 1 ? selectedMonth - 1 : 12;
+            if (!is_month) {
+                let newMonth;
+                let newYear;
+                if (param === 'up') {
+                    newYear = selectedMonth < 12 ? selectedYear : selectedYear + 1;
+                    newMonth = selectedMonth < 12 ? selectedMonth + 1 : 1;
+                    calendar_elem = makeCalendar(newYear, newMonth);
+                    calendar_elem.classList.add("from-down");
+                } else if (param === 'down') {
+                    newYear = selectedMonth > 1 ? selectedYear : selectedYear - 1;
+                    newMonth = selectedMonth > 1 ? selectedMonth - 1 : 12;
+                    calendar_elem = makeCalendar(newYear, newMonth);
+                    calendar_elem.classList.add("from-up");
+                }
+                selectedYear = newYear;
+                selectedMonth = newMonth;
+            } else {
+                calendar_elem = makeCalendar(selectedYear, param.dataset.number);
+                calendar_elem.classList.add("from-up");
+                selectedMonth = parseInt(param.dataset.number);
             }
-
-            calendar_elem = makeCalendar(newYear, newMonth);
-            selectedYear = newYear;
-            selectedMonth = newMonth;
             dialog_content_div.innerHTML = "";
             const days = calendar_elem.querySelectorAll(".day");
             for (const key in groupedAppointments) {
@@ -321,7 +269,6 @@ function prepareCalendarContainer(direction) {
                     }
                 }
             }
-            calendar_elem.classList.add("from-down");
             calendar.remove();
             calendar = calendar_elem;
             calendar_container.append(calendar);

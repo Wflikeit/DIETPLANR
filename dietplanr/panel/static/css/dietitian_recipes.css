@@ -1,10 +1,8 @@
 .clients-container, .my_recipes-container {
     height: 100%;
     overflow-y: auto;
-    /* background-color: hsla(230, 100%, 65%, 50%); */
     border-radius: 1rem;
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
@@ -12,8 +10,6 @@
 }
 
 .personalize-btn {
-    height: fit-content;
-    width: fit-content;
     outline: none;
     border: none;
     font-weight: bold;
@@ -24,10 +20,10 @@
 
 .personalize-btn:hover {
     cursor: pointer;
-    scale:1.1
+    scale: 1.1
 }
 
-    table {
+table {
     border-collapse: collapse;
     width: 100%;
     overflow: hidden;
@@ -68,27 +64,19 @@ tbody tr:nth-of-type(even) {
     padding: 10px;
     border: 1px solid gray;
     color: black;
-    width: fit-content;
     border-radius: 1rem;
     background-color: #FFCF15;
     min-width: 70%;
 }
 
 
-#recipe-form-wrapper h1 {
-    display: inline-block;
-
-}
-
 #recipe-form {
     background-color: beige;
     display: grid;
     grid-template-columns: 30% 70%;
     border: 4px solid rgb(200, 200, 200);
-
     border-radius: 10px;
-
-    justify-content: center; /* Center content horizontally */
+    justify-content: center;
 }
 
 
@@ -107,16 +95,8 @@ tbody tr:nth-of-type(even) {
 }
 
 
-#recipe-form label:hover {
-    background-color: hsla(214, 95%, 50%, 60%);
-    border-radius: 0.2rem;
-    box-shadow: inset 0 0 1.6em -0.6em hsl(214deg 100% 11.68%);
-
-}
-
 #recipe-form fieldset {
     display: flex;
-    width: inherit;
     flex-direction: column;
     justify-content: center;
     border: none;
@@ -142,11 +122,9 @@ tbody tr:nth-of-type(even) {
 
 [class^='input-group'] {
     font-family: 'Segoe UI', sans-serif;
-    margin: 2em 0 0 0;
+    margin: 2em 10% 0 10%;
     min-width: 70%;
     position: relative;
-    margin-left: 10%;
-    margin-right: 10%;
     max-height: min-content;
 }
 
@@ -202,7 +180,7 @@ tbody tr:nth-of-type(even) {
     margin-left: 20%;
 }
 
-[class^="checkbox-wrapper-"] a {
+[class^="checkbox-wrapper-"] span {
     position: relative;
     top: 20%;
     height: fit-content;
@@ -437,7 +415,7 @@ section::-webkit-scrollbar-thumb {
 /* Handle on hover */
 .ingredients-container::-webkit-scrollbar-thumb:hover,
 textarea::-webkit-scrollbar-thumb:hover,
-section::-webkit-scrollbar-thumb:hover, {
+section::-webkit-scrollbar-thumb:hover {
 
     background: #555;
 }

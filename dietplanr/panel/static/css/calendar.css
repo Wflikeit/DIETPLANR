@@ -1,7 +1,3 @@
-.container {
-    overflow-x: hidden;
-}
-
 .calendar-container {
     background-color: hsla(230, 100%, 65%, 50%);
     border-radius: 1rem 1rem 0 0;
@@ -9,7 +5,6 @@
     grid-template-rows: auto 1fr;
     row-gap: 0.5rem;
     padding-top: 0.5rem;
-    /*height: 70vh;*/
 }
 
 .calendar-container header {
@@ -19,18 +14,31 @@
 
 .button-container {
     width: 18ch;
-    padding: .5em .2em .2em;
+    padding: .5rem .2rem .2rem;
 }
 
-header i {
+.button-container button {
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    font-weight: 700;
+    width: 100%;
     cursor: pointer;
 }
 
-.calendar-container header, .calendar-container form {
-    margin-left: 0.5rem;
-    gap: 2em;
+.arrows-wrapper i {
+    font-weight: 900;
+    vertical-align: top;
+    font-size: 1.4rem;
+    padding: 0.3rem;
+    cursor: pointer;
 }
 
+.button-container:hover,
+.arrows-wrapper i:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
 
 .calendar {
     display: grid;
@@ -38,14 +46,6 @@ header i {
     grid-template-rows: auto repeat(6, 1fr);
     animation-fill-mode: forwards;
     animation-duration: 500ms;
-}
-
-.button-container button {
-    border: none;
-    background-color: transparent;
-    margin-left: 1rem;
-    font-size: 1rem;
-    font-weight: 700
 }
 
 .calendar.from-up {
@@ -69,17 +69,17 @@ header i {
 .month, .year {
     display: grid;
     place-items: center;
-    /* border-radius: 50%; */
     border: none !important;
     overflow-y: unset !important;
     height: 60%;
     aspect-ratio: 1;
     place-self: center;
 }
+
 .month:hover, .year:hover {
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 30%) !important;
-    cursor:pointer;
+    cursor: pointer;
     transition: 500ms;
     scale: 1.2;
 
@@ -96,6 +96,12 @@ div.current_day {
     min-height: 75px;
 }
 
+.weekday {
+    text-align: center;
+    margin-right: 1em;
+    padding: 0.2em;
+}
+
 .calendar .diff_day {
     opacity: 70%;
 }
@@ -110,7 +116,6 @@ div.current_day {
 
 .appointment.dragging {
     opacity: 70%;
-    /*display: none;*/
 }
 
 .appointment .time {
@@ -146,10 +151,6 @@ div.current_day {
     inset: 0;
 }
 
-.d-none {
-    display: none;
-}
-
 .appointment-dialog {
     top: 50%;
     left: 50%;
@@ -175,10 +176,12 @@ div.current_day {
     from {
         transform: translateY(-50%);
         opacity: 0;
+        z-index: -1;
     }
     to {
         transform: translateY(0);
         opacity: 100%;
+        z-index: auto;
     }
 }
 
@@ -209,25 +212,4 @@ div.current_day {
         grid-template-columns: repeat(2, auto);
         grid-template-rows: repeat(6, 1fr);
     }
-}
-
-.button-container:hover,
-.fa-solid:hover {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-.weekday {
-    text-align: center;
-    margin-right: 1em;
-    height:fit-content;
-    padding:0.2em;
-}
-
-
-.fa-solid, .fas {
-    font-weight: 900;
-    vertical-align: top;
-    font-size: 1.4em;
-    padding: 0.3em;
 }
