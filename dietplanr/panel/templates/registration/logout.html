@@ -1,7 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
-    <h1>Spierdalaj</h1>
-    <a href="{% url 'panel:login' %}"><button type="button">Log in again</button></a>
+{% block title %}Log-in{% endblock title %}
+{% block stylesheets %}
+    <link href="{% static "css/register.css" %}" rel="stylesheet">
 {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="form">
+            <h3>You have logged out</h3>
+            {% if form.errors %}
+                <p class="errors">
+                    Twoje dane logowania są nieprawidłowe.
+                    Spróbuj ponownie.
+                </p>
+            {% else %}
+                <p>
+                    Proszę, użyj poniższego formularza do logowania.
+                <p>Jeśli nie masz jeszcze konta, <a href="{% url "panel:registration" %}">załóż je tutaj</a></p>
+                </p>
+            {% endif %}
+            <form action="{% url 'panel:login' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="next" value="{{ next }}"/>
+                <a href="{% url 'panel:registration' %}" class="button">
+                    Register
+                </a>
+                <button type="submit">Log in</button>
 
+
+            </form>
+        </div>
+    </div>
+{% endblock content %}

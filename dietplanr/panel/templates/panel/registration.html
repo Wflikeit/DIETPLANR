@@ -1,19 +1,27 @@
-{#{% extends 'base.html' %}#}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+{% block stylesheets %}
+    <link href="{% static "css/logout.css" %}" rel="stylesheet">{% endblock %}
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-    <input type="submit" value="register">
-    </form>
-    {% if user.is_authenticated %}
-        <a href="{% url 'panel:home' %}"><button type="button">Save changes</button></a>
+    <div class="container">
+        <div class="form">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_div }}
+                <button type="submit">Register</button>
+            </form>
+            {% if user.is_authenticated %}
+                <a href="{% url 'panel:home' %}" class="button">Save changes</a>
 
-    {% else %}
-    <!-- Przycisk rejestracji jako klient -->
-<a href="{% url 'panel:registration' %}?is_client=True">Zarejestruj jako klient</a>
+            {% else %}
+                <!-- Przycisk rejestracji jako klient -->
+                <a href="{% url 'panel:registration' %}?is_client=True" class="button">Zarejestruj jako klient</a>
 
-<!-- Przycisk rejestracji jako dietetyk -->
-<a href="{% url 'panel:registration' %}?is_dietitian=True">Zarejestruj jako dietetyk</a>
-    {% endif %}
+                <!-- Przycisk rejestracji jako dietetyk -->
+                <a href="{% url 'panel:registration' %}?is_dietitian=True" class="button">Zarejestruj jako dietetyk</a>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}
