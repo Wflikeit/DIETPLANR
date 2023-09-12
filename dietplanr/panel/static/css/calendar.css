@@ -19,8 +19,7 @@
 
 .button-container {
     width: 18ch;
-    padding: .2em;
-    padding-top: .5em;
+    padding: .5em .2em .2em;
 }
 
 header i {
@@ -35,8 +34,8 @@ header i {
 
 .calendar {
     display: grid;
-    grid-template-columns: repeat(7, auto);
-    grid-template-rows: auto repeat(6, auto);
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto repeat(6, 1fr);
     animation-fill-mode: forwards;
     animation-duration: 500ms;
 }
