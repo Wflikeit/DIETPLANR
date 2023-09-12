@@ -2,23 +2,29 @@
 ## Description
 DIETPLANR is a brand new platform designed especially for dietitians to connect with their clients and get a better insight on their eating habbits.
 ### Features:
- Our solution provides areal-time chat using Websocket, 
+ * Real-time chat using Websocket,
+ * Interactive calendar,
+ * Making appointments,
+ * Personalize recipes,
+ * Personalize your profile,
+ <!-- * insight on user activity  -->
 ## Tech Stack: 
 ### Backend:
-- **Django**
-- **Django-REST-framework**
-- **Django channels**
-- **Redis**
-- **SQLite3**
+> **Django,**
+> **Django-REST-framework,**
+> **Django channels,**
+> **Redis,**
+> **SQLite3**
 ### Front-end
-- **Javascript**
-- **HTML**
-- **CSS**
-- **Bootstrap**
+> **Javascript,**
+> **Fetch API,**
+> **HTML,**
+> **CSS,**
+> **Bootstrap**
 ### Tools:
-- **Docker**
-- **Pycharm**
-- **VS CODE**
+> **Docker,**
+> **Pycharm,**
+> **VS CODE**
 
 ## Getting started
 download repository using
@@ -39,30 +45,29 @@ docker run --rm -p 6379:6379 redis:7
 ```
 Now you can enjoy exploring our platform
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
 ## Visuals
 Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## Incoming change
+Our next steps to make our app even more exceptional
+will be:
+- finishing integration with external API for recipes
+- improve the design of our landing page,
+- improve the view of user profile,
+- improve performance
+- use PostgresSQL instead of SQLite3
+- make some custom signals
+- introduce MessageBroker for asynchronously sending notifications 
 
 
 ## Authors
-- says
-- say
+* <a href="https://github.com/avrgprogrammer741">avrgprogrammer741</a>
+* <a href="https://github.com/Wflikeit">Wflikeit<a>
 
 
-## Project status
-Project is still in development, we are planning to expand a tool for managing and creating recipes features, (we hve got prepared models for recipes, but we don't download it from external API)
+<!-- ## Project status
+Project is still in development, we are planning to expand a tool for managing and creating recipes features, (we hve got prepared models for recipes, but we don't download it from external API) -->
 
 ## License
-For open source projects, say how it is licensed.
+DIETPLANR is an open-source project licensed under the MIT License.
