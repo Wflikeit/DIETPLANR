@@ -1,8 +1,14 @@
 .clients-container, .my_recipes-container {
     height: 100%;
-    overflow-y: scroll;
-    background-color: hsla(230, 100%, 65%, 50%);
+    overflow-y: auto;
+    /* background-color: hsla(230, 100%, 65%, 50%); */
     border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .personalize-btn {
@@ -11,25 +17,28 @@
     outline: none;
     border: none;
     font-weight: bold;
-    background-color: #FFCF15;
+    background-color: #ffcf15;
     padding: 0.5rem;
-    border-radius: 1rem;
-    margin-left: 25%;
+    border-radius: .6rem;
 }
 
 .personalize-btn:hover {
     cursor: pointer;
+    scale:1.1
 }
 
-table {
+    table {
     border-collapse: collapse;
     width: 100%;
     overflow: hidden;
 }
 
 thead tr {
-    background-color: hsla(214, 60%, 60%, 80%);
     text-align: left;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 th, td {
@@ -140,12 +149,12 @@ tbody tr:nth-of-type(even) {
     margin-right: 10%;
     max-height: min-content;
 }
+
 @media only screen and (min-width: 1900px) {
     [class^='input-group'] {
-        min-width:55%;
+        min-width: 55%;
     }
 }
-
 
 
 [class^='input-group'] input, textarea, .ingredients-wrapper, select {
@@ -187,8 +196,7 @@ tbody tr:nth-of-type(even) {
 
 
 [class^="checkbox-wrapper-"],
-#short-inputs > .input-group
-{
+#short-inputs > .input-group {
     display: flex;
     margin-bottom: 0.5em;
     margin-left: 20%;
@@ -418,7 +426,9 @@ textarea::-webkit-scrollbar {
 
 /* Handle */
 .ingredients-container::-webkit-scrollbar-thumb,
-textarea::-webkit-scrollbar-thumb {
+textarea::-webkit-scrollbar-thumb,
+section::-webkit-scrollbar-thumb {
+
     background: #888;
     border-radius: 8px;
 
@@ -426,12 +436,16 @@ textarea::-webkit-scrollbar-thumb {
 
 /* Handle on hover */
 .ingredients-container::-webkit-scrollbar-thumb:hover,
-textarea::-webkit-scrollbar-thumb:hover {
+textarea::-webkit-scrollbar-thumb:hover,
+section::-webkit-scrollbar-thumb:hover, {
+
     background: #555;
 }
 
 .ingredients-container::-webkit-scrollbar-button,
-textarea::-webkit-scrollbar-button {
+textarea::-webkit-scrollbar-button,
+section::-webkit-scrollbar-button {
+
     display: none;
 }
 
@@ -441,7 +455,7 @@ textarea::-webkit-scrollbar-button {
     grid-column: 1/3;
     align-content: center;
     justify-content: center;
-    min-width:80%;
+    min-width: 80%;
 
 }
 
@@ -450,26 +464,31 @@ textarea::-webkit-scrollbar-button {
     height: 8em;
     resize: none;
 }
+
 #line {
- background-color:rgb(200, 200, 200);
- display: block;
-    padding-top:.3em;
+    background-color: rgb(200, 200, 200);
+    display: block;
+    padding-top: .3em;
     grid-row: 3;
-    grid-column:1/3;
+    grid-column: 1/3;
     margin: 1em 1em
 
 }
+
 @media only screen and (max-width: 1250px) {
     #recipe-form {
-        display:flex;
-        flex-direction:column;
+        display: flex;
+        flex-direction: column;
     }
-    #short-inputs .input-group{
+
+    #short-inputs .input-group {
+        width: -webkit-fill-available;
         margin-left: 10%;
         margin-top: 10%;
     }
-    #short-inputs [class^="checkbox-wrapper-"]:first-child{
-            margin-top: 5%;
+
+    #short-inputs [class^="checkbox-wrapper-"]:first-child {
+        margin-top: 5%;
 
     }
 }

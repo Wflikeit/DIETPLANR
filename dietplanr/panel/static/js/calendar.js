@@ -24,7 +24,8 @@ const yearButton = document.getElementById("year-button");
 const tenYearsButton = document.getElementById("ten-years-button");
 const arrowUp = document.getElementById("arrow-up");
 const arrowDown = document.getElementById("arrow-down");
-const monthsList = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+const monthsList = ['January', 'February', 'March', 'April','May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
 monthButton.style.display = "block";
 yearButton.style.display = "none";
 
