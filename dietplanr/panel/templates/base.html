@@ -24,7 +24,6 @@
             <li><a href="">View your profile</a></li>
             <li><a href="">Features</a></li>
             <li><a href="">FAQ</a></li>
-{#            <li><a href="">Sign up</a></li>#}
         </ul>
     </div>
     <div class="last">
@@ -91,7 +90,7 @@
                     No problem
                 </p>
             </div>
-            <button class="register">REGISTER</button>
+            <a href="{% url 'panel:registration' %}" class="register">REGISTER</a>
         </div>
     </footer>
 {% endif %}
