@@ -17,8 +17,10 @@
     justify-content: start;
 }
 
-.button-container{
-    width: 15ch;
+.button-container {
+    width: 18ch;
+    padding: .2em;
+    padding-top: .5em;
 }
 
 header i {
@@ -27,7 +29,9 @@ header i {
 
 .calendar-container header, .calendar-container form {
     margin-left: 0.5rem;
+    gap: 2em;
 }
+
 
 .calendar {
     display: grid;
@@ -37,13 +41,21 @@ header i {
     animation-duration: 500ms;
 }
 
-.calendar.from-up{
+.button-container button {
+    border: none;
+    background-color: transparent;
+    margin-left: 1rem;
+    font-size: 1rem;
+    font-weight: 700
+}
+
+.calendar.from-up {
     transform: translateY(-50%);
     opacity: 0;
     animation-name: calendar_from_up_transition;
 }
 
-.calendar.from-down{
+.calendar.from-down {
     transform: translateY(50%);
     opacity: 0;
     animation-name: calendar_from_down_transition;
@@ -52,25 +64,26 @@ header i {
 .calendar.different-form {
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(4, 1fr);
+    overflow: hidden;
 }
 
-.calendar.different-form > div {
+.month, .year {
     display: grid;
     place-items: center;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     border: none !important;
     overflow-y: unset !important;
-    background-color: rgba(255, 255, 255, 30%) !important;
-    height: 100%;
+    height: 60%;
     aspect-ratio: 1;
     place-self: center;
-    cursor: pointer;
 }
-
-.calendar.different-form > div:hover {
-    scale: 1.2;
-    background-color: rgba(255, 255, 255, 50%) !important;
+.month:hover, .year:hover {
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 30%) !important;
+    cursor:pointer;
     transition: 500ms;
+    scale: 1.2;
+
 }
 
 div.current_day {
@@ -83,11 +96,6 @@ div.current_day {
     min-width: 100px;
     min-height: 75px;
 }
-
-
-/*.calendar .day{*/
-/*    z-index: 100;*/
-/*}*/
 
 .calendar .diff_day {
     opacity: 70%;
@@ -124,14 +132,14 @@ div.current_day {
     margin: auto;
 }
 
-.appointment-count-container .appointment-count{
+.appointment-count-container .appointment-count {
     text-align: center;
     position: relative;
     bottom: 1ch;
     cursor: pointer;
 }
 
-.appointment-count-container .content{
+.appointment-count-container .content {
     position: absolute;
     height: 10rem;
     overflow-y: scroll;
@@ -165,22 +173,22 @@ div.current_day {
 }
 
 @keyframes calendar_from_up_transition {
-    from{
+    from {
         transform: translateY(-50%);
         opacity: 0;
     }
-    to{
+    to {
         transform: translateY(0);
         opacity: 100%;
     }
 }
 
 @keyframes calendar_from_down_transition {
-    from{
+    from {
         transform: translateY(50%);
         opacity: 0;
     }
-    to{
+    to {
         transform: translateY(0);
         opacity: 100%;
     }
@@ -202,4 +210,25 @@ div.current_day {
         grid-template-columns: repeat(2, auto);
         grid-template-rows: repeat(6, 1fr);
     }
+}
+
+.button-container:hover,
+.fa-solid:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.weekday {
+    text-align: center;
+    margin-right: 1em;
+    height:fit-content;
+    padding:0.2em;
+}
+
+
+.fa-solid, .fas {
+    font-weight: 900;
+    vertical-align: top;
+    font-size: 1.4em;
+    padding: 0.3em;
 }
