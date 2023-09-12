@@ -63,20 +63,7 @@
 <div id="content">
     {% block content %}
 
-            <div class="message-form">
-                <i class="fa-solid fa-file"></i>
-                <i class="fa-regular fa-image"></i>
-                <div class="message-input ">
-                            <input type="text" class="form-control message-input" id="chatMessageInput" placeholder="Enter your chat message">
-                                <button class="btn btn-success" id="chatMessageSend" style="display: none;" type="button"></button>
-                    <i class="fa-solid fa-face-smile"></i>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <i class="fa-regular fa-message fa-2xl" id="chat-icon"></i>
-{% endblock %}
+    {% endblock %}
 </div>
 {% if not user.is_authenticated %}
     <footer>

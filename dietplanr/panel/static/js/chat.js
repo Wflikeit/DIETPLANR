@@ -1,5 +1,4 @@
-// chat/static/chat.jsaa
-function makeNewChatElem() {
+function makeNewChatElem(name) {
     const div = document.createElement("div");
     const i = document.createElement("i");
     const chat_input = document.createElement("input")
@@ -11,16 +10,27 @@ function makeNewChatElem() {
     const settings_content_elem = div.cloneNode();
     const chat_element = div.cloneNode();
     const chat_class = div.cloneNode();
+    const chat_name_wrapper = div.cloneNode();
+    const chat_name_div = div.cloneNode();
+    const name_user_block = div.cloneNode();
     const message_form = div.cloneNode();
     const message_input_block = div.cloneNode();
     const emote_icon = i.cloneNode();
     const file_icon = i.cloneNode();
     const image_icon = i.cloneNode();
     const down_arrow_icon = i.cloneNode();
+    const closing_icon = i.cloneNode();
+    const user_icon = i.cloneNode();
     chat_element.setAttribute("data-chat", '');
     chat_element.append(settings_element, chat_class);
     chat_log_element.setAttribute("data-chat-log", "");
     chat_log_element.classList.add("custom-chat-log");
+    name_user_block.append(user_icon, chat_name_div);
+    name_user_block.classList.add("name-user-block");
+    chat_name_wrapper.append(name_user_block, closing_icon);
+    chat_name_wrapper.classList.add("chat-name-wrapper");
+    chat_name_div.classList.add("chat-name");
+    chat_name_div.innerHTML = name;
     message_form.classList.add("message-form");
     message_input_block.classList.add("message-input")
     message_input_block.append(chat_input, chat_button, emote_icon);
@@ -31,11 +41,18 @@ function makeNewChatElem() {
     chat_button.setAttribute("data-chat-message-send", "");
     chat_button.classList.add("d-none");
     message_form.append(file_icon, image_icon, message_input_block);
+    closing_icon.classList.add("fa-solid", "fa-xmark");
+    user_icon.classList.add("fa-regular", "fa-user", "fa-xl");
+    closing_icon.addEventListener("click", function (e){
+        chat_element.classList.remove("active");
+        const link = chat_links.find(link => link.dataset.value == chat_element.dataset.value);
+        link.classList.remove("active");
+    })
     emote_icon.classList.add("fa-solid", "fa-smile");
     file_icon.classList.add("fa-solid", "fa-file");
     image_icon.classList.add("fa-regular", "fa-image");
     chat_class.classList.add("chat");
-    chat_class.append(chat_log_element, message_form);
+    chat_class.append(chat_name_wrapper, chat_log_element, message_form);
     settings_element.classList.add("chat-settings");
     settings_element.append(option_dropdown_element);
     option_dropdown_element.classList.add("option-dropdown");
@@ -44,7 +61,6 @@ function makeNewChatElem() {
     down_arrow_icon.classList.add("fa-solid", "fa-angle-down");
     dropdown_element.append("Adjust chat", down_arrow_icon);
     settings_content_elem.classList.add("content");
-    settings_content_elem.append("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     return chat_element;
 }
 
@@ -256,7 +272,7 @@ async function loadConversations() {
 
 async function loadMoreMessages() {
     messages_array.forEach((messages, index) => {
-        const chatblock = makeNewChatElem();
+        const chatblock = makeNewChatElem(conversations_array[index].user2_data.name);
         chatblock.dataset.value = conversations_array[index].user2_data.id;
         document.body.append(chatblock);
         chat_containers.push(chatblock);

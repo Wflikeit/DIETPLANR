@@ -465,7 +465,6 @@ textarea::-webkit-scrollbar-button {
         flex-direction:column;
     }
     #short-inputs .input-group{
-        width: -webkit-fill-available;
         margin-left: 10%;
         margin-top: 10%;
     }
