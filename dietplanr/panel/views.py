@@ -277,4 +277,6 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
             context['dietitian_profile'] = dietitian_profile
 
         return context
+def ManageDietitianProfileView(request):
+    return render(request, 'panel/dietitian_profile.html')
 

@@ -9,7 +9,8 @@ from .views import (ClientProfileEditView,
                     Home,
                     DisplayDietitianProfile,
                     ManageCalendar,
-                    ManageRecipesView)
+                    ManageRecipesView,
+                    ManageDietitianProfileView)
 
 app_name = 'panel'
 urlpatterns = [
@@ -25,7 +26,7 @@ urlpatterns = [
     path('dietitians/<slug:dietitian_slug>', DisplayDietitianProfile.as_view(), name='show_clients'),
     path('calendar/', ManageCalendar.as_view(), name='show_calendar'),
     path('recipes/', ManageRecipesView.as_view(), name='show_recipes'),
-
+    path('profile/', ManageDietitianProfileView, name="show_profile")
 ]
 
 

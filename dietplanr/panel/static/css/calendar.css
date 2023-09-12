@@ -14,25 +14,7 @@
 
 .button-container {
     width: 18ch;
-    padding: .5em .2em .2em;
-}
-
-header i {
-    cursor: pointer;
-}
-
-.calendar-container header, .calendar-container form {
-    margin-left: 0.5rem;
-    gap: 2em;
-}
-
-
-.calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: auto repeat(6, 1fr);
-    animation-fill-mode: forwards;
-    animation-duration: 500ms;
+    padding: .5rem .2rem .2rem;
 }
 
 .button-container button {
@@ -42,6 +24,28 @@ header i {
     font-weight: 700;
     width: 100%;
     cursor: pointer;
+}
+
+.arrows-wrapper i {
+    font-weight: 900;
+    vertical-align: top;
+    font-size: 1.4rem;
+    padding: 0.3rem;
+    cursor: pointer;
+}
+
+.button-container:hover,
+.arrows-wrapper i:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto repeat(6, 1fr);
+    animation-fill-mode: forwards;
+    animation-duration: 500ms;
 }
 
 .calendar.from-up {
@@ -65,17 +69,17 @@ header i {
 .month, .year {
     display: grid;
     place-items: center;
-    /* border-radius: 50%; */
     border: none !important;
     overflow-y: unset !important;
     height: 60%;
     aspect-ratio: 1;
     place-self: center;
 }
+
 .month:hover, .year:hover {
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 30%) !important;
-    cursor:pointer;
+    cursor: pointer;
     transition: 500ms;
     scale: 1.2;
 
@@ -92,6 +96,12 @@ div.current_day {
     min-height: 75px;
 }
 
+.weekday {
+    text-align: center;
+    margin-right: 1em;
+    padding: 0.2em;
+}
+
 .calendar .diff_day {
     opacity: 70%;
 }
@@ -106,7 +116,6 @@ div.current_day {
 
 .appointment.dragging {
     opacity: 70%;
-    /*display: none;*/
 }
 
 .appointment .time {
@@ -142,10 +151,6 @@ div.current_day {
     inset: 0;
 }
 
-.d-none {
-    display: none;
-}
-
 .appointment-dialog {
     top: 50%;
     left: 50%;
@@ -171,10 +176,12 @@ div.current_day {
     from {
         transform: translateY(-50%);
         opacity: 0;
+        z-index: -1;
     }
     to {
         transform: translateY(0);
         opacity: 100%;
+        z-index: auto;
     }
 }
 
@@ -205,24 +212,4 @@ div.current_day {
         grid-template-columns: repeat(2, auto);
         grid-template-rows: repeat(6, 1fr);
     }
-}
-
-.button-container:hover,
-.fa-solid:hover {
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-.weekday {
-    text-align: center;
-    margin-right: 1em;
-    padding:0.2em;
-}
-
-
-.arrows-wrapper i {
-    font-weight: 900;
-    vertical-align: top;
-    font-size: 1.4em;
-    padding: 0.3em;
 }

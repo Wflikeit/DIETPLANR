@@ -22,6 +22,7 @@ function makeNewChatElem(name) {
     const closing_icon = i.cloneNode();
     const user_icon = i.cloneNode();
     chat_element.setAttribute("data-chat", '');
+    chat_element.classList.add("chat-wrapper");
     chat_element.append(settings_element, chat_class);
     chat_log_element.setAttribute("data-chat-log", "");
     chat_log_element.classList.add("custom-chat-log");

@@ -35,6 +35,12 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+}
+
 i.fa-bars {
     font-size: 1rem;
     display: none;
@@ -42,11 +48,6 @@ i.fa-bars {
 
 i.fa-bars::before {
     border-radius: 0 !important;
-}
-
-.navbar a {
-    text-decoration: none;
-    color: black;
 }
 
 .list-wrapper ul {
@@ -59,9 +60,7 @@ i.fa-bars::before {
 }
 
 .list-wrapper li:hover {
-    display:flex;
-    align-items:center;
-    background:#d4d3d3;
+    scale: 1.2;
     transition: 0.5s;
 }
 
@@ -131,7 +130,7 @@ footer {
     width: 70%;
 }
 
-[data-chat] {
+.chat-wrapper {
     display: none;
     position: fixed;
     bottom: 1rem;
@@ -142,7 +141,7 @@ footer {
     z-index: 300;
 }
 
-[data-chat].active {
+.chat-wrapper.active {
     display: flex;
     justify-content: end;
 }
@@ -227,13 +226,13 @@ footer {
     border-radius: 0 1rem 1rem 0;
 }
 
-.chat-name-wrapper{
+.chat-name-wrapper {
     display: grid;
     grid-template-columns: repeat(2, auto);
     padding: 1rem 0.5rem;
 }
 
-.name-user-block{
+.name-user-block {
     display: grid;
     grid-auto-flow: column;
     justify-content: start;
@@ -241,7 +240,7 @@ footer {
     gap: 0.5rem;
 }
 
-.chat i.fa-xmark{
+.chat i.fa-xmark {
     cursor: pointer;
     justify-self: end;
 }
@@ -353,6 +352,11 @@ footer .register {
     border-radius: 100rem;
     margin-left: 25%;
     cursor: pointer;
+    transition: 500ms;
+}
+
+footer .register:hover {
+    scale: 1.2;
 }
 
 @media (max-width: 768px) {
@@ -381,7 +385,7 @@ footer .register {
         gap: 1vh;
     }
 
-    [data-chat] {
+    .chat-wrapper {
         flex-direction: column;
         width: 300px;
         right: 0;
