@@ -8,6 +8,10 @@
     <link href="{% static "css/base.css" %}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5e1f2a52bc.js" crossorigin="anonymous"></script>
     <script src="{% static "js/chat.js" %}" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;900&display=swap" rel="stylesheet">
+
     {% block stylesheets %}{% endblock %}
     {% block scripts %}{% endblock %}
 </head>
@@ -16,11 +20,10 @@
     <i class="fa-solid fa-bars" id="bars"></i>
     <div class="list-wrapper" id="list-wrapper">
         <ul>
-            <li><a href="">Product</a></li>
+            <li><a href="{% url 'panel:home' %}">Home</a></li>
             <li><a href="">Features</a></li>
-            <li><a href="">Our dietitians</a></li>
+            <li><a href="{% url 'panel:show_profile' %}">View your profile</a></li>
             <li><a href="">FAQ</a></li>
-            <li><a href="">Sign up</a></li>
         </ul>
     </div>
     <div class="last">
@@ -63,20 +66,7 @@
 <div id="content">
     {% block content %}
 
-            <div class="message-form">
-                <i class="fa-solid fa-file"></i>
-                <i class="fa-regular fa-image"></i>
-                <div class="message-input ">
-                            <input type="text" class="form-control message-input" id="chatMessageInput" placeholder="Enter your chat message">
-                                <button class="btn btn-success" id="chatMessageSend" style="display: none;" type="button"></button>
-                    <i class="fa-solid fa-face-smile"></i>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <i class="fa-regular fa-message fa-2xl" id="chat-icon"></i>
-{% endblock %}
+    {% endblock %}
 </div>
 {% if not user.is_authenticated %}
     <footer>
@@ -100,7 +90,7 @@
                     No problem
                 </p>
             </div>
-            <button class="register">REGISTER</button>
+            <a href="{% url 'panel:registration' %}" class="register">REGISTER</a>
         </div>
     </footer>
 {% endif %}

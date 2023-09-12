@@ -29,7 +29,6 @@ function openModal(recipeId) {
         .then(response => response.json())
         .then(data => {
             updateFormFields(data);
-            console.log(data)
         });
 }
 
@@ -69,8 +68,9 @@ function updateFormFields(data) {
 function updateMacroFields(macrosData) {
     const macros = document.getElementById('recipe-macros');
     const indicesToShow = ['Calories', 'Protein', 'Fat', 'Carbohydrates'];
-    indicesToShow.forEach((d) => {
-        const macro = macrosData.nutrients.find(nutrient => nutrient.name === d);
+    macros.textContent = "";
+    indicesToShow.forEach((indice) => {
+        const macro = macrosData.nutrients.find(nutrient => nutrient.name === indice);
         if (macro) {
             macros.textContent += `${macro.name[0]}:${Math.floor(macro.amount)}${macro.unit}\n`;
         }
@@ -112,14 +112,16 @@ function updateTextField(key, value) {
 // }
 
 function updateCheckboxField(key, value) {
-    const div = document.getElementsByClassName(`checkbox-wrapper-${key}`);
+    const div = document.querySelector(`.checkbox-wrapper-${key}`);
     const shortInput = document.getElementById(`input-${key}`);
     const label = document.querySelector(`label[for="${shortInput.id}"]`);
     label.style.display = 'inline';
     shortInput.checked = value;
-    const element = document.createElement('a');
+    const element = document.createElement('span');
     element.textContent = key;
-    div[0].appendChild(element);
+    if (div.querySelector("span"))
+        div.querySelector("span").remove();
+    div.appendChild(element);
 }
 
 function addSubmitButton() {
@@ -127,6 +129,7 @@ function addSubmitButton() {
     submitButton.type = 'submit';
     submitButton.textContent = 'Submit';
 }
+
 const input = document.getElementById('input-ingredients');
 const box = document.querySelector('.ingredients-container');
 
@@ -190,6 +193,7 @@ function prependToContainer(container, element) {
 
 // Function to update ingredients based on data (you can call this when needed)
 function updateIngredientsField(ingredientsData) {
+    box.innerHTML = "";
     ingredientsData.ingredients.forEach((ingredient) => {
         const ingredientElement = createIngredient(ingredient);
         prependToContainer(box, ingredientElement);

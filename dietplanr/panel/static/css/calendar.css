@@ -1,7 +1,3 @@
-.container {
-    overflow-x: hidden;
-}
-
 .calendar-container {
     background-color: hsla(230, 100%, 65%, 50%);
     border-radius: 1rem 1rem 0 0;
@@ -9,7 +5,6 @@
     grid-template-rows: auto 1fr;
     row-gap: 0.5rem;
     padding-top: 0.5rem;
-    /*height: 70vh;*/
 }
 
 .calendar-container header {
@@ -17,33 +12,49 @@
     justify-content: start;
 }
 
-.button-container{
-    width: 15ch;
+.button-container {
+    width: 18ch;
+    padding: .5rem .2rem .2rem;
 }
 
-header i {
+.button-container button {
+    border: none;
+    background-color: transparent;
+    font-size: 1rem;
+    font-weight: 700;
+    width: 100%;
     cursor: pointer;
 }
 
-.calendar-container header, .calendar-container form {
-    margin-left: 0.5rem;
+.arrows-wrapper i {
+    font-weight: 900;
+    vertical-align: top;
+    font-size: 1.4rem;
+    padding: 0.3rem;
+    cursor: pointer;
+}
+
+.button-container:hover,
+.arrows-wrapper i:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .calendar {
     display: grid;
-    grid-template-columns: repeat(7, auto);
-    grid-template-rows: auto repeat(6, auto);
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto repeat(6, 1fr);
     animation-fill-mode: forwards;
     animation-duration: 500ms;
 }
 
-.calendar.from-up{
+.calendar.from-up {
     transform: translateY(-50%);
     opacity: 0;
     animation-name: calendar_from_up_transition;
 }
 
-.calendar.from-down{
+.calendar.from-down {
     transform: translateY(50%);
     opacity: 0;
     animation-name: calendar_from_down_transition;
@@ -52,25 +63,26 @@ header i {
 .calendar.different-form {
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(4, 1fr);
+    overflow: hidden;
 }
 
-.calendar.different-form > div {
+.month, .year {
     display: grid;
     place-items: center;
-    border-radius: 50%;
     border: none !important;
     overflow-y: unset !important;
-    background-color: rgba(255, 255, 255, 30%) !important;
-    height: 100%;
+    height: 60%;
     aspect-ratio: 1;
     place-self: center;
-    cursor: pointer;
 }
 
-.calendar.different-form > div:hover {
-    scale: 1.2;
-    background-color: rgba(255, 255, 255, 50%) !important;
+.month:hover, .year:hover {
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 30%) !important;
+    cursor: pointer;
     transition: 500ms;
+    scale: 1.2;
+
 }
 
 div.current_day {
@@ -84,10 +96,11 @@ div.current_day {
     min-height: 75px;
 }
 
-
-/*.calendar .day{*/
-/*    z-index: 100;*/
-/*}*/
+.weekday {
+    text-align: center;
+    margin-right: 1em;
+    padding: 0.2em;
+}
 
 .calendar .diff_day {
     opacity: 70%;
@@ -103,7 +116,6 @@ div.current_day {
 
 .appointment.dragging {
     opacity: 70%;
-    /*display: none;*/
 }
 
 .appointment .time {
@@ -124,23 +136,19 @@ div.current_day {
     margin: auto;
 }
 
-.appointment-count-container .appointment-count{
+.appointment-count-container .appointment-count {
     text-align: center;
     position: relative;
     bottom: 1ch;
     cursor: pointer;
 }
 
-.appointment-count-container .content{
+.appointment-count-container .content {
     position: absolute;
     height: 10rem;
     overflow-y: scroll;
     background: white;
     inset: 0;
-}
-
-.d-none {
-    display: none;
 }
 
 .appointment-dialog {
@@ -165,22 +173,24 @@ div.current_day {
 }
 
 @keyframes calendar_from_up_transition {
-    from{
+    from {
         transform: translateY(-50%);
         opacity: 0;
+        z-index: -1;
     }
-    to{
+    to {
         transform: translateY(0);
         opacity: 100%;
+        z-index: auto;
     }
 }
 
 @keyframes calendar_from_down_transition {
-    from{
+    from {
         transform: translateY(50%);
         opacity: 0;
     }
-    to{
+    to {
         transform: translateY(0);
         opacity: 100%;
     }

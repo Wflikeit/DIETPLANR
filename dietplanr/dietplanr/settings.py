@@ -136,8 +136,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'panel.CustomUser'
 LOGIN_URL = '/panel/account/login/'
-LOGIN_REDIRECT_URL = '/panel/'
-LOGOUT_URL = 'panel/account/logout'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = '/account/logout'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
