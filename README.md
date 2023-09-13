@@ -36,13 +36,12 @@ install all needed dependencies:
 poetry install
 ```
 ### If not install requirements from requirements.txt:
-then use following commands to run server and redis docker image:
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Then:
-then use following commands to run server and redis docker image:
+Use following commands to run server and redis docker image:
 ```bash
 cd dietplanr
 python manage.py runserver
