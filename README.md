@@ -20,7 +20,6 @@ DIETPLANR is a brand new platform designed especially for dietitians to connect 
 > **Fetch API,**
 > **HTML,**
 > **CSS,**
-> **Bootstrap**
 ### Tools:
 > **Docker,**
 > **Pycharm,**
@@ -31,12 +30,18 @@ download repository using
 ```bash
 git clone https://github.com/Wflikeit/DIETPLANR
 ```
-then download poetry using 
-and install all needed dependencies:
+### If you have poetry:
+install all needed dependencies:
 ```bash
-pip poetry install
 poetry install
 ```
+### If not install requirements from requirements.txt:
+then use following commands to run server and redis docker image:
+```bash
+pip install -r requirements.txt
+```
+
+## Then:
 then use following commands to run server and redis docker image:
 ```bash
 cd dietplanr
