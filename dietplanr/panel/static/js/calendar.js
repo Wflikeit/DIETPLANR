@@ -124,6 +124,7 @@ function makeAppointment(appointment, key) {
     })
     let timeoutId = null;
     appointment_div.addEventListener("drag", function (e) {
+        if (e.clientY == 0) console.log(e.clientY);
         if (e.clientY < calendar_rect.top) {
             if (!this.dragging) {
                 clearTimeout(timeoutId);
@@ -147,9 +148,15 @@ function makeAppointment(appointment, key) {
             this.dragging = false;
         }
     });
-    appointment_div.addEventListener("dragend", function () {
-        this.classList.remove("dragging");
-        dragged_elem = null;
+    appointment_div.addEventListener("dragend", function (e) {
+        // Capture the mouse position
+        const mouseY = e.clientY;
+
+        // Check if the mouse position is valid (not zero)
+        if (mouseY !== 0) {
+            this.classList.remove("dragging");
+            dragged_elem = null;
+        }
     })
     return appointment_div;
 }

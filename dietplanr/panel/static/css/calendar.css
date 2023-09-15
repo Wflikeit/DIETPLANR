@@ -49,14 +49,10 @@
 }
 
 .calendar.from-up {
-    transform: translateY(-50%);
-    opacity: 0;
     animation-name: calendar_from_up_transition;
 }
 
 .calendar.from-down {
-    transform: translateY(50%);
-    opacity: 0;
     animation-name: calendar_from_down_transition;
 }
 
@@ -69,8 +65,6 @@
 .month, .year {
     display: grid;
     place-items: center;
-    border: none !important;
-    overflow-y: unset !important;
     height: 60%;
     aspect-ratio: 1;
     place-self: center;
@@ -78,7 +72,7 @@
 
 .month:hover, .year:hover {
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 30%) !important;
+    background-color: rgba(255, 255, 255, 30%);
     cursor: pointer;
     transition: 500ms;
     scale: 1.2;
