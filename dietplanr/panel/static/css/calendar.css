@@ -28,7 +28,6 @@
 
 .arrows-wrapper i {
     font-weight: 900;
-    vertical-align: top;
     font-size: 1.4rem;
     padding: 0.3rem;
     cursor: pointer;
@@ -43,7 +42,7 @@
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: auto repeat(6, 1fr);
+    grid-template-rows: auto repeat(6, auto);
     animation-fill-mode: forwards;
     animation-duration: 500ms;
 }
@@ -92,7 +91,7 @@ div.current_day {
 
 .weekday {
     text-align: center;
-    margin-right: 1em;
+    margin-right: 1rem;
     padding: 0.2em;
 }
 
@@ -120,29 +119,17 @@ div.current_day {
     text-align: center;
 }
 
-.calendar .day:has(.appointment-count-container) {
+.calendar .day:has(.appointment-count) {
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
-.appointment-count-container {
-    margin: auto;
-}
-
-.appointment-count-container .appointment-count {
+.appointment-count {
     text-align: center;
-    position: relative;
-    bottom: 1ch;
+    transform: translateY(-1ch);
+    margin: auto;
     cursor: pointer;
-}
-
-.appointment-count-container .content {
-    position: absolute;
-    height: 10rem;
-    overflow-y: scroll;
-    background: white;
-    inset: 0;
 }
 
 .appointment-dialog {
@@ -156,10 +143,6 @@ div.current_day {
     background: none;
     border: none;
     cursor: pointer;
-}
-
-.appointment-dialog input {
-    background: gray;
 }
 
 .appointment-dialog::backdrop {

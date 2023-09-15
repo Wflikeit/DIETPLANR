@@ -134,7 +134,7 @@
     margin-bottom: 1rem;
 }
 
-input[type="text"]{
+.appointment-form input[type="text"]{
     border-radius: 0.2rem;
     border: 1px solid rgba(0,0,0,0.5);
     opacity: 70%;

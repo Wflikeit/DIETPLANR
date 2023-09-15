@@ -2,6 +2,7 @@
     height: 100%;
     background-color: hsla(214, 95%, 50%, 60%);
     border-radius: 1rem;
+    padding: 1rem;
     display: grid;
     grid-template-rows: auto 1fr;
 }
@@ -31,7 +32,6 @@
 
 .home-link {
     width: fit-content;
-    margin: 1rem;
     padding: 0.5rem;
     border-radius: 1rem;
     background: black;
@@ -56,7 +56,7 @@ textarea{
 input[type="text"], textarea{
     border-radius: 0.2rem;
     border: 1px solid rgba(0,0,0,0.5);
-    opacity: 85%;
+    opacity: 70%;
 }
 
 input[type="text"]:focus, textarea:focus{

@@ -6,15 +6,15 @@
 <meta name="csrf-token" content="{{ csrf_token }}">
 {% block additional_scripts %}
     <script src="{% static "js/calendar.js" %}"
-            defer
-            data-month></script>{% endblock %}
+            defer></script>
+{% endblock %}
 {% block information %}
     <div class="calendar-container" data-container>
         <header>
             <div id="selected_year" class="d-none">{{ selected_year }}</div>
             <div id="selected_month" class="d-none">{{ selected_month }}</div>
             <div class="button-container">
-                <button class="month-button" id="month-button">{{ current_month }} {{ current_year }}</button>
+                <button class="month-button" id="month-button">{{ current_month }}-{{ current_year }}</button>
                 <button class="year-button" id="year-button" style="display: none;">{{ current_year }}</button>
                 <button class="ten-years-button" id="ten-years-button" style="display: none;">2020-2030</button>
             </div>
@@ -23,22 +23,6 @@
                 <i class="fa-solid fa-angle-down" id="arrow-down"></i>
             </div>
         </header>
-        {#                <form action="{% url 'panel:show_calendar' %}" method="POST">#}
-        {#                    {% csrf_token %}#}
-        {#                    <select name="year">#}
-        {#                        {% for year in years %}#}
-        {#                            <option value="{{ year }}" {% if year == selected_year %} selected {% endif %}>{{ year }}</option>#}
-        {#                        {% endfor %}#}
-        {#                    </select>#}
-        {#                    <select name="month">#}
-        {#                        {% for number, month in months.items %}#}
-        {#                            <option value="{{ number }}" {% if number == selected_month %}#}
-        {#                                    selected {% endif %}>{{ month }}</option>#}
-        {#                        {% endfor %}#}
-        {#                    </select>#}
-        {#                    <button type="submit">SUBMIT</button>#}
-        {#                </form>#}
-
         <div class="calendar from-up">
             {% for weekday in weekdays %}
                 <div class="weekday">{{ weekday }}</div>
@@ -54,32 +38,22 @@
                         {% for appointment in group %}
                             {% if appointment.date.year == selected_year and appointment.date.month == selected_month and appointment.date.day == day %}
                                 {% if group|length > 1 %}
-                                    <div class="appointment-count-container" data-count="{{ group|length }}">
-                                        <div class="appointment-count">
-                                            {% if forloop.first %}
-                                                Appointment count: {{ group|length }}
-                                            {% endif %}
+                                    {% if forloop.first %}
+                                        <div class="appointment-count" data-appointment-count="{{ group|length }}" data-value="{{ appointment.date.date }}">
+                                            Appointment count: {{ group|length }}
                                         </div>
-                                        <div class="content d-none">
-                                            <div class="appointment"
-                                                 data-appointment="{{ appointment.date.date }}">
-                                                <div class="time">{{ appointment.date.time }}</div>
-                                                <div class="title"
-                                                >{{ appointment.title }}</div>
-                                                <div class="duration">
-                                                    Duration: {{ appointment.event_duration }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {% endif %}
                                 {% elif group|length == 1 %}
-                                    <div class="appointment"
-                                         data-appointment="{{ appointment.date.date }}">
-                                        <div class="time"
-                                        >{{ appointment.date.time }}</div>
-                                        <div class="title"
-                                        >{{ appointment.title }}</div>
+                                    <div class="appointment" draggable="true" data-appointment="{{ appointment.date.date }}">
+                                        <div class="time">
+                                            {{ appointment.date.time }}
+                                        </div>
+                                        <div class="title">
+                                            {{ appointment.title }}
+                                        </div>
                                         <div class="duration">
-                                            Duration: {{ appointment.event_duration }}</div>
+                                            Duration: {{ appointment.event_duration }}
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endif %}
@@ -98,17 +72,23 @@
             <button formmethod="dialog" type="submit">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="content">
-                {% for group in grouped_appointments %}
-                    {% for appointment in group %}
-                        <div class="d-none"
-                             data-dialog-content="{{ appointment.date.date }}">{{ appointment.title }}</div>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-            <input type="text" name="text">
-            <button type="submit">SUBMIT</button>
         </form>
+        <div class="content">
+            {% for group in grouped_appointments %}
+                {% for appointment in group %}
+                    <form class="d-none dialog-form" data-dialog-content="{{ appointment.date.date }}">
+                        <div class="title">{{ appointment.title }}</div>
+                        <input type="text" name="title" value="{{ appointment.title }}">
+                        <select name="duration">
+                            <option value="30:00">30:00</option>
+                            <option value="60:00">60:00</option>
+                        </select>
+                        <input type="time" value="{{ appointment.time }}">
+                        <button data-dialog-form-button>SUBMIT</button>
+                    </form>
+                {% endfor %}
+            {% endfor %}
+        </div>
     </dialog>
 {% endblock %}
 

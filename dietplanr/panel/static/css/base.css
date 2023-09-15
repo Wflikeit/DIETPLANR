@@ -6,7 +6,7 @@
 }
 
 .d-none {
-    display: none;
+    display: none !important;
 }
 
 body {
@@ -75,7 +75,7 @@ i.fa-bars::before {
     display: flex;
     gap: 0.2rem;
     justify-self: end;
-    margin-right: 1rem;
+    margin-right: 2rem;
 }
 
 .user-action {
@@ -150,22 +150,22 @@ footer {
 }
 
 .conversations {
+    margin-top: 0.1rem;
     height: 400px;
-    width: 200px;
+    min-width: 150px;
     background-color: #95A7EB;
     position: absolute;
     border-radius: 1rem;
-    overflow: hidden;
+    overflow: auto;
     grid-row: 2/3;
 }
 
 .conversation {
-    height: 4rem;
     padding: 0.5rem;
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 0.5rem;
-    overflow: hidden;
+    /*overflow: hidden;*/
     cursor: pointer;
     background-color: rgba(255, 255, 255, 20%);
     transition: 500ms;
@@ -221,7 +221,7 @@ footer {
 
 .chat {
     height: 400px;
-    width: 300px;
+    width: 100%;
     background-color: white;
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -300,6 +300,7 @@ footer {
 .chatMessageInput {
     width: 100%;
     padding: 0.25rem;
+    border: 1px solid rgba(0,0,0,50%);
     border-radius: 1rem;
     text-align: end;
     background-color: hsl(0, 0%, 86%);
@@ -375,7 +376,7 @@ footer .register:hover {
         display: grid;
         grid-template-rows: 0fr;
         transition: 500ms;
-        grid-column: 1/2;
+        grid-column: 1/-1;
         grid-row: 2/3;
     }
 
@@ -389,11 +390,15 @@ footer .register:hover {
         overflow: hidden;
         justify-content: start;
         gap: 1vh;
+        margin-top: 1vh;
+    }
+
+    .conversation i{
+        display: none;
     }
 
     .chat-wrapper {
         flex-direction: column;
-        width: 300px;
         right: 0;
         bottom: 0;
     }
@@ -415,6 +420,12 @@ footer .register:hover {
 
     footer:nth-child(2) .register {
         margin-left: 0;
+    }
+}
+
+@media (max-width: 360px) {
+    .chat-wrapper{
+        width: 100%;
     }
 }
 
