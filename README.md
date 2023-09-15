@@ -60,7 +60,7 @@ will be:
 - improve the design of our landing page,
 - improve the view of user profile,
 - improve performance
-- use PostgresSQL instead of SQLite3
+- use PostgreSQL instead of SQLite3
 - make some custom signals
 - introduce MessageBroker for asynchronously sending notifications 
 
