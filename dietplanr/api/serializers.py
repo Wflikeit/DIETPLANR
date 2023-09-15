@@ -16,12 +16,7 @@ class AppointmentSerializer(ModelSerializer):
     def get_user2_data(self, appointment):
         user2 = appointment.user_profile
         user1 = appointment.dietitian_profile.user
-        print('get_user2_data')
-        print(f"self.context['request'].user: {self.context['request'].user}")
-        print(f'user1:{user1}\nuser2:{user2}\n user: {self.context["request"].user}')
         if self.context['request'].user == user1:
-            print('sukces11')
-            print(appointment.date.time)
             user_data = {
                 'name': user2.full_name,
                 'id': user2.id,

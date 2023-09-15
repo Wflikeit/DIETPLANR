@@ -53,8 +53,14 @@ textarea{
     border-radius: 0.5rem;
 }
 
-input{
-    border-radius: 0.5rem;
+input[type="text"], textarea{
+    border-radius: 0.2rem;
+    border: 1px solid rgba(0,0,0,0.5);
+    opacity: 85%;
+}
+
+input[type="text"]:focus, textarea:focus{
+    opacity: 100%;
 }
 
 @media (max-width: 1050px) {
