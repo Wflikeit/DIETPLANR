@@ -4,6 +4,12 @@ const recipeButtons = Array.from(createRecipeButton).concat(Array.from(personali
 const recipeForm = document.getElementById('recipe-form-wrapper');
 const recipeTable = document.getElementById('recipes-table');
 
+fetch("http://127.0.0.1:8000/api/clients/")
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    });
+
 recipeForm.addEventListener("click", (event) => {
     if (event.target === recipeForm) {
         closeModal();

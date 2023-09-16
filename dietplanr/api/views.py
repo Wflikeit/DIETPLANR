@@ -1,9 +1,9 @@
+from panel.models import DietitianProfile, ClientProfile, Appointment
+from recipes.models import Recipe
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 
-from panel.models import DietitianProfile, ClientProfile
-from recipes.models import Recipe
-from .serializers import AppointmentSerializer, PersonalizeRecipeSerializer
+from .serializers import AppointmentSerializer, PersonalizeRecipeSerializer, ClientsSerializer
 
 
 class ConversationsPagination(PageNumberPagination):
@@ -33,3 +33,19 @@ class PersonalizeRecipeView(generics.RetrieveUpdateDestroyAPIView):
         recipe_id = self.kwargs.get('id')
 
         return Recipe.objects.filter(id=recipe_id)
+
+
+class AppointmentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = 'pk'
+    serializer_class = AppointmentSerializer
+
+    def get_queryset(self):
+        appointment_id = self.kwargs.get('id')
+        return Appointment.objects.filter(id=appointment_id)
+
+
+class ClientsView(generics.ListAPIView):
+    serializer_class = ClientsSerializer
+
+    def get_queryset(self):
+        return DietitianProfile.get_clients(self.request.user.dietitianprofile)

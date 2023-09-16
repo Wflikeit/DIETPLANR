@@ -118,6 +118,9 @@ class DietitianProfile(models.Model):
     def get_dietitian_appointments(self):
         return Appointment.objects.filter(dietitian_profile=self)
 
+    def get_clients(self):
+        return ClientProfile.objects.filter(dietitian=self.user.dietitianprofile)
+
 
 class ClientProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
@@ -141,6 +144,9 @@ class ClientProfile(models.Model):
 
     def get_client_appointments(self):
         return Appointment.objects.filter(user_profile=self)
+
+    def get_dietitian(self):
+        return self.dietitian
 
 
 class Appointment(models.Model):

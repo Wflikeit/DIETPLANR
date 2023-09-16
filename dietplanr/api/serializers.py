@@ -1,8 +1,7 @@
+from panel.models import Appointment, ClientProfile
+from recipes.models import Recipe
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
-
-from panel.models import Appointment
-from recipes.models import Recipe
 
 
 class AppointmentSerializer(ModelSerializer):
@@ -41,3 +40,15 @@ class PersonalizeRecipeSerializer(ModelSerializer):
                   'ketogenic', 'vegan', 'vegetarian', 'summary',
                   'finished', 'is_personalised', 'title',
                   'assigned_to', 'ingredients', 'macros']
+
+
+class ClientsSerializer(ModelSerializer):
+    client_data = SerializerMethodField()
+
+    class Meta:
+        model = ClientProfile
+        fields = ["client_data", ]
+
+    def get_client_data(self, client_profile):
+        user_data = client_profile.user.get_user_data()
+        return user_data
