@@ -275,7 +275,7 @@ arrowDown.addEventListener("click", function () {
 
 function prepareCalendarContainer(param, is_month) {
     let calendar_elem = null;
-    fetch(`/api/get-appointments`)
+    fetch(`/api/appointments/`)
         .then(response => response.json())
         .then(data => {
             const groupedAppointments = {};

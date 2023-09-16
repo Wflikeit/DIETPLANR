@@ -67,7 +67,7 @@ function openModal(recipeId) {
     recipeForm.showModal();
 
     if (recipeId) {
-        fetchRecipe(`/api/personalise-reicipe/${recipeId}`, false);
+        fetchRecipe(`/api/recipes/${recipeId}/personalize/`, false);
     } else {
         const randomRecipeId = getRandomRecipeId();
         fetchRecipe(`https://api.spoonacular.com/recipes/${randomRecipeId}/information?apiKey=2b74ec79341f45c2a24fa427b5e79fcf&includeNutrition=true`, true);

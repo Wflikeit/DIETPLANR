@@ -23,7 +23,7 @@ class AppointmentsView(generics.ListAPIView):
         if user2: return user2.get_client_appointments()
 
 
-class RecipesView(generics.RetrieveUpdateDestroyAPIView):
+class PersonalizeRecipeView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PersonalizeRecipeSerializer
     lookup_field = 'id'
 
