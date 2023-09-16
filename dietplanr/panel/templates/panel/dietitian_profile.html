@@ -2,7 +2,11 @@
 {% load static %}
 {% block title %}Profil{% endblock %}
 {% block stylesheets %}
-    <link href="{% static "css/dietitian_profile.css" %}" rel="stylesheet">{% endblock %}
+    <link href="{% static "css/dietitian_profile.css" %}" rel="stylesheet">
+{% endblock %}
+{% block scripts %}
+    <script src="{% static "js/dietitian_profile.js" %}" defer></script>
+{% endblock %}
 {% block content %}
     <div class="container">
         <div class="dietitian-heading">
@@ -80,7 +84,7 @@
                         officia sapiente aliquam dolorem velit voluptatibus. Nam doloremque omnis dolore voluptates?
                     </p>
                 </div>
-                <button class="appointment-btn">
+                <button class="appointment-btn" data-appointment-card-btn>
                     Appointment
                     <i class="fa-regular fa-calendar-check"></i>
                 </button>
@@ -97,7 +101,7 @@
                         voluptatibus vitae voluptatem placeat rem eaque ullam sequi error sapiente facere. Possimus.
                     </p>
                 </div>
-                <button class="appointment-btn">
+                <button class="appointment-btn" data-appointment-card-btn>
                     Appointment
                     <i class="fa-regular fa-calendar-check"></i>
                 </button>

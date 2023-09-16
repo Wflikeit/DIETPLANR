@@ -44,7 +44,7 @@ function makeNewChatElem(name) {
     message_form.append(file_icon, image_icon, message_input_block);
     closing_icon.classList.add("fa-solid", "fa-xmark");
     user_icon.classList.add("fa-regular", "fa-user", "fa-xl");
-    closing_icon.addEventListener("click", function (e){
+    closing_icon.addEventListener("click", function (e) {
         chat_element.classList.remove("active");
         const link = chat_links.find(link => link.dataset.value == chat_element.dataset.value);
         link.classList.remove("active");
@@ -96,6 +96,7 @@ function createConvLink(last_message_text, element, id) {
     conv_wrapper.append(icon, message_name_wrapper);
     return conv_wrapper;
 }
+
 let chatLog = document.querySelector("[data-chat_log]");
 let messages_array = [];
 let conversations_array = [];
@@ -126,7 +127,7 @@ user_action.addEventListener("click", function () {
     conversations_container.classList.add("d-none");
 })
 
-bars.addEventListener("click", function (e){
+bars.addEventListener("click", function (e) {
     listWrapper.classList.toggle("active");
 })
 let chatSocket = null;

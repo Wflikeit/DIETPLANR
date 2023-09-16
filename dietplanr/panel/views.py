@@ -180,7 +180,6 @@ class DietitianProfileEditView(DietitianRequiredMixin, View):
         form = DietitianProfileForm(request.POST, instance=dietitian_profile)
         if form.is_valid():
             form.save()
-            print('saceeeeee')
             return redirect('panel:home')
         return render(request, 'panel/dietitian_profile_edit.html', {'form': form})
 
@@ -238,17 +237,10 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
         current_month = datetime.now().month
         month_name = calendar.month_name[current_month]
         appointments = self.get_queryset()
-        print("Appointments: ")
         sorted_appointments = sorted(appointments, key=attrgetter("date"))
         grouped_appointments = []
         for date, group in groupby(sorted_appointments, key=lambda app: app.date.date()):
             grouped_appointments.append(list(group))
-
-        # Print the grouped appointments
-        for group in grouped_appointments:
-            print("Appointments on:", group[0].date.date())
-            for appointment in group:
-                print("  Time:", appointment.date.time())
         context = {
             "current_date": datetime.now(),
             "current_year": datetime.now().year,
@@ -264,7 +256,6 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
             "next_days": next_days,
             "grouped_appointments": grouped_appointments,
         }
-
         return render(request, "panel/calendar.html", context)
 
     def get_context_data(self, **kwargs):
@@ -277,6 +268,7 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
             context['dietitian_profile'] = dietitian_profile
 
         return context
+
+
 def ManageDietitianProfileView(request):
     return render(request, 'panel/dietitian_profile.html')
-

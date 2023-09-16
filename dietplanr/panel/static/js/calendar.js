@@ -1,18 +1,7 @@
 const appointments = document.querySelectorAll("[data-appointment]");
+const appointment_counts = document.querySelectorAll("[data-appointment-count]");
 const dialog = document.querySelector("[data-appointment-dialog]");
-const dialogContent = dialog.querySelectorAll("[data-dialog-content]");
 const dialog_content_div = dialog.querySelector(".content");
-appointments.forEach(appointment => {
-    appointment.addEventListener("click", () => {
-        dialogContent.forEach(element => {
-            if (element.dataset.dialogContent === appointment.dataset.appointment) {
-                element.classList.remove("d-none");
-            } else element.classList.add("d-none");
-        })
-        dialog.showModal();
-    })
-})
-
 let dragged_elem;
 let calendar = document.querySelector('.calendar');
 let calendar_container = document.querySelector('.calendar-container');
@@ -29,6 +18,21 @@ const monthsList = ['January', 'February', 'March', 'April', 'May', 'June',
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 monthButton.style.display = "block";
 yearButton.style.display = "none";
+appointments.forEach(appointment => {
+    setTimeout(() => {
+        addEventsToAppointment(appointment);
+    }, 500);
+})
+appointment_counts.forEach(count_elem => {
+    setTimeout(() => {
+        addEventsToAppointmentCount(count_elem);
+    }, 500);
+})
+document.querySelectorAll("[data-day]").forEach(day => {
+    setTimeout(() => {
+        addDropEventToDay(day);
+    }, 500);
+})
 
 function makeCalendar(year, month_num) {
     const calendar = document.createElement("div");
@@ -54,23 +58,7 @@ function makeCalendar(year, month_num) {
     for (let i = 1; i <= days_count; i++) {
         const day = document.createElement("div");
         day.classList.add("day");
-        day.addEventListener("dragover", e => {
-            e.preventDefault();
-        })
-        day.addEventListener("drop", () => {
-            let appointment_count = Array.from(document.querySelectorAll(".appointment-count-container")).find(appointment_count => day.contains(appointment_count))
-            if (appointment_count) {
-                dragged_elem.remove();
-                dragged_elem = null;
-                const count = parseInt(appointment_count.dataset.count) + 1;
-                appointment_count.setAttribute("data-count", count);
-                appointment_count.innerHTML = `Appointment count: ${count}`;
-            } else {
-                day.append(dragged_elem);
-                dragged_elem = null;
-            }
-
-        })
+        addDropEventToDay(day);
         if (i === current_date.getDate() && year === current_date.getFullYear() && month_num - 1 === current_date.getMonth()) day.classList.add("current_day");
         day.innerHTML = `${i}`;
         calendar.append(day);
@@ -85,46 +73,75 @@ function makeCalendar(year, month_num) {
 }
 
 function makeAppointment(appointment, key) {
-    const calendar_rect = calendar.getBoundingClientRect();
     const appointmentDate = new Date(appointment.date);
     const appointment_div = document.createElement("div");
-    appointment_div.classList.add("appointment");
     const time_div = document.createElement("div");
-    time_div.classList.add("time");
     const duration_div = document.createElement("div");
-    duration_div.classList.add("duration");
     const title_div = document.createElement("div");
+    const dialog_appointment_form = makeDialogContentForm(appointment);
+
+    appointment_div.classList.add("appointment");
+    time_div.classList.add("time");
+    duration_div.classList.add("duration");
     title_div.classList.add("title");
-    title_div.innerHTML = appointment.title;
-    time_div.innerHTML = `${appointmentDate.getHours().toString().padStart(2, '0')}:${appointmentDate.getMinutes().toString().padStart(2, '0')}`;
+    dialog_appointment_form.classList.add("d-none", "dialog-form");
+    dialog_appointment_form.method = "POST";
+    appointment_div.setAttribute("data-appointment", key);
+    appointment_div.setAttribute("draggable", "true");
+    dialog_appointment_form.setAttribute("data-dialog-content", key);
     const totalSeconds = parseInt(appointment.event_duration);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
+    title_div.innerHTML = appointment.title;
+    time_div.innerHTML = `${appointmentDate.getHours().toString().padStart(2, '0')}:${appointmentDate.getMinutes().toString().padStart(2, '0')}`;
     duration_div.innerHTML = `Duration: ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     appointment_div.append(time_div, title_div, duration_div);
-    appointment_div.setAttribute("data-appointment", key);
-    appointment_div.setAttribute("draggable", "true");
-    const dialog_appointment = document.createElement("div");
-    dialog_appointment.setAttribute("data-dialog-content", key);
-    dialog_appointment.classList.add("d-none");
-    dialog_appointment.innerHTML = appointment.title;
-    dialog_content_div.append(dialog_appointment);
-    appointment_div.addEventListener("click", () => {
-        dialog.querySelectorAll("[data-dialog-content]").forEach(element => {
-            if (element.dataset.dialogContent === appointment_div.dataset.appointment) {
-                element.classList.remove("d-none");
-            } else element.classList.add("d-none");
-        })
-        dialog.showModal();
-    })
-    appointment_div.addEventListener("dragstart", function () {
+    dialog_content_div.append(dialog_appointment_form);
+    addEventsToAppointment(appointment_div);
+    return appointment_div;
+}
+
+function makeDialogContentForm(appointment){
+    if(!appointment.hasOwnProperty('title')) appointment = {
+                    title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
+                    time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, "")
+                }
+    const dialog_appointment_form = document.createElement("form");
+    const title_input = document.createElement("input");
+    const duration_select = document.createElement("select");
+    const option1 = document.createElement("option");
+    const option2 = document.createElement("option");
+    const time_input = document.createElement("input");
+    const submit_button = document.createElement("button");
+    const title_div = document.createElement("div");
+    title_div.innerHTML = appointment.title;
+    title_input.value = appointment.title;
+    time_input.value = appointment.time;
+    option1.value = "30:00";
+    option2.value = "60:00";
+    title_input.type = "text";
+    time_input.type = "time";
+    duration_select.name = "duration";
+    time_input.name = "time";
+    title_input.name = "title";
+    submit_button.setAttribute("data-dialog-form-button", "");
+    option1.innerHTML = "30:00";
+    option2.innerHTML = "60:00";
+    submit_button.innerHTML = "SUBMIT";
+    duration_select.append(option1, option2);
+    dialog_appointment_form.append(title_div, title_input, duration_select, time_input, submit_button);
+    return dialog_appointment_form;
+}
+function addEventsToAppointment(appointment_div) {
+    const calendar_rect = calendar.getBoundingClientRect();
+    appointment_div.addEventListener("dragstart", function (e) {
+        e.dataTransfer.setDragImage(this, 0, 0);
         this.classList.add("dragging");
         dragged_elem = this;
     })
     let timeoutId = null;
     appointment_div.addEventListener("drag", function (e) {
-        if (e.clientY == 0) console.log(e.clientY);
         if (e.clientY < calendar_rect.top) {
             if (!this.dragging) {
                 clearTimeout(timeoutId);
@@ -148,17 +165,66 @@ function makeAppointment(appointment, key) {
             this.dragging = false;
         }
     });
-    appointment_div.addEventListener("dragend", function (e) {
-        // Capture the mouse position
-        const mouseY = e.clientY;
-
-        // Check if the mouse position is valid (not zero)
-        if (mouseY !== 0) {
-            this.classList.remove("dragging");
-            dragged_elem = null;
-        }
+    appointment_div.addEventListener("dragend", (e) => {
+        appointment_div.classList.remove("dragging");
     })
-    return appointment_div;
+    appointment_div.addEventListener("click", () => {
+        dialog.querySelectorAll("[data-dialog-content]").forEach(element => {
+            if (element.dataset.dialogContent === appointment_div.dataset.appointment) {
+                element.classList.remove("d-none");
+            } else element.classList.add("d-none");
+        })
+        dialog.showModal();
+    })
+}
+
+function addDropEventToDay(day) {
+    day.addEventListener("dragover", e => {
+        e.preventDefault();
+    })
+    day.addEventListener("drop", () => {
+        const appointment_count = day.querySelector("[data-appointment-count]");
+        if(dragged_elem && day.querySelector("[data-appointment]") != dragged_elem){
+            if (appointment_count) {
+                const count = parseInt(appointment_count.dataset.appointmentCount) + 1;
+                appointment_count.setAttribute("data-appointment-count", count);
+                appointment_count.innerHTML = `Appointment count: ${count}`;
+                const dialog_appointment_form = makeDialogContentForm(dragged_elem);
+                dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
+                dialog_content_div.querySelector(`[data-dialog-content="${appointment_count.dataset.value}"]`).append(dialog_appointment_form);
+                dragged_elem.remove();
+                dragged_elem = null;
+            } else if (day.querySelector("[data-appointment]")) {
+                const first_app_div = day.querySelector("[data-appointment]");
+                const app_count_div = document.createElement("div");
+                app_count_div.classList.add("appointment-count");
+                app_count_div.setAttribute("data-appointment-count", "2");
+                app_count_div.setAttribute("data-value", first_app_div.dataset.appointment);
+                app_count_div.innerHTML = "Appointment count: 2";
+                first_app_div.remove();
+                dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).setAttribute("data-dialog-content", first_app_div.dataset.appointment);
+                addEventsToAppointmentCount(app_count_div);
+                day.append(app_count_div);
+                dragged_elem.remove();
+                dragged_elem = null;
+            }else{
+                day.append(dragged_elem);
+                dragged_elem = null;
+            }
+        }
+
+    })
+}
+
+function addEventsToAppointmentCount(appointment_count) {
+    appointment_count.addEventListener("click", () => {
+        dialog.querySelectorAll("[data-dialog-content]").forEach(element => {
+            if (element.dataset.dialogContent === appointment_count.dataset.value || element.dataset.dialogContent === appointment_count.dataset.appointment) {
+                element.classList.remove("d-none");
+            } else element.classList.add("d-none");
+        })
+        dialog.showModal();
+    })
 }
 
 monthButton.addEventListener("click", function () {
@@ -169,10 +235,10 @@ monthButton.addEventListener("click", function () {
             prepareCalendarContainer(this, 1)
         });
     });
-    monthButton.style.display = "none";
-    tenYearsButton.style.display = "none";
     monthButton.innerHTML = `${monthsList[selectedMonth - 1]}-${selectedYear}`;
     yearButton.innerHTML = `${selectedYear}`;
+    monthButton.style.display = "none";
+    tenYearsButton.style.display = "none";
     yearButton.style.display = "block";
 });
 tenYearsButton.addEventListener("click", function () {
@@ -254,36 +320,33 @@ function prepareCalendarContainer(param, is_month) {
                             const appointment_div = makeAppointment(appointment, key);
                             day.append(appointment_div);
                         } else if (group.indexOf(appointment) === 0) {
-                            const count_container = document.createElement("div");
-                            count_container.classList.add("appointment-count-container");
-                            count_container.setAttribute("data-count", group.length);
                             const appointment_count_div = document.createElement("div");
+                            appointment_count_div.setAttribute("data-appointment-count", group.length);
+                            appointment_count_div.setAttribute("data-value", key);
+                            addEventsToAppointmentCount(appointment_count_div);
+                            dialog_content_div.append(makeDialogContentForm(appointment));
                             appointment_count_div.innerHTML = `Appointment count: ${group.length}`;
                             appointment_count_div.classList.add("appointment-count");
-                            appointment_count_div.addEventListener("click", function () {
-                                content_div.classList.remove("d-none");
-                            })
-                            const content_div = document.createElement("div");
-                            content_div.classList.add("content", "d-none");
-                            for (const appointment_item of group) {
-                                const appointment_div = makeAppointment(appointment_item, key);
-                                content_div.append(appointment_div);
-                            }
-                            count_container.append(appointment_count_div, content_div);
-                            day.append(count_container);
+                            day.append(appointment_count_div);
                             break;
                         }
                     }
                 }
             }
+            if (dragged_elem) {
+                const dragged_date = new Date(dragged_elem.dataset.appointment);
+                if (dragged_date.getFullYear() === selectedYear && dragged_date.getMonth() === selectedMonth - 1)
+                    dragged_elem.remove();
+                dragged_elem = null;
+            }
             calendar.remove();
             calendar = calendar_elem;
             calendar_container.append(calendar);
             originalCalendarContent = calendar.innerHTML;
-            yearButton.style.display = "none";
-            tenYearsButton.style.display = "none";
             monthButton.innerHTML = `${monthsList[selectedMonth - 1]}-${selectedYear}`;
             yearButton.innerHTML = `${selectedYear}`;
+            yearButton.style.display = "none";
+            tenYearsButton.style.display = "none";
             monthButton.style.display = "block";
         });
 }
