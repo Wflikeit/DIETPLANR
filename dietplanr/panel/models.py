@@ -152,6 +152,7 @@ class ClientProfile(models.Model):
 class Appointment(models.Model):
     APPOINTMENT_CHOICES = [
         ('diet_consultation', 'Diet_consultation'),
+        ('diet_consultion', 'Diet_consultation'),
         ('deep_analyse_of_activity', 'Deep_analyse_of_activity'),
         ('swimming', 'Swimming'),
     ]

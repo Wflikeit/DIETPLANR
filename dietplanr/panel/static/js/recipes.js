@@ -4,11 +4,6 @@ const recipeButtons = Array.from(createRecipeButton).concat(Array.from(personali
 const recipeForm = document.getElementById('recipe-form-wrapper');
 const recipeTable = document.getElementById('recipes-table');
 
-fetch("http://127.0.0.1:8000/api/clients/")
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-    });
 
 recipeForm.addEventListener("click", (event) => {
     if (event.target === recipeForm) {
@@ -129,7 +124,7 @@ function updateFormFields(data) {
                     case 'title':
                         document.getElementsByClassName('recipe-form-title')[0].textContent = data[key];
                         break;
-                    case 'assigned_to':
+                    case 'assigned_to_full_name':
                         updateDropdownField(key, data[key]);
                         break;
                     case 'instructions':
@@ -203,13 +198,36 @@ function updateMacroFields(macrosData) {
 function updateDropdownField(key, values) {
     const selectElement = document.getElementById('dropdown-input');
     selectElement.innerHTML = '';
+
+    const uniqueValues = new Set(); // Użyj Set do przechowywania unikalnych wartości
+
     values.forEach((value) => {
-        const option = document.createElement('option');
-        option.value = value;
-        option.textContent = value;
-        selectElement.appendChild(option);
+        if (!uniqueValues.has(value)) { // Sprawdź, czy wartość jest już w zestawie
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            selectElement.appendChild(option);
+            uniqueValues.add(value); // Dodaj wartość do zestawu
+        }
     });
+
+    fetch("http://127.0.0.1:8000/api/clients/")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            data.forEach((value) => {
+                const name = value['client_data'].name;
+                if (!uniqueValues.has(name)) { // Sprawdź, czy nazwa jest już w zestawie
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    selectElement.appendChild(option);
+                    uniqueValues.add(name); // Dodaj nazwę do zestawu
+                }
+            });
+        });
 }
+
 
 function updateTextField(key, value) {
     const input = document.getElementById(`input-${key}`);

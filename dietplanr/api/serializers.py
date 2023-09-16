@@ -34,12 +34,19 @@ class AppointmentSerializer(ModelSerializer):
 
 
 class PersonalizeRecipeSerializer(ModelSerializer):
+    assigned_to_full_name = SerializerMethodField()
+
     class Meta:
         model = Recipe
         fields = ['instructions', 'cheap', 'dairyFree',
                   'ketogenic', 'vegan', 'vegetarian', 'summary',
                   'finished', 'is_personalised', 'title',
-                  'assigned_to', 'ingredients', 'macros']
+                  'assigned_to', 'ingredients', 'macros', 'assigned_to_full_name']
+
+
+    def get_assigned_to_full_name(self, recipe):
+        print(recipe.get_assigned_to_username())
+        return recipe.get_assigned_to_username()
 
 
 class ClientsSerializer(ModelSerializer):
