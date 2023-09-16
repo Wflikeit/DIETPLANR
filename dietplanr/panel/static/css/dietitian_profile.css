@@ -6,8 +6,8 @@
 .container {
     display: grid;
     margin: auto;
-    gap: 0.5rem;
-    padding: 0 4rem;
+    gap: .5rem;
+    padding: 2rem 10em 0 10rem;
 }
 
 .dietitian-heading, .recipe-heading {
