@@ -149,7 +149,7 @@ tbody tr:nth-of-type(even) {
     background-color: transparent;
     border-radius: 8px;
     width: 100%;
-    margin-bottom: 1em;
+    margin-bottom: .1em;
     display: flex;
     flex-direction: column;
     cursor: auto;
@@ -378,11 +378,9 @@ tbody tr:nth-of-type(even) {
     width: inherit;
     height: fit-content;
     align-items: center;
-    margin: 0 0 0.3em 0;
+    margin: 0 0 .3em 0;
     border: 2px solid transparent;
     border-radius: 6px;
-
-
 }
 
 .ingredient .icon {

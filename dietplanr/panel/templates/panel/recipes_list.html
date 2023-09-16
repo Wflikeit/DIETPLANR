@@ -22,7 +22,7 @@
                 <th><span class="create-recipe">Generate recipe</span></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="recipes-table">
             {% for recipe in recipes %}
                 <tr>
                     <td>{{ recipe }}</td>
@@ -66,7 +66,7 @@
         </table>
     </section>
     <dialog id="recipe-form-wrapper" active="False">
-        <h3 id="recipe-form-title">
+        <h3 class="recipe-form-title">
 
         </h3>
         <form id="recipe-form" class="recipe-form">
