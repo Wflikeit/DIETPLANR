@@ -55,7 +55,7 @@
 }
 
 .overview-container > [class$="-wrapper"] {
-    display:flex;
+    display: flex;
     flex-direction: column;
     background-color: lightgray;
     margin: .5rem;
@@ -63,6 +63,7 @@
     transform: scale(1);
     transition: transform .5s;
 }
+
 .overview-container > [class$="-wrapper"]:hover {
     transform: scale(1.05);
 }
@@ -86,14 +87,18 @@ h1 {
     height: 10vh;
     font-size: 3em;
 }
+
 [class$="-span"] {
     height: 100%;
-    margin:0 2rem 2rem 2rem;
-    overflow:auto;
+    margin: 0 2rem 2rem 2rem;
+    overflow: auto;
+    border-radius: .22rem;
 }
 
-.message {
+[class$="-span"] .message {
     display: block;
-    margin: 0 1em .2em 1em;
     width: inherit;
+    border-radius: .22rem;
+    padding: .1em
+
 }
