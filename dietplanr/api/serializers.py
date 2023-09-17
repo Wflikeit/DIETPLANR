@@ -43,7 +43,6 @@ class PersonalizeRecipeSerializer(ModelSerializer):
                   'finished', 'is_personalised', 'title',
                   'assigned_to', 'ingredients', 'macros', 'assigned_to_full_name']
 
-
     def get_assigned_to_full_name(self, recipe):
         print(recipe.get_assigned_to_username())
         return recipe.get_assigned_to_username()

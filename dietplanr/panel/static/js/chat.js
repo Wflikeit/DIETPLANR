@@ -148,7 +148,7 @@ function connect() {
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         switch (data.type) {
-            case "chat_message":
+            case "private_message":
                 let Class = null
                 let who = null;
                 let message_div = createChatMessage(data.message);
@@ -170,20 +170,7 @@ function connect() {
                 }
                 message_div.classList.add(Class);
                 break;
-            case "private_message":
-                // span.innerHTML = "PM to " + data.target + ": " + data.message;
-                message_div = createChatMessage("PM to " + data.target + ": " + data.message);
-                chatLog.children.item(current_conversation.index).appendChild(message_div);
-                break;
-            case "private_message_delivered":
-                message_div = document.createElement("div");
-                span = document.createElement("span");
-                message_div.classList.add("message");
-                span.innerHTML = "PM to " + data.target + ": " + data.message;
-                message_div.appendChild(span);
-                message_div.classList.add("right");
-                chatLog.children.item(current_conversation.index).appendChild(message_div);
-                break;
+
             default:
                 console.error("Unknown message type!");
                 break;

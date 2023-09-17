@@ -37,30 +37,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # receive message from Websocket
     async def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
-        print(text_data_json)
-        print(self.user)
-
-        if not self.user.is_authenticated:  # new
-            print('dupa')
-            return  # new
         message = text_data_json.get('message')
         receiver_id = text_data_json.get('user_inbox')
-        if message and receiver_id:
-            await self.channel_layer.group_send(
-                self.user_id, {'type': 'chat_message',
-                               'user': self.user.full_name,
-                               'user_id': str(self.user.id),
-                               'message': message}
-            )
-            await self.channel_layer.group_send(
-                receiver_id, {'type': 'chat_message',
-                              'user': self.user.full_name,
-                              'user_id': str(self.user.id),
-                              'message': message}
-            )
 
-    async def chat_message(self, event):
-        await self.send(text_data=json.dumps(event))
+        if not self._is_authenticated():
+            return
+
+        if message and receiver_id:
+            message_data = {
+                'type': 'private_message',
+                'user': self.user.full_name,
+                'user_id': str(self.user.id),
+                'message': message
+            }
+
+            await self.channel_layer.group_send(self.user_id, message_data)
+            await self.channel_layer.group_send(receiver_id, message_data)
+
+    def _is_authenticated(self):
+        if not self.user.is_authenticated:
+            print('User is not authenticated')
+            return False
+        return True
+
 
     # async def save_message(self, message, receiver_id):
     #     inbox_with_receiver = await self.get_conversation(receiver_id)
@@ -71,13 +70,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     #         conversation=inbox1
     #     )
     #
-    # @database_sync_to_async
-    # def get_conversation(self, receiver_id):
-    #     conversation = Conversation.objects.get(user1=self.user, user2=receiver_id)
-    #     return conversation
 
-    def private_message(self, event):
-        self.send(text_data=json.dumps(event))
-
-    def private_message_delivered(self, event):
-        self.send(text_data=json.dumps(event))
+    async def private_message(self, event):
+        await self.send(text_data=json.dumps(event))
