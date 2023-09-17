@@ -159,8 +159,7 @@ function connect() {
                     chat_containers.find(container => container.dataset.value === data.user_id).querySelector("[data-chat-log]").append(message_div);
                     who = data.user + ": ";
                     chat_link.querySelector(".last-message").innerHTML = who + data.message;
-                    if (!chat_link.classList.contains("active"))
-                        chat_link.querySelector(".last-message").classList.add("unread");
+                    if (!chat_link.classList.contains("active")) chat_link.querySelector(".last-message").classList.add("unread");
                 } else {
                     Class = "right";
                     // chatLog.children.item(current_conversation.index).appendChild(message_div)

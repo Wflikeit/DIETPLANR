@@ -181,6 +181,6 @@ class Notification(models.Model):
     # for checking the lenght
     seen = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
-    url = models.URLField(null=True, blank=True, )
+    url = models.URLField(null=True, blank=True)
     user = models.OneToOneField('CustomUser', on_delete=models.CASCADE)
 # Create your models here.

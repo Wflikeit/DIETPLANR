@@ -1,6 +1,8 @@
 import json
 
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+from panel.models import Notification, CustomUser
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -53,6 +55,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             await self.channel_layer.group_send(self.user_id, message_data)
             await self.channel_layer.group_send(receiver_id, message_data)
+            await self.save_notification(receiver_id)
 
     def _is_authenticated(self):
         if not self.user.is_authenticated:
@@ -60,9 +63,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return False
         return True
 
-
     # async def save_message(self, message, receiver_id):
-    #     inbox_with_receiver = await self.get_conversation(receiver_id)
+    # inbox_with_receiver = await self.get_conversation(receiver_id)
     #     await database_sync_to_async(Message.objects.create)(
     #         sender=self.user,
     #         content=message,
@@ -73,3 +75,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def private_message(self, event):
         await self.send(text_data=json.dumps(event))
+
+    @database_sync_to_async
+    def save_notification(self, user_id):
+        Notification.objects.create(
+            title=f"New message from {user_id}",
+            user=CustomUser.objects.get(id=user_id)
+        )
+
+# @database_sync_to_async
+# def get_conversation(self, receiver_id):
+#     conversation = Conversation.objects.get(user1=self.user, user2=receiver_id)
+#     return conversation
