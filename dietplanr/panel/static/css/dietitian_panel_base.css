@@ -45,3 +45,44 @@
         max-width: 100%;
     }
 }
+
+.overview-container {
+    display: grid;
+    height: 500px;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin: 3vh 0 3vh 0
+}
+
+.overview-container > [class$="-wrapper"] {
+    display:flex;
+    flex-direction: column;
+    background-color: lightgray;
+    margin: .5rem;
+    border-radius: 1rem;
+}
+
+.meetings-activity-wrapper {
+    grid-column: 2 / 3;
+}
+
+.clients-activity-wrapper {
+    grid-row: 1/ 3;
+    background-color: aqua;
+}
+
+.overview-container p {
+    font-size: 1.8rem;
+    margin: .6em .3em .3em 1.2em;
+}
+
+h1 {
+    margin: 1rem 0 0 .5rem;
+    height: 10vh;
+    font-size: 3em;
+}
+.clients-span {
+    background-color: #4B68FF;
+    height: 100%;
+    margin:0 2.3rem 3rem 2.3rem;
+}
