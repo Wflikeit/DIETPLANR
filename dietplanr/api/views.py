@@ -3,7 +3,7 @@ from recipes.models import Recipe
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 
-from .serializers import AppointmentSerializer, PersonalizeRecipeSerializer, ClientsSerializer
+from .serializers import AppointmentSerializer, PersonalizeRecipeSerializer, ClientsSerializer, NotificationsSerializer
 
 
 class ConversationsPagination(PageNumberPagination):
@@ -49,3 +49,10 @@ class ClientsView(generics.ListAPIView):
 
     def get_queryset(self):
         return DietitianProfile.get_clients(self.request.user.dietitianprofile)
+
+
+class NotificationsView(generics.ListAPIView):
+    serializer_class = NotificationsSerializer
+
+    def get_queryset(self):
+        return self.request.user.get_user_notification()

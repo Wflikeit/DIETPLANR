@@ -1,4 +1,4 @@
-from panel.models import Appointment, ClientProfile
+from panel.models import Appointment, ClientProfile, Notification
 from recipes.models import Recipe
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
@@ -57,4 +57,16 @@ class ClientsSerializer(ModelSerializer):
 
     def get_client_data(self, client_profile):
         user_data = client_profile.user.get_user_data()
+        return user_data
+
+
+class NotificationsSerializer(ModelSerializer):
+    user_name = SerializerMethodField()
+
+    class Meta:
+        model = Notification
+        fields = ["date", "title", "user_name"]
+
+    def get_user_name(self, notification):
+        user_data = notification.user.get_user_data()['name']
         return user_data

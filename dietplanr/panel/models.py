@@ -79,6 +79,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def get_user_appointments(self):
         return Appointment.objects.filter(user_profile=self)
 
+    def get_user_notification(self):
+        return Notification.objects.filter(user=self, seen=False)
+
     objects = UserProfileManager()
     groups = models.ManyToManyField(
         Group,
@@ -160,7 +163,7 @@ class Appointment(models.Model):
         (timedelta(minutes=30), '30 minutes'),
         (timedelta(minutes=60), '60 minutes'),
     ]
-    title = models.CharField(max_length=40)
+    title = models.CharField(max_length=80)
     event_duration = models.DurationField(choices=DURATION_CHOICES)
     date = models.DateTimeField()
     user_profile = models.ForeignKey(CustomUser,
@@ -177,10 +180,10 @@ class Appointment(models.Model):
 
 class Notification(models.Model):
     date = models.DateField(auto_now_add=True)
-    title = models.CharField(max_length=40)  # TODO to every TEXTFIELD add a method
-    # for checking the lenght
+    title = models.CharField(max_length=80)  # TODO to every TEXTFIELD add a method
     seen = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
     url = models.URLField(null=True, blank=True)
-    user = models.OneToOneField('CustomUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='to_user')
+    from_user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='from_user')
 # Create your models here.
