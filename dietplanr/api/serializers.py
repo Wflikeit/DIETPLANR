@@ -65,7 +65,7 @@ class NotificationsSerializer(ModelSerializer):
 
     class Meta:
         model = Notification
-        fields = ["date", "title", "user_name"]
+        fields = ["date", "title", "user_name", 'type']
 
     def get_user_name(self, notification):
         user_data = notification.user.get_user_data()['name']

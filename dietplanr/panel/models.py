@@ -179,6 +179,11 @@ class Appointment(models.Model):
 
 
 class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('message', 'chat_message'),
+        ('appointment', 'appointment'),
+        ('activity', 'activity'),
+    ]
     date = models.DateField(auto_now_add=True)
     title = models.CharField(max_length=80)  # TODO to every TEXTFIELD add a method
     seen = models.BooleanField(default=False)
@@ -186,4 +191,5 @@ class Notification(models.Model):
     url = models.URLField(null=True, blank=True)
     user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='to_user')
     from_user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='from_user')
+    type = models.CharField(choices=NOTIFICATION_TYPES, null=False, max_length=40, default='message')
 # Create your models here.

@@ -55,7 +55,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             await self.channel_layer.group_send(self.user_id, message_data)
             await self.channel_layer.group_send(receiver_id, message_data)
-            await self.save_notification(self.user_id, receiver_id)
+            await self.save_notification(self.user_id, receiver_id, self.user.full_name)
 
     def _is_authenticated(self):
         if not self.user.is_authenticated:
@@ -77,11 +77,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(event))
 
     @database_sync_to_async
-    def save_notification(self, sender_id, receiver_id):
+    def save_notification(self, sender_id, receiver_id, full_name):
         Notification.objects.create(
-            title=f"New message from {sender_id}",
+            title=f"New message from {full_name}",
             from_user=CustomUser.objects.get(id=sender_id),
-            user=CustomUser.objects.get(id=receiver_id)
+            user=CustomUser.objects.get(id=receiver_id),
+            type='message'
         )
 
 # @database_sync_to_async
