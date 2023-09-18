@@ -24,19 +24,25 @@
                 <textarea id="somemore" name="somemore" class="long-input" placeholder=" "></textarea>
                 <label for="somemore">Some more</label>
             </div>
+            <button type="submit" id="profile-settings-btn">SUBMIT</button>
+        </form>
+        <form class="user-settings">
+            <section class="user-settings-section">
+                 <div>
+                    <label for="mail">Mail</label>
+                    <input type="email" name="mail" id="mail" value="">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" name="image" id="password" value="">
+                </div>
+                <div>
+                    <label for="image">Image</label>
+                    <input type="file" name="image" id="image" value="">
+                </div>
+                <button type="submit">SUBMIT</button>
+            </section>
 
-            {#            <div>#}
-            {#                <label for="first_name">First name</label>#}
-            {#                <input type="text" name="first_name" id="first_name">#}
-            {#            </div>#}
-            {#            <div>#}
-            {#                <label for="last_name">Last name</label>#}
-            {#                <input type="text" name="last_name" id="last_name">#}
-            {#            </div>#}
-            {#            <div>#}
-            {#                <label for="image">Image</label>#}
-            {#                <input type="file" name="image" id="image" value="">#}
-            {#            </div>#}
         </form>
     </div>
 {% endblock %}

@@ -443,7 +443,6 @@ footer .register:hover {
     padding: 1rem 1rem 1rem 1rem;
     width:inherit
 
-
 }
 
 .input-group textarea:not(:placeholder-shown) + label {
@@ -455,6 +454,7 @@ footer .register:hover {
     border: .15rem solid rgb(0 0 0 / 100%);
     border-radius: 0.5rem 0.5rem 0 0 ;
     min-width:35vw;
+    width:100%
 }
 .input-group label {
     position: relative;
@@ -469,14 +469,49 @@ footer .register:hover {
 .profile-settings-wrapper {
     display: grid;
     grid-template-rows: repeat(4,1fr);
-    margin:3rem 2rem 0 2rem;
-
+    margin: 1rem 2rem 0 2rem;
 }
-.input-group {
+.profile-settings-wrapper .input-group {
     height:10rem;
     width: 100%;
 }
 
 input[type="text"]:focus, textarea:focus{
     opacity: 100%;
+}
+.user-settings {
+    grid-column:2/3;
+    display:flex;
+    flex-flow: column;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+
+}
+.user-settings-section {
+    display:flex;
+    flex-flow:column;
+    margin-bottom:1rem;
+    background-color:#ffffffa6;
+    border-radius:1em;
+    width:fit-content;
+}
+.user-settings-section div{
+    margin:.9em;
+    text-align:center
+}
+.user-settings-section button {
+    width: fit-content;
+    margin: .4rem auto;
+    padding: 0.5rem;
+    border-radius: .5rem;
+    background: black;
+    color: white;
+    cursor: pointer;
+    opacity: 85%;
+    transition: 500ms;
+}
+#profile-settings-btn {
+    width: 10vw;
+    margin: 0 auto;
 }
