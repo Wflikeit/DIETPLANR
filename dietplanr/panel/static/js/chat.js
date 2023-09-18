@@ -1,51 +1,8 @@
-function makeNewChatElem(name) {
-    const chat_elem = chat_template.cloneNode(true);
-    chat_elem.querySelector(".chat-name").innerHTML = name;
-    chat_elem.querySelector(".fa-xmark").addEventListener("click", function () {
-        chat_elem.classList.remove("active");
-        const link = chat_links.find(link => link.dataset.value == chat_elem.dataset.value);
-        link.classList.remove("active");
-    })
-    return chat_elem;
-}
-
-function createChatMessage(message) {
-    let message_div = document.createElement("div");
-    let span = document.createElement("span");
-    message_div.classList.add("message");
-    span.innerHTML = message;
-    message_div.appendChild(span);
-    return message_div;
-}
-
-function createConvLink(last_message_text, element, id) {
-    const conv_wrapper = document.createElement("div");
-    const icon = document.createElement("i");
-    const last_message = document.createElement("div");
-    const name = document.createElement("div");
-    const message_name_wrapper = document.createElement("div");
-    message_name_wrapper.classList.add("wrapper");
-    conv_wrapper.classList.add("conversation");
-    conv_wrapper.dataset.value = id;
-    icon.classList.add("fa-regular", "fa-user");
-    last_message.classList.add("last-message");
-    name.classList.add("name");
-    name.innerHTML = element.user2_data.name;
-    if (last_message_text != null) {
-        const who = element.user2_data.id === last_message_text.sender ? element.user2_data.name + ": " : "Ty: ";
-        if (element.user2_data.id === last_message_text.sender) last_message.classList.add("unread");
-        last_message.innerHTML = who + last_message_text.content;
-    }
-    message_name_wrapper.append(name, last_message);
-    conv_wrapper.append(icon, message_name_wrapper);
-    return conv_wrapper;
-}
+import {client_textables} from "./clients.js";
 
 let messages_array = [];
 let conversations_array = [];
 let chat_containers = [];
-let chat_inputs = [];
-let chat_buttons = [];
 let chat_links = [];
 
 const chat_template = document.querySelector("[data-chat-template]").content.children[0];
@@ -74,6 +31,7 @@ user_action.addEventListener("click", function () {
 bars.addEventListener("click", function (e) {
     listWrapper.classList.toggle("active");
 })
+
 let chatSocket = null;
 
 function connect() {
@@ -129,7 +87,76 @@ function connect() {
     }
 }
 
-connect();
+function makeNewChatElem(name, id) {
+    const chat_elem = chat_template.cloneNode(true);
+    chat_elem.querySelector(".chat-name").innerHTML = name;
+    chat_elem.querySelector(".fa-xmark").addEventListener("click", function () {
+        chat_elem.classList.remove("active");
+        const link = chat_links.find(link => link.dataset.value == chat_elem.dataset.value);
+        link.classList.remove("active");
+    })
+    chat_elem.dataset.value = id;
+    const chat_button = chat_elem.querySelector("[data-chat-message-send]");
+    const chat_input = chat_elem.querySelector("[data-chat-message-input]");
+    document.body.append(chat_elem);
+    chat_containers.push(chat_elem);
+    chat_input.onkeyup = function (e) {
+        if (e.keyCode === 13) {  // enter key
+            chat_button.click();
+        }
+    };
+    chat_button.onclick = function () {
+        if (chat_input.value.length === 0) return;
+        chatSocket.send(JSON.stringify({
+            "message": chat_input.value,
+            "user_inbox": chat_links[current_conversation.index].dataset.value,
+
+        }));
+        chat_input.value = "";
+    };
+    return chat_elem;
+}
+
+function createChatMessage(message) {
+    let message_div = document.createElement("div");
+    let span = document.createElement("span");
+    message_div.classList.add("message");
+    span.innerHTML = message;
+    message_div.appendChild(span);
+    return message_div;
+}
+
+function createConvLink(last_message_text, user_name, id) {
+    const conv_wrapper = document.createElement("div");
+    const icon = document.createElement("i");
+    const last_message = document.createElement("div");
+    const name_div = document.createElement("div");
+    const message_name_wrapper = document.createElement("div");
+    message_name_wrapper.classList.add("wrapper");
+    conv_wrapper.classList.add("conversation");
+    conv_wrapper.dataset.value = id;
+    icon.classList.add("fa-regular", "fa-user");
+    last_message.classList.add("last-message");
+    name_div.classList.add("name");
+    name_div.innerHTML = user_name;
+    if (last_message_text != null) {
+        const who = id === last_message_text.sender ? user_name + ": " : "Ty: ";
+        if (id === last_message_text.sender) last_message.classList.add("unread");
+        last_message.innerHTML = who + last_message_text.content;
+    }
+    message_name_wrapper.append(name_div, last_message);
+    conv_wrapper.append(icon, message_name_wrapper);
+    conv_wrapper.addEventListener("click", function (e) {
+        chat_links.forEach(link => link.classList.remove("active"));
+        this.classList.add("active");
+        this.querySelector(".last-message").classList.remove("unread");
+        current_conversation = {index: chat_links.indexOf(this), id: id};
+        chat_containers.forEach(container => container.classList.remove("active"));
+        chat_containers.find(container => container.dataset.value === this.dataset.value).classList.add("active");
+    })
+    chat_links.push(conv_wrapper);
+    conversations_container.appendChild(conv_wrapper);
+}
 
 let offset = 0; // Zmienna do śledzenia ofsetu wiadomości
 
@@ -137,62 +164,22 @@ async function loadConversations() {
     try {
         const response = await fetch(`/chat/api/get-conversations/${offset}`);
         const data = await response.json();
-        let conv_messages = [];
-        let last_message_text = null;
         data.results.forEach(element => {
             conversations_array.push(element)
         })
-        conversations_array.forEach((element, index) => {
-            conv_messages = [];
-            last_message_text = null;
-            const id = element.user2_data.id;
-            element.messages.forEach((message, index) => {
+        conversations_array.forEach((conversation, index) => {
+            let conv_messages = [];
+            let last_message_text;
+            conversation.messages.forEach((message, index) => {
                 conv_messages.push(message);
-                if (index === element.messages.length - 1) last_message_text = message;
+                if (index === conversation.messages.length - 1) last_message_text = message;
             })
             messages_array.push(conv_messages);
-            const conv_wrapper = createConvLink(last_message_text, element, id);
-            chat_links.push(conv_wrapper);
-            conv_wrapper.addEventListener("click", function (e) {
-                chat_links.forEach(link => link.classList.remove("active"));
-                this.classList.add("active");
-                this.querySelector(".last-message").classList.remove("unread");
-                const index = chat_links.indexOf(this);
-                current_conversation = {index: chat_links.indexOf(this), id: id};
-                chat_containers.forEach(container => container.classList.remove("active"));
-                chat_containers.find(container => container.dataset.value === this.dataset.value).classList.add("active");
-            })
-            conversations_container.appendChild(conv_wrapper);
+            const id = conversation.user2_data.id;
+            const user_name = conversation.user2_data.name;
+            createConvLink(last_message_text, user_name, id);
         })
         await loadMoreMessages();
-        chat_inputs.forEach((input, index) => {
-            input.onkeyup = function (e) {
-                if (e.keyCode === 13) {  // enter key
-                    chat_buttons[index].click();
-                }
-            };
-        })
-        chat_buttons.forEach((button, index) => {
-            button.onclick = function () {
-                if (chat_inputs[index].value.length === 0) return;
-                chatSocket.send(JSON.stringify({
-                    "message": chat_inputs[index].value,
-                    "user_inbox": chat_links[current_conversation.index].dataset.value,  // Twój typ komunikatu
-
-                }));
-                chat_inputs[index].value = "";
-            };
-        })
-        const chat_settings_dropdowns = chat_containers.map(container => {
-            return container.querySelectorAll(".option-dropdown");
-        });
-        chat_settings_dropdowns.forEach((list) => {
-            list.forEach(option_dropdown => {
-                option_dropdown.querySelector(".dropdown").addEventListener("click", function () {
-                    option_dropdown.querySelector(".content").classList.toggle("active");
-                })
-            })
-        })
         return data.results;
     } catch (error) {
         console.error("Błąd podczas pobierania wiadomości:", error);
@@ -204,14 +191,9 @@ async function loadConversations() {
 
 async function loadMoreMessages() {
     messages_array.forEach((messages, index) => {
-        const chatblock = makeNewChatElem(conversations_array[index].user2_data.name);
-        chatblock.dataset.value = conversations_array[index].user2_data.id;
-        document.body.append(chatblock);
-        chat_containers.push(chatblock);
-        chat_buttons.push(chatblock.querySelector("[data-chat-message-send]"));
-        chat_inputs.push(chatblock.querySelector("[data-chat-message-input]"));
+        const chat_block = makeNewChatElem(conversations_array[index].user2_data.name, conversations_array[index].user2_data.id);
         messages.forEach(message => {
-            addMessageToChatLog(index, message, chatblock);
+            addMessageToChatLog(index, message, chat_block);
         })
     });
 }
@@ -227,4 +209,5 @@ function addMessageToChatLog(index, message, chatblock) {
     chatblock.querySelector("[data-chat-log]").append(message_div);
 }
 
-loadConversations()
+connect();
+loadConversations();
