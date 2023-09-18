@@ -18,6 +18,23 @@ const monthsList = ['January', 'February', 'March', 'April', 'May', 'June',
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 monthButton.style.display = "block";
 yearButton.style.display = "none";
+formatDatasets();
+
+function formatDatasets() {
+    appointment_counts.forEach(count_elem => {
+        const input_date = new Date(count_elem.dataset.value);
+        count_elem.setAttribute("data-value", new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]);
+    })
+    appointments.forEach(appointment => {
+        const input_date = new Date(appointment.dataset.appointment);
+        appointment.setAttribute("data-appointment", new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]);
+    })
+    dialog.querySelectorAll("[data-dialog-content]").forEach(element => {
+        const input_date = new Date(element.dataset.dialogContent);
+        element.setAttribute("data-dialog-content", new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]);
+    })
+}
+
 appointments.forEach(appointment => {
     setTimeout(() => {
         addEventsToAppointment(appointment);
@@ -58,6 +75,7 @@ function makeCalendar(year, month_num) {
     for (let i = 1; i <= days_count; i++) {
         const day = document.createElement("div");
         day.classList.add("day");
+        day.setAttribute("data-day", i);
         addDropEventToDay(day);
         if (i === current_date.getDate() && year === current_date.getFullYear() && month_num - 1 === current_date.getMonth()) day.classList.add("current_day");
         day.innerHTML = `${i}`;
@@ -79,7 +97,6 @@ function makeAppointment(appointment, key) {
     const duration_div = document.createElement("div");
     const title_div = document.createElement("div");
     const dialog_appointment_form = makeDialogContentForm(appointment);
-
     appointment_div.classList.add("appointment");
     time_div.classList.add("time");
     duration_div.classList.add("duration");
@@ -102,11 +119,7 @@ function makeAppointment(appointment, key) {
     return appointment_div;
 }
 
-function makeDialogContentForm(appointment){
-    if(!appointment.hasOwnProperty('title')) appointment = {
-                    title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
-                    time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, "")
-                }
+function makeDialogContentForm(appointment) {
     const dialog_appointment_form = document.createElement("form");
     const title_input = document.createElement("input");
     const duration_select = document.createElement("select");
@@ -125,6 +138,8 @@ function makeDialogContentForm(appointment){
     duration_select.name = "duration";
     time_input.name = "time";
     title_input.name = "title";
+    dialog_appointment_form.classList.add("dialog-form", "d-none");
+    dialog_appointment_form.setAttribute("data-dialog-content", appointment.date.split("T")[0]);
     submit_button.setAttribute("data-dialog-form-button", "");
     option1.innerHTML = "30:00";
     option2.innerHTML = "60:00";
@@ -133,6 +148,7 @@ function makeDialogContentForm(appointment){
     dialog_appointment_form.append(title_div, title_input, duration_select, time_input, submit_button);
     return dialog_appointment_form;
 }
+
 function addEventsToAppointment(appointment_div) {
     const calendar_rect = calendar.getBoundingClientRect();
     appointment_div.addEventListener("dragstart", function (e) {
@@ -183,15 +199,23 @@ function addDropEventToDay(day) {
         e.preventDefault();
     })
     day.addEventListener("drop", () => {
-        const appointment_count = day.querySelector("[data-appointment-count]");
-        if(dragged_elem && day.querySelector("[data-appointment]") != dragged_elem){
+        if (dragged_elem && day.querySelector("[data-appointment]") !== dragged_elem) {
+            const appointment_count = day.querySelector("[data-appointment-count]");
             if (appointment_count) {
                 const count = parseInt(appointment_count.dataset.appointmentCount) + 1;
-                appointment_count.setAttribute("data-appointment-count", count);
+                appointment_count.setAttribute("data-appointment-count", count.toString());
                 appointment_count.innerHTML = `Appointment count: ${count}`;
-                const dialog_appointment_form = makeDialogContentForm(dragged_elem);
+                const input_date = new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day));
+                const data_object = {
+                    title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
+                    time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, ""),
+                    date: new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]
+                };
+                const dialog_appointment_form = makeDialogContentForm(data_object);
+                console.log(dragged_elem);
+                console.log(dialog_content_div);
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
-                dialog_content_div.querySelector(`[data-dialog-content="${appointment_count.dataset.value}"]`).append(dialog_appointment_form);
+                dialog_content_div.append(dialog_appointment_form);
                 dragged_elem.remove();
                 dragged_elem = null;
             } else if (day.querySelector("[data-appointment]")) {
@@ -207,10 +231,22 @@ function addDropEventToDay(day) {
                 day.append(app_count_div);
                 dragged_elem.remove();
                 dragged_elem = null;
-            }else{
+            } else {
+                const date = new Date(dragged_elem.dataset.appointment);
+                const input_date = new Date(date.getFullYear(), date.getMonth(), parseInt(day.dataset.day));
+                const data_object = {
+                    title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
+                    time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, ""),
+                    date: new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]
+                };
+                const dialog_appointment_form = makeDialogContentForm(data_object);
+                dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
+                dialog_content_div.append(dialog_appointment_form);
+                dragged_elem.dataset.appointment = data_object.date;
                 day.append(dragged_elem);
                 dragged_elem = null;
             }
+
         }
 
     })
@@ -219,7 +255,7 @@ function addDropEventToDay(day) {
 function addEventsToAppointmentCount(appointment_count) {
     appointment_count.addEventListener("click", () => {
         dialog.querySelectorAll("[data-dialog-content]").forEach(element => {
-            if (element.dataset.dialogContent === appointment_count.dataset.value || element.dataset.dialogContent === appointment_count.dataset.appointment) {
+            if (element.dataset.dialogContent === appointment_count.dataset.value) {
                 element.classList.remove("d-none");
             } else element.classList.add("d-none");
         })
@@ -275,7 +311,7 @@ arrowDown.addEventListener("click", function () {
 
 function prepareCalendarContainer(param, is_month) {
     let calendar_elem = null;
-    fetch(`/api/appointments/`)
+    fetch(`/api/appointments`)
         .then(response => response.json())
         .then(data => {
             const groupedAppointments = {};
@@ -319,25 +355,27 @@ function prepareCalendarContainer(param, is_month) {
                         if (group.length === 1) {
                             const appointment_div = makeAppointment(appointment, key);
                             day.append(appointment_div);
-                        } else if (group.indexOf(appointment) === 0) {
-                            const appointment_count_div = document.createElement("div");
-                            appointment_count_div.setAttribute("data-appointment-count", group.length);
-                            appointment_count_div.setAttribute("data-value", key);
-                            addEventsToAppointmentCount(appointment_count_div);
-                            dialog_content_div.append(makeDialogContentForm(appointment));
-                            appointment_count_div.innerHTML = `Appointment count: ${group.length}`;
-                            appointment_count_div.classList.add("appointment-count");
-                            day.append(appointment_count_div);
-                            break;
+                        } else {
+                            if (group.indexOf(appointment) === 0) {
+                                const appointment_count_div = document.createElement("div");
+                                appointment_count_div.setAttribute("data-appointment-count", group.length);
+                                appointment_count_div.setAttribute("data-value", key);
+                                addEventsToAppointmentCount(appointment_count_div);
+                                appointment_count_div.innerHTML = `Appointment count: ${group.length}`;
+                                appointment_count_div.classList.add("appointment-count");
+                                day.append(appointment_count_div);
+                            }
                         }
                     }
+                    dialog_content_div.append(makeDialogContentForm(appointment));
                 }
             }
             if (dragged_elem) {
                 const dragged_date = new Date(dragged_elem.dataset.appointment);
-                if (dragged_date.getFullYear() === selectedYear && dragged_date.getMonth() === selectedMonth - 1)
+                if (dragged_date.getFullYear() === selectedYear && dragged_date.getMonth() === selectedMonth - 1) {
                     dragged_elem.remove();
-                dragged_elem = null;
+                    dragged_elem = null;
+                }
             }
             calendar.remove();
             calendar = calendar_elem;
