@@ -8,6 +8,8 @@ let calendar_container = document.querySelector('.calendar-container');
 let originalCalendarContent = calendar.innerHTML;
 let selectedMonth = parseInt(document.getElementById("selected_month").innerHTML);
 let selectedYear = parseInt(document.getElementById("selected_year").innerHTML);
+const appointment_template = document.querySelector("[data-appointment-template]").content.children[0];
+const dialog_form_template = document.querySelector("[data-dialog-form-template]").content.children[0];
 const monthButton = document.getElementById("month-button");
 const yearButton = document.getElementById("year-button");
 const tenYearsButton = document.getElementById("ten-years-button");
@@ -92,60 +94,30 @@ function makeCalendar(year, month_num) {
 
 function makeAppointment(appointment, key) {
     const appointmentDate = new Date(appointment.date);
-    const appointment_div = document.createElement("div");
-    const time_div = document.createElement("div");
-    const duration_div = document.createElement("div");
-    const title_div = document.createElement("div");
+    const appointment_div = appointment_template.cloneNode("true");
     const dialog_appointment_form = makeDialogContentForm(appointment);
-    appointment_div.classList.add("appointment");
-    time_div.classList.add("time");
-    duration_div.classList.add("duration");
-    title_div.classList.add("title");
     dialog_appointment_form.classList.add("d-none", "dialog-form");
     dialog_appointment_form.method = "POST";
     appointment_div.setAttribute("data-appointment", key);
-    appointment_div.setAttribute("draggable", "true");
     dialog_appointment_form.setAttribute("data-dialog-content", key);
     const totalSeconds = parseInt(appointment.event_duration);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    title_div.innerHTML = appointment.title;
-    time_div.innerHTML = `${appointmentDate.getHours().toString().padStart(2, '0')}:${appointmentDate.getMinutes().toString().padStart(2, '0')}`;
-    duration_div.innerHTML = `Duration: ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    appointment_div.append(time_div, title_div, duration_div);
+    appointment_div.querySelector(".title").innerHTML = appointment.title;
+    appointment_div.querySelector(".time").innerHTML = `${appointmentDate.getHours().toString().padStart(2, '0')}:${appointmentDate.getMinutes().toString().padStart(2, '0')}`;
+    appointment_div.querySelector(".duration").innerHTML = `Duration: ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     dialog_content_div.append(dialog_appointment_form);
     addEventsToAppointment(appointment_div);
     return appointment_div;
 }
 
 function makeDialogContentForm(appointment) {
-    const dialog_appointment_form = document.createElement("form");
-    const title_input = document.createElement("input");
-    const duration_select = document.createElement("select");
-    const option1 = document.createElement("option");
-    const option2 = document.createElement("option");
-    const time_input = document.createElement("input");
-    const submit_button = document.createElement("button");
-    const title_div = document.createElement("div");
-    title_div.innerHTML = appointment.title;
-    title_input.value = appointment.title;
-    time_input.value = appointment.time;
-    option1.value = "30:00";
-    option2.value = "60:00";
-    title_input.type = "text";
-    time_input.type = "time";
-    duration_select.name = "duration";
-    time_input.name = "time";
-    title_input.name = "title";
-    dialog_appointment_form.classList.add("dialog-form", "d-none");
+    const dialog_appointment_form = dialog_form_template.cloneNode(true);
+    dialog_appointment_form.querySelector(".title").innerHTML = appointment.title;
+    dialog_appointment_form.querySelector("input[name=\"title\"]").value = appointment.title;
+    dialog_appointment_form.querySelector("input[name=\"time\"]").value = appointment.time;
     dialog_appointment_form.setAttribute("data-dialog-content", appointment.date.split("T")[0]);
-    submit_button.setAttribute("data-dialog-form-button", "");
-    option1.innerHTML = "30:00";
-    option2.innerHTML = "60:00";
-    submit_button.innerHTML = "SUBMIT";
-    duration_select.append(option1, option2);
-    dialog_appointment_form.append(title_div, title_input, duration_select, time_input, submit_button);
     return dialog_appointment_form;
 }
 
@@ -200,20 +172,41 @@ function addDropEventToDay(day) {
     })
     day.addEventListener("drop", () => {
         if (dragged_elem && day.querySelector("[data-appointment]") !== dragged_elem) {
+            const data_object = {
+                title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
+                time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, ""),
+                date: new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day))
+            };
+            // console.log(document.querySelector("[data-token]").getAttribute("value"));
+            // fetch('/api/appointments/', {
+            //     method: 'PUT',
+            //     headers: {
+            //         'X-CSRF-Token': document.querySelector("[data-token]").getAttribute("value"),
+            //         //session data
+            //     },
+            //     body: JSON.stringify(data_object), // Convert your data to JSON format
+            // })
+            //     .then(response => {
+            //         if (!response.ok) {
+            //             throw new Error('Network response was not ok');
+            //         }
+            //     })
+            //     .then(data => {
+            //         // Handle the data returned by the server
+            //         console.log('PUT request succeeded with JSON response', data);
+            //     })
+            //     .catch(error => {
+            //         console.error('There was a problem with the PUT request:', error);
+            //     });
+
             const appointment_count = day.querySelector("[data-appointment-count]");
             if (appointment_count) {
                 const count = parseInt(appointment_count.dataset.appointmentCount) + 1;
                 appointment_count.setAttribute("data-appointment-count", count.toString());
                 appointment_count.innerHTML = `Appointment count: ${count}`;
                 const input_date = new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day));
-                const data_object = {
-                    title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
-                    time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, ""),
-                    date: new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]
-                };
+                data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
                 const dialog_appointment_form = makeDialogContentForm(data_object);
-                console.log(dragged_elem);
-                console.log(dialog_content_div);
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
                 dialog_content_div.append(dialog_appointment_form);
                 dragged_elem.remove();
@@ -234,11 +227,7 @@ function addDropEventToDay(day) {
             } else {
                 const date = new Date(dragged_elem.dataset.appointment);
                 const input_date = new Date(date.getFullYear(), date.getMonth(), parseInt(day.dataset.day));
-                const data_object = {
-                    title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
-                    time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, ""),
-                    date: new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]
-                };
+                data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
                 const dialog_appointment_form = makeDialogContentForm(data_object);
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
                 dialog_content_div.append(dialog_appointment_form);
@@ -246,9 +235,7 @@ function addDropEventToDay(day) {
                 day.append(dragged_elem);
                 dragged_elem = null;
             }
-
         }
-
     })
 }
 

@@ -3,12 +3,12 @@
 {% block title %}Calendar{% endblock %}
 {% block additional_stylesheets %}
     <link href="{% static "css/calendar.css" %}" rel="stylesheet">{% endblock %}
-<meta name="csrf-token" content="{{ csrf_token }}">
 {% block additional_scripts %}
     <script src="{% static "js/calendar.js" %}"
             defer></script>
 {% endblock %}
 {% block information %}
+{#    <span data-token="{% csrf_token %}" class="d-none"></span>#}
     <div class="calendar-container" data-container>
         <header>
             <div id="selected_year" class="d-none">{{ selected_year }}</div>
@@ -39,12 +39,14 @@
                             {% if appointment.date.year == selected_year and appointment.date.month == selected_month and appointment.date.day == day %}
                                 {% if group|length > 1 %}
                                     {% if forloop.first %}
-                                        <div class="appointment-count" data-appointment-count="{{ group|length }}" data-value="{{ appointment.date.date }}">
+                                        <div class="appointment-count" data-appointment-count="{{ group|length }}"
+                                             data-value="{{ appointment.date.date }}">
                                             Appointment count: {{ group|length }}
                                         </div>
                                     {% endif %}
                                 {% elif group|length == 1 %}
-                                    <div class="appointment" draggable="true" data-appointment="{{ appointment.date.date }}">
+                                    <div class="appointment" draggable="true"
+                                         data-appointment="{{ appointment.date.date }}">
                                         <div class="time">
                                             {{ appointment.date.time }}
                                         </div>
@@ -65,8 +67,26 @@
                 <div class="diff_day" data-next-day="{{ day }}">{{ day }}</div>
             {% endfor %}
         </div>
-
     </div>
+    <template data-appointment-template>
+        <div class="appointment" data-appointment draggable="true">
+            <div class="time"></div>
+            <div class="title"></div>
+            <div class="duration"></div>
+        </div>
+    </template>
+    <template data-dialog-form-template>
+        <form class="d-none dialog-form">
+            <div class="title"></div>
+            <input type="text" name="title">
+            <select name="duration">
+                <option value="30:00">30:00</option>
+                <option value="60:00">60:00</option>
+            </select>
+            <input type="time" name="time">
+            <button data-dialog-form-button>SUBMIT</button>
+        </form>
+    </template>
     <dialog class="appointment-dialog" data-appointment-dialog>
         <form method="POST">
             <button formmethod="dialog" type="submit">

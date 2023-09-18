@@ -63,6 +63,27 @@
         </ul>
     </div>
 </nav>
+<template data-chat-template>
+    <div class="chat-wrapper" data-chat>
+        <div class="chat">
+            <div class="chat-name-wrapper">
+                <div class="name-user-block">
+                    <i class="fa-regular fa-user fa-xl"></i>
+                    <div class="chat-name"></div>
+                </div>
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div data-chat-log class="custom-chat-log">
+            </div>
+            <div class="message-form">
+                <div class="message-input">
+                    <input type="text" placeholder="Enter your chat message here" class="chatMessageInput" data-chat-message-input>
+                </div>
+                <button class="d-none" data-chat-message-send></button>
+            </div>
+        </div>
+    </div>
+</template>
 <div id="content">
     {% block content %}
 
