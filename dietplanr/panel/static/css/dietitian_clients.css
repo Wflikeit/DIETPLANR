@@ -65,6 +65,21 @@ tbody tr.active-row {
     text-indent: 1.2rem;
 }
 
+.text-client-wrapper{
+    border-radius: 1rem !important;
+    padding: 0.2rem;
+    background: white;
+    opacity: 60%;
+    border: 1px solid rgba(0,0,0,70%);
+    transition: 500ms;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.text-client-wrapper:hover{
+    opacity: 100%;
+}
+
 .header {
     display: flex;
 }

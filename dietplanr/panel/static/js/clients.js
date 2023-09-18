@@ -1,0 +1,1 @@
+export const client_textables = document.querySelectorAll("[data-text-client]");

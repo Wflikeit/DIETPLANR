@@ -5,6 +5,7 @@
     <link href="{% static "css/dietitian_clients.css" %}" rel="stylesheet">{% endblock %}
 {% block additional_scripts %}
     <script src="{% static "js/client-search.js" %}" defer></script>
+    <script src="{% static "js/clients.js" %}" defer type="module"></script>
 {% endblock %}
 {% block information %}
     <div class="clients-container">
@@ -29,7 +30,13 @@
             <tbody>
             {% for client in clients %}
                 <tr data-client="{{ client }}">
-                    <td>{{ client }}</td>
+                    <td>
+                        {{ client }}
+                        <div class="text-client-wrapper" data-text-client="{{ client.pk }}" data-name="{{ client }}">
+                            Text
+                            <i class="fa-solid fa-pen fa-xs"></i>
+                        </div>
+                    </td>
                     <td>agjadnkf</td>
                     <td>fsasf</td>
                     <td>fsaf</td>

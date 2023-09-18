@@ -7,7 +7,6 @@ input.addEventListener("input", () =>{
     search_icon.classList.toggle("d-none", value.length >= 20);
     client_records.forEach(record => {
         const name = record.dataset.client.toLowerCase();
-        console.log(name);
         record.classList.toggle("d-none", !name.includes(value));
     })
 })

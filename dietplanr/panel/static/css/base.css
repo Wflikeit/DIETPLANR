@@ -59,7 +59,7 @@ i.fa-bars::before {
     gap: 3vw;
 }
 
-.list-wrapper li{
+.list-wrapper li {
     opacity: 70%;
 }
 
@@ -124,13 +124,46 @@ i.fa-bars::before {
     margin-top: 0.5rem;
 }
 
-footer {
-    border-radius: 0 1rem 0 0;
-    background-color: rgba(255, 255, 255, 0.95);
-    margin-top: auto;
+i.fa-message::before {
+    position: relative;
+}
+
+i.fa-message:hover::before, i.fa-bars:hover::before {
+    background-color: black;
+    color: #F2F2F4;
+    transition: 0.5s;
+}
+
+i.fa-message.active::before {
+    background-color: black;
+    color: white;
+    transition: 0.5s;
+}
+
+i.fa-message.active:hover::before {
+    background-color: white;
+    color: black;
+    transition: 0.5s;
+}
+
+.chat-list::after {
+    content: attr(data-notification-count); /* Add the notification content here */
+    border-radius: 50%;
+    color: white;
+    background: red;
+    position: absolute;
+    bottom: 1rem; /* Adjust the top position as needed */
+    left: 1.3rem;
+    width: 1rem; /* Adjust the width as needed */
+    font-size: 0.8rem; /* Adjust the font size as needed */
+    aspect-ratio: 1;
     display: flex;
-    justify-content: space-around;
-    width: 70%;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-list[data-notification-count="0"]::after {
+    display: none;
 }
 
 .chat-wrapper {
@@ -142,6 +175,7 @@ footer {
     overflow: hidden;
     align-items: end;
     z-index: 10;
+    border: 1px solid black;
 }
 
 .chat-wrapper.active {
@@ -300,7 +334,7 @@ footer {
 .chatMessageInput {
     width: 100%;
     padding: 0.25rem;
-    border: 1px solid rgba(0,0,0,50%);
+    border: 1px solid rgba(0, 0, 0, 50%);
     border-radius: 1rem;
     text-align: end;
     background-color: hsl(0, 0%, 86%);
@@ -314,22 +348,13 @@ i.fa-message::before, i.fa-bars::before {
     cursor: pointer;
 }
 
-i.fa-message:hover::before, i.fa-bars:hover::before {
-    background-color: black;
-    color: #F2F2F4;
-    transition: 0.5s;
-}
-
-i.fa-message.active::before {
-    background-color: black;
-    color: white;
-    transition: 0.5s;
-}
-
-i.fa-message.active:hover::before {
-    background-color: white;
-    color: black;
-    transition: 0.5s;
+footer {
+    border-radius: 0 1rem 0 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    margin-top: auto;
+    display: flex;
+    justify-content: space-around;
+    width: 70%;
 }
 
 footer > * {
@@ -393,7 +418,7 @@ footer .register:hover {
         margin-top: 1vh;
     }
 
-    .conversation i{
+    .conversation i {
         display: none;
     }
 
@@ -424,7 +449,7 @@ footer .register:hover {
 }
 
 @media (max-width: 360px) {
-    .chat-wrapper{
+    .chat-wrapper {
         width: 100%;
     }
 }
@@ -437,27 +462,28 @@ footer .register:hover {
 
 /*Settings*/
 .long-input {
-    background-color:white;
+    background-color: white;
     resize: none;
     min-height: 7.4rem;
     border-radius: 0.5rem;
-    min-width:35vw;
+    min-width: 35vw;
     padding: 1rem 1rem 1rem 1rem;
-    width:inherit
+    width: inherit
 
 }
 
 .input-group textarea:not(:placeholder-shown) + label {
     transform: translateY(-80%);
     padding: 0.4rem;
-    background-color:white;
+    background-color: white;
     resize: none;
     right: .5rem;
     border: .15rem solid rgb(0 0 0 / 100%);
-    border-radius: 0.5rem 0.5rem 0 0 ;
-    min-width:35vw;
-    width:100%
+    border-radius: 0.5rem 0.5rem 0 0;
+    min-width: 35vw;
+    width: 100%
 }
+
 .input-group label {
     position: relative;
     bottom: 14.4vh;
@@ -468,40 +494,46 @@ footer .register:hover {
     transition: all 0.3s ease;
     color: rgb(100, 100, 100);
 }
+
 .profile-settings-wrapper {
     display: grid;
-    grid-template-rows: repeat(4,1fr);
+    grid-template-rows: repeat(4, 1fr);
     margin: 1rem 2rem 0 2rem;
 }
+
 .profile-settings-wrapper .input-group {
-    height:10rem;
+    height: 10rem;
     width: 100%;
 }
 
-input[type="text"]:focus, textarea:focus{
+input[type="text"]:focus, textarea:focus {
     opacity: 100%;
 }
+
 .user-settings {
-    grid-column:2/3;
-    display:flex;
+    grid-column: 2/3;
+    display: flex;
     flex-flow: column;
-    justify-content:center;
-    align-items:center;
-    width:100%;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 
 }
+
 .user-settings-section {
-    display:flex;
-    flex-flow:column;
-    margin-bottom:1rem;
-    background-color:#ffffffa6;
-    border-radius:1em;
-    width:fit-content;
+    display: flex;
+    flex-flow: column;
+    margin-bottom: 1rem;
+    background-color: #ffffffa6;
+    border-radius: 1em;
+    width: fit-content;
 }
-.user-settings-section div{
-    margin:.9em;
-    text-align:center
+
+.user-settings-section div {
+    margin: .9em;
+    text-align: center
 }
+
 .user-settings-section button {
     width: fit-content;
     margin: .4rem auto;
@@ -513,6 +545,7 @@ input[type="text"]:focus, textarea:focus{
     opacity: 85%;
     transition: 500ms;
 }
+
 #profile-settings-btn {
     width: 10vw;
     margin: 0 auto;
