@@ -254,7 +254,7 @@ footer {
     padding: 0 0.5rem;
 }
 
-.message {
+.custom-chat-log .message {
     width: 60%;
     margin-top: 0.3rem;
     clear: both;
