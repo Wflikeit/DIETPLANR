@@ -10,29 +10,38 @@
 {% endblock %}
 {% block information %}
     <div class="settings-container" data-container>
-        <form method="POST" class="profile-settings-wrapper">
-            {% csrf_token %}
-            <div class="input-group">
-                <textarea id="specialty" name="specialty" class="long-input" placeholder=" "></textarea>
-                <label for="specialty">Specialty</label>
-            </div>
-            <div class="input-group">
-                <textarea id="experience" name="experience" class="long-input" placeholder=" "></textarea>
-                <label for="experience">Experience</label>
-            </div>
-            <div class="input-group">
-                <textarea id="philosophy" name="philosophy" class="long-input" placeholder=" "></textarea>
-                <label for="philosophy">Philosophy</label>
-            </div>
-            <div class="input-group">
-                <textarea id="somemore" name="somemore" class="long-input" placeholder=" "></textarea>
-                <label for="somemore">Some more</label>
-            </div>
-            <button type="submit" id="profile-settings-btn">SUBMIT</button>
-        </form>
+        {% if user.is_dietitian %}
+            <form method="POST" class="profile-settings-wrapper">
+                {% csrf_token %}
+                <script>
+                    const csrfToken = "{{ csrf_token }}";
+                </script>
+
+                <div class="input-group">
+                    <textarea id="specialty" name="specialty" class="long-input" placeholder=" "></textarea>
+                    <label for="specialty">Specialty</label>
+                </div>
+                <div class="input-group">
+                    <textarea id="experience" name="experience" class="long-input" placeholder=" "></textarea>
+                    <label for="experience">Experience</label>
+                </div>
+                <div class="input-group">
+                    <textarea id="nutritional_philosophy" name="philosophy" class="long-input"
+                              placeholder=" "></textarea>
+                    <label for="nutritional_philosophy">Philosophy</label>
+                </div>
+                <div class="input-group">
+                    <textarea id="some_more" name="somemore" class="long-input" placeholder=" "></textarea>
+                    <label for="some_more">Some more</label>
+                </div>
+                <button type="submit" id="profile-settings-btn">SUBMIT</button>
+            </form>
+        {% endif %}
+
         <form class="user-settings">
+            {% csrf_token %}
             <section class="user-settings-section">
-                 <div>
+                <div>
                     <label for="mail">Mail</label>
                     <input type="email" name="mail" id="mail" value="">
                 </div>
@@ -41,8 +50,8 @@
                     <input type="password" name="image" id="password" value="">
                 </div>
                 <div>
-                    <label for="image">Image</label>
-                    <input type="file" name="image" id="image" value="">
+                    <label for="photo">Photo</label>
+                    <input type="file" name="image" id="photo" value="">
                 </div>
                 <button type="submit">SUBMIT</button>
             </section>
