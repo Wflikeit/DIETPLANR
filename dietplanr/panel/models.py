@@ -146,7 +146,7 @@ class ClientProfile(models.Model):
         return self.user.full_name
 
     def get_client_appointments(self):
-        return Appointment.objects.filter(user_profile=self)
+        return Appointment.objects.filter(user_profile=self.user)
 
     def get_dietitian(self):
         return self.dietitian
