@@ -5,16 +5,23 @@
     <link href="{% static "css/dietitian_recipes.css" %}" rel="stylesheet">{% endblock %}
 {% block additional_scripts %}
     <script src="{% static "js/recipes.js" %}" defer></script>
+    <script src="{% static "js/recipe-search.js" %}" defer></script>
     <meta name="csrf-token" content="{{ csrf_token }}">
-
-
 {% endblock %}
 {% block information %}
     <section class="my_recipes-container">
         <table>
             <thead>
             <tr>
-                <th>Name</th>
+                <th>
+                    <div class="search-wrapper">
+                        <label for="search-name">Name</label>
+                        <div class="input-wrapper">
+                            <input id="search-recipe" type="text">
+                            <i data-search-icon class="fa-solid fa-magnifying-glass fa-xs"></i>
+                        </div>
+                    </div>
+                </th>
                 <th>Proteins</th>
                 <th>Carbs</th>
                 <th>Fats</th>
@@ -24,7 +31,7 @@
             </thead>
             <tbody id="recipes-table">
             {% for recipe in recipes %}
-                <tr>
+                <tr data-recipe="{{ recipe }}">
                     <td>{{ recipe }}</td>
                     <td>20g</td>
                     <td>45g</td>
