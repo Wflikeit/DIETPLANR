@@ -1,7 +1,7 @@
+from panel.models import CustomUser
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from panel.models import CustomUser
 from ..models import Message, Conversation
 
 
@@ -34,8 +34,6 @@ class ConversationSerializer(ModelSerializer):
     def get_user2_data(self, conversation):
         user2 = conversation.user2
         user1 = conversation.user1
-        # print(f"self.context['request'].user: {self.context['request'].user}")
-        # print(f'user1:{user1}\nuser2:{user2}')
         if self.context['request'].user == user1:
             # print('sukces')
             user_data = {
@@ -52,8 +50,7 @@ class ConversationSerializer(ModelSerializer):
             }
             return user_data
         return {
-                'name': "error",
-                'id': "error",
-                'photo': "error"
-            }
-
+            'name': "error",
+            'id': "error",
+            'photo': "error"
+        }

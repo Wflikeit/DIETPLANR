@@ -1,4 +1,4 @@
-from panel.models import Appointment, ClientProfile, Notification
+from panel.models import Appointment, ClientProfile, Notification, DietitianProfile
 from recipes.models import Recipe
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
@@ -70,3 +70,33 @@ class NotificationsSerializer(ModelSerializer):
     def get_user_name(self, notification):
         user_data = notification.user.get_user_data()['name']
         return user_data
+
+
+class ClientProfileSerializer(ModelSerializer):
+    photo = SerializerMethodField()
+
+    class Meta:
+        model = ClientProfile
+        fields = ['image']
+
+    def get_photo(self):
+        obj = self.context['request'].user.photo
+        if obj:
+            return obj
+        return None
+
+
+class DietitianProfileSerializer(ModelSerializer):
+    photo = SerializerMethodField()
+
+    class Meta:
+        model = DietitianProfile
+        fields = ['specialty', 'experience',
+                  'nutritional_philosophy', 'some_more',
+                  "photo"]
+
+    def get_photo(self, obj):
+        obj = self.context['request'].user.photo
+        if obj:
+            return obj
+        return None

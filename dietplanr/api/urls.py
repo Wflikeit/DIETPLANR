@@ -1,7 +1,7 @@
 from rest_framework.routers import DefaultRouter
 from rest_framework.urlpatterns import path, include
 
-from .views import AppointmentsView, PersonalizeRecipeView, AppointmentDetailView, ClientsView, NotificationsView
+from .views import AppointmentsView, PersonalizeRecipeView, AppointmentDetailView, ClientsView, NotificationsView, MyProfileView
 app_name = 'api'
 router = DefaultRouter()
 router.register(r'get-appointments', AppointmentsView, basename='appointments')
@@ -13,6 +13,7 @@ urlpatterns = [
     path('clients/', ClientsView.as_view(), name='clients-list'),
     path('notifications/', NotificationsView.as_view(), name='notification-list'),
     path('notifications/<int:id>', ClientsView.as_view(), name='notification-details'),
+    path('my-profile/', MyProfileView.as_view(), name='notification-details'),
 
     # path('create-appointment/', CreateAppointmentView.as_view(), name='create_appointment'),
 

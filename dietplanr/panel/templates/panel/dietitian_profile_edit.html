@@ -4,6 +4,10 @@
 {% block additional_stylesheets %}
     <link href="{% static "css/dietitian_profile_edit.css" %}" rel="stylesheet">
 {% endblock %}
+{% block additional_scripts %}
+    <script src="{% static "js/settings.js" %}" defer></script>
+
+{% endblock %}
 {% block information %}
     <div class="settings-container" data-container>
         <form method="POST" class="profile-settings-wrapper">
