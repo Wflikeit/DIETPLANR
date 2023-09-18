@@ -2,47 +2,47 @@
 {% load static %}
 {% block title %}Settings{% endblock %}
 {% block additional_stylesheets %}
-    <link href="{% static "css/dietitian_profile_edit.css" %}" rel="stylesheet">{% endblock %}
+    <link href="{% static "css/dietitian_profile_edit.css" %}" rel="stylesheet">
+{% endblock %}
 {% block information %}
     <div class="settings-container" data-container>
-        <a href="{% url 'panel:home' %}" class="home-link">
-            Home
-        </a>
-        <form method="POST">
+        <form method="POST" class="profile-settings-wrapper">
             {% csrf_token %}
-            <div>
+            <div class="input-group">
+                <textarea id="specialty" name="specialty" class="long-input" placeholder=" "></textarea>
                 <label for="specialty">Specialty</label>
-                <textarea id="specialty" name="specialty" class="long-input">
-                </textarea>
             </div>
-            <div>
+            <div class="input-group">
+                <textarea id="experience" name="experience" class="long-input" placeholder=" "></textarea>
                 <label for="experience">Experience</label>
-                <textarea id="experience" name="experience" class="long-input">
-                </textarea>
             </div>
-            <div>
+            <div class="input-group">
+                <textarea id="philosophy" name="philosophy" class="long-input" placeholder=" "></textarea>
                 <label for="philosophy">Philosophy</label>
-                <textarea id="philosophy" name="philosophy" class="long-input">
-                </textarea>
             </div>
-            <div>
+            <div class="input-group">
+                <textarea id="somemore" name="somemore" class="long-input" placeholder=" "></textarea>
                 <label for="somemore">Some more</label>
-                <textarea id="somemore" name="somemore" class="long-input">
-                </textarea>
             </div>
-            <div>
-                <label for="first_name">First name</label>
-                <input type="text" name="first_name" id="first_name">
-            </div>
-            <div>
-                <label for="last_name">Last name</label>
-                <input type="text" name="last_name" id="last_name">
-            </div>
-            <div>
-                <label for="image">Image</label>
-                <input type="file" name="image" id="image" value="">
-            </div>
-            <button type="submit">SUBMIT</button>
+            <button type="submit" id="profile-settings-btn">SUBMIT</button>
+        </form>
+        <form class="user-settings">
+            <section class="user-settings-section">
+                 <div>
+                    <label for="mail">Mail</label>
+                    <input type="email" name="mail" id="mail" value="">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" name="image" id="password" value="">
+                </div>
+                <div>
+                    <label for="image">Image</label>
+                    <input type="file" name="image" id="image" value="">
+                </div>
+                <button type="submit">SUBMIT</button>
+            </section>
+
         </form>
     </div>
 {% endblock %}

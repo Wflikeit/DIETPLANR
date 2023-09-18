@@ -17,8 +17,6 @@ class AppointmentsView(generics.ListAPIView):
     # pagination_class = ConversationsPagination
 
     def get_queryset(self):
-        print(self.request.user)
-
         try:
             user1 = DietitianProfile.objects.get(user=self.request.user)
             if user1: return user1.get_dietitian_appointments()
@@ -26,6 +24,7 @@ class AppointmentsView(generics.ListAPIView):
             user2 = ClientProfile.objects.get(user=self.request.user)
             if user2: return user2.get_client_appointments()
         return []
+
 
 class PersonalizeRecipeView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PersonalizeRecipeSerializer
