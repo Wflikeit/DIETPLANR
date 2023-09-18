@@ -434,3 +434,49 @@ footer .register:hover {
         gap: 5vw;
     }
 }
+.long-input {
+    background-color:white;
+    resize: none;
+    min-height: 7.4rem;
+    border-radius: 0.5rem;
+    min-width:35vw;
+    padding: 1rem 1rem 1rem 1rem;
+    width:inherit
+
+
+}
+
+.input-group textarea:not(:placeholder-shown) + label {
+    transform: translateY(-80%);
+    padding: 0.4rem;
+    background-color:white;
+    resize: none;
+    right: .5rem;
+    border: .15rem solid rgb(0 0 0 / 100%);
+    border-radius: 0.5rem 0.5rem 0 0 ;
+    min-width:35vw;
+}
+.input-group label {
+    position: relative;
+    bottom: 14.4vh;
+    right: .2rem;
+    padding: 0.8rem;
+    margin-left: 0.5rem;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: rgb(100, 100, 100);
+}
+.profile-settings-wrapper {
+    display: grid;
+    grid-template-rows: repeat(4,1fr);
+    margin:3rem 2rem 0 2rem;
+
+}
+.input-group {
+    height:10rem;
+    width: 100%;
+}
+
+input[type="text"]:focus, textarea:focus{
+    opacity: 100%;
+}
