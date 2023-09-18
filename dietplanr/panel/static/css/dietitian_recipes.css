@@ -58,7 +58,22 @@ tbody tr:nth-of-type(even) {
     background-color: hsla(0, 0%, 90%, 0.5);
 }
 
+.search-wrapper .input-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
+.input-wrapper i{
+    position: absolute;
+    z-index: 2;
+    left: 0.5rem;
+    opacity: 50%;
+}
+
+.input-wrapper input{
+    text-indent: 1.2rem;
+}
 
 /* form styling */
 #recipe-form-wrapper {
