@@ -79,6 +79,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def get_user_appointments(self):
         return Appointment.objects.filter(user_profile=self)
 
+    def get_user_notification(self):
+        return Notification.objects.filter(user=self, seen=False)
+
     objects = UserProfileManager()
     groups = models.ManyToManyField(
         Group,
@@ -118,6 +121,9 @@ class DietitianProfile(models.Model):
     def get_dietitian_appointments(self):
         return Appointment.objects.filter(dietitian_profile=self)
 
+    def get_clients(self):
+        return ClientProfile.objects.filter(dietitian=self.user.dietitianprofile)
+
 
 class ClientProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
@@ -140,12 +146,16 @@ class ClientProfile(models.Model):
         return self.user.full_name
 
     def get_client_appointments(self):
-        return Appointment.objects.filter(user_profile=self)
+        return Appointment.objects.filter(user_profile=self.user)
+
+    def get_dietitian(self):
+        return self.dietitian
 
 
 class Appointment(models.Model):
     APPOINTMENT_CHOICES = [
         ('diet_consultation', 'Diet_consultation'),
+        ('diet_consultion', 'Diet_consultation'),
         ('deep_analyse_of_activity', 'Deep_analyse_of_activity'),
         ('swimming', 'Swimming'),
     ]
@@ -153,7 +163,7 @@ class Appointment(models.Model):
         (timedelta(minutes=30), '30 minutes'),
         (timedelta(minutes=60), '60 minutes'),
     ]
-    title = models.CharField(max_length=40)
+    title = models.CharField(max_length=80)
     event_duration = models.DurationField(choices=DURATION_CHOICES)
     date = models.DateTimeField()
     user_profile = models.ForeignKey(CustomUser,
@@ -169,11 +179,17 @@ class Appointment(models.Model):
 
 
 class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('message', 'chat_message'),
+        ('appointment', 'appointment'),
+        ('activity', 'activity'),
+    ]
     date = models.DateField(auto_now_add=True)
-    title = models.CharField(max_length=40)  # TODO to every TEXTFIELD add a method
-    # for checking the lenght
+    title = models.CharField(max_length=80)  # TODO to every TEXTFIELD add a method
     seen = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
-    url = models.URLField(null=True, blank=True, )
-    user = models.OneToOneField('CustomUser', on_delete=models.CASCADE)
+    url = models.URLField(null=True, blank=True)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='to_user')
+    from_user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='from_user')
+    type = models.CharField(choices=NOTIFICATION_TYPES, null=False, max_length=40, default='message')
 # Create your models here.

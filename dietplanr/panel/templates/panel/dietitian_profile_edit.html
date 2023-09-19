@@ -2,47 +2,59 @@
 {% load static %}
 {% block title %}Settings{% endblock %}
 {% block additional_stylesheets %}
-    <link href="{% static "css/dietitian_profile_edit.css" %}" rel="stylesheet">{% endblock %}
+    <link href="{% static "css/settings.css" %}" rel="stylesheet">
+{% endblock %}
+{% block additional_scripts %}
+    <script src="{% static "js/settings.js" %}" defer></script>
+{% endblock %}
 {% block information %}
     <div class="settings-container" data-container>
-        <a href="{% url 'panel:home' %}" class="home-link">
-            Home
-        </a>
-        <form method="POST">
+        {% if user.is_dietitian %}
+            <form method="POST" class="profile-settings-wrapper">
+                {% csrf_token %}
+                <script>
+                    const csrfToken = "{{ csrf_token }}";
+                </script>
+
+                <div class="input-group">
+                    <textarea id="specialty" name="specialty" class="long-input" placeholder=" "></textarea>
+                    <label for="specialty">Specialty</label>
+                </div>
+                <div class="input-group">
+                    <textarea id="experience" name="experience" class="long-input" placeholder=" "></textarea>
+                    <label for="experience">Experience</label>
+                </div>
+                <div class="input-group">
+                    <textarea id="nutritional_philosophy" name="philosophy" class="long-input"
+                              placeholder=" "></textarea>
+                    <label for="nutritional_philosophy">Philosophy</label>
+                </div>
+                <div class="input-group">
+                    <textarea id="some_more" name="somemore" class="long-input" placeholder=" "></textarea>
+                    <label for="some_more">Some more</label>
+                </div>
+                <button type="submit" id="profile-settings-btn">SUBMIT</button>
+            </form>
+        {% endif %}
+
+        <form class="user-settings">
             {% csrf_token %}
-            <div>
-                <label for="specialty">Specialty</label>
-                <textarea id="specialty" name="specialty" class="long-input">
-                </textarea>
-            </div>
-            <div>
-                <label for="experience">Experience</label>
-                <textarea id="experience" name="experience" class="long-input">
-                </textarea>
-            </div>
-            <div>
-                <label for="philosophy">Philosophy</label>
-                <textarea id="philosophy" name="philosophy" class="long-input">
-                </textarea>
-            </div>
-            <div>
-                <label for="somemore">Some more</label>
-                <textarea id="somemore" name="somemore" class="long-input">
-                </textarea>
-            </div>
-            <div>
-                <label for="first_name">First name</label>
-                <input type="text" name="first_name" id="first_name">
-            </div>
-            <div>
-                <label for="last_name">Last name</label>
-                <input type="text" name="last_name" id="last_name">
-            </div>
-            <div>
-                <label for="image">Image</label>
-                <input type="file" name="image" id="image">
-            </div>
-            <button type="submit">SUBMIT</button>
+            <section class="user-settings-section">
+                <div>
+                    <label for="mail">Mail</label>
+                    <input type="email" name="mail" id="mail" value="">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" name="image" id="password" value="">
+                </div>
+                <div>
+                    <label for="photo">Photo</label>
+                    <input type="file" name="image" id="photo" value="">
+                </div>
+                <button type="submit">SUBMIT</button>
+            </section>
+
         </form>
     </div>
 {% endblock %}

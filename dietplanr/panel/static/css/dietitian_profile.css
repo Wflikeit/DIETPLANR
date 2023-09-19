@@ -3,16 +3,11 @@
     border-radius: 1rem;
 }
 
-.section .body {
-    margin-top: 1rem;
-}
-
 .container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     margin: auto;
-    gap: 0.5rem;
-    padding: 1rem;
+    gap: .5rem;
+    padding: 2rem 10em 0 10rem;
 }
 
 .dietitian-heading, .recipe-heading {
@@ -20,75 +15,65 @@
     display: grid;
 }
 
-.dietitian-heading img, .recipe-heading img {
+.dietitian-heading {
+    position: relative;
+    grid-template-columns: 40% 60%;
+    align-items: start;
+}
+
+.recipe-heading {
+    grid-template-columns: 60% 40%;
+}
+
+.name-img-wrapper {
+    width: 100%;
+}
+
+.name-img-wrapper .name{
+    margin: 1rem 0;
+}
+
+.name-img-wrapper img {
     border-radius: 1rem;
     border: 5px solid white;
     width: 100%;
 }
 
-.dietitian-heading .section, .recipe-heading .section {
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    display: flex;
-    flex-direction: column;
-}
-
-.dietitian-heading .title, .recipe-heading .title {
+.section .title, .name-img-wrapper .name {
     text-align: center;
     color: rgba(255, 255, 255, 0.8);
-    font-size: large;
+    font-size: x-large;
 }
 
-.dietitian-heading .body, .recipe-heading .body {
+.section {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    height: 100%;
+}
+
+
+.section .body {
     background-color: rgba(255, 255, 255, 0.5);
     color: rgba(0, 0, 0, 0.7);
     text-align: center;
-}
-
-.dietitian-heading {
-    position: relative;
-    grid-template-columns: 40% 60%;
-    grid-template-rows: repeat(3, auto);
-    align-items: start;
-}
-
-.dietitian-heading .section {
-    height: 100%;
-}
-
-.recipe-heading {
-    grid-template-columns: 60% 40%;
-    grid-template-rows: repeat(2, auto);
-    height: fit-content;
-}
-
-.recipe-heading:nth-child(1) {
-    grid-row: 1/-1;
-}
-
-.recipe-heading:nth-child(3) {
-    grid-column-start: 2;
-}
-
-.recipe-heading .section {
-    height: 100%;
+    margin-top: 1rem;
 }
 
 .appointments-heading {
     background-color: rgba(255, 255, 255, 0.7);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-items: center;
 }
 
 .appointments-heading .appointment-card {
     background-color: rgba(169, 196, 255, 62%);
-    width: 40%;
-    height: 100%;
     padding: 1rem;
     border-radius: 1rem;
+    max-width: 350px;
+    width: 100%;
 }
 
-.appointments-heading .appointment-card .title {
+.appointment-card .title {
     background-color: rgba(255, 255, 255, 0.5);
     color: rgba(0, 0, 0, 0.8);
     border-radius: 100rem;
@@ -97,18 +82,18 @@
     font-size: large;
 }
 
-.appointments-heading .appointment-card .body {
+.appointment-card .body {
     background-color: rgba(255, 255, 255, 0.5);
     color: rgba(0, 0, 0, 0.7);
     margin-top: 1rem;
 }
 
-.appointments-heading .appointment-card .body p {
+.appointment-card .body p {
     text-align: center;
     margin-top: 0.5rem;
 }
 
-.appointments-heading .appointment-card .body .numbers {
+.appointment-card .body .numbers {
     background-color: rgba(255, 255, 255, 0.5);
     padding: 0.5rem 0.5rem;
     border-radius: 1rem;
@@ -117,98 +102,88 @@
     justify-content: space-around;
 }
 
-.appointments-heading .appointment-card .appointment-btn {
+.appointment-card .appointment-btn {
+    background-color: rgba(177, 173, 234, 100%);
+}
+
+.appointment-btn {
     display: block;
     margin: auto;
     margin-top: 1rem;
     border-radius: 1000rem;
     padding: 0.5rem;
     border: none;
-    text-decoration: none;
     font-weight: bold;
     font-size: medium;
-    background-color: rgba(177, 173, 234, 100%);
 }
 
-.appointments-heading .appointment-card .appointment-btn:hover {
-    cursor: pointer;
+.appointment-form .appointment-btn {
+    background-color: rgba(81, 108, 252, 70%);
+    margin-top: 0;
 }
 
 .appointment-form {
     background-color: rgba(255, 255, 255, 0.7);
     display: grid;
     grid-template-columns: repeat(3, auto);
-    height: fit-content;
     justify-content: space-around;
-    grid-gap: 1rem;
 }
 
 .appointment-form > * {
-    height: fit-content;
     margin-top: 1rem;
     margin-bottom: 1rem;
-
 }
 
-.appointment-form .appointment-btn {
-    border-radius: 1000rem;
-    padding: 0.5rem;
-    width: fit-content;
-    border: none;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: medium;
-    background-color: rgba(81, 108, 252, 70%);
-    margin: auto;
+.appointment-form input[type="text"]{
+    border-radius: 0.2rem;
+    border: 1px solid rgba(0,0,0,0.5);
+    opacity: 70%;
 }
 
-.appointment-form .appointment-btn:hover {
+input[type="text"]:focus{
+    opacity: 100%;
+}
+
+.appointment-btn:hover {
     cursor: pointer;
+    scale: 1.1;
+    transition: 500ms;
 }
 
 @media (max-width: 768px) {
     .container {
-        padding: 5rem;
-        gap: 5rem;
+        gap: 2rem;
+        padding: 0 1rem;
     }
 
-    .container, .dietitian-heading, .recipe-heading {
+    .container, .dietitian-heading, .appointments-heading, .appointment-form {
         grid-template-columns: auto;
     }
+
 
     .recipe-heading {
         display: flex;
         flex-direction: column;
     }
 
-    .recipe-heading > :nth-child(2) {
+    .recipe-heading .name-img-wrapper{
         order: 1;
     }
 
-    .recipe-heading > :nth-child(1) {
+    .recipe-heading :first-child{
         order: 2;
     }
 
-    .recipe-heading > :nth-child(3) {
+    .recipe-heading :nth-child(3){
         order: 3;
     }
 
     .appointments-heading {
-        flex-wrap: wrap;
         gap: 1rem;
     }
-
-    .appointments-heading > * {
-        flex-basis: 100%;
-    }
-
-    .appointment-form {
-        grid-template-columns: auto;
-    }
 }
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    .container {
-        grid-template-columns: auto;
+@media (max-width: 360px) {
+    .name-img-wrapper img{
+        display: none;
     }
 }

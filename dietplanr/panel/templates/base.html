@@ -7,7 +7,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link href="{% static "css/base.css" %}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/5e1f2a52bc.js" crossorigin="anonymous"></script>
-    <script src="{% static "js/chat.js" %}" defer></script>
+    <script src="{% static "js/chat.js" %}" defer type="module"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;900&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
     </div>
     <div class="last">
         {% if user.is_authenticated %}
-            <div class="chat-list">
+            <div class="chat-list" data-notification-count="0" data-chat-list>
                 <i class="fa-regular fa-message fa-lg" id="chat-icon"></i>
                 <div class="conversations d-none" id="conversations"></div>
             </div>
@@ -63,6 +63,28 @@
         </ul>
     </div>
 </nav>
+<template data-chat-template>
+    <div class="chat-wrapper" data-chat>
+        <div class="chat">
+            <div class="chat-name-wrapper">
+                <div class="name-user-block">
+                    <i class="fa-regular fa-user fa-xl"></i>
+                    <div class="chat-name"></div>
+                </div>
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div data-chat-log class="custom-chat-log">
+            </div>
+            <div class="message-form">
+                <div class="message-input">
+                    <input type="text" placeholder="Enter your chat message here" class="chatMessageInput"
+                           data-chat-message-input>
+                </div>
+                <button class="d-none" data-chat-message-send></button>
+            </div>
+        </div>
+    </div>
+</template>
 <div id="content">
     {% block content %}
 

@@ -5,26 +5,33 @@
     <link href="{% static "css/dietitian_recipes.css" %}" rel="stylesheet">{% endblock %}
 {% block additional_scripts %}
     <script src="{% static "js/recipes.js" %}" defer></script>
+    <script src="{% static "js/recipe-search.js" %}" defer></script>
     <meta name="csrf-token" content="{{ csrf_token }}">
-
-
 {% endblock %}
 {% block information %}
     <section class="my_recipes-container">
         <table>
             <thead>
             <tr>
-                <th>Name</th>
+                <th>
+                    <div class="search-wrapper">
+                        <label for="search-name">Name</label>
+                        <div class="input-wrapper">
+                            <input id="search-recipe" type="text">
+                            <i data-search-icon class="fa-solid fa-magnifying-glass fa-xs"></i>
+                        </div>
+                    </div>
+                </th>
                 <th>Proteins</th>
                 <th>Carbs</th>
                 <th>Fats</th>
                 <th>Allergens</th>
-                <th></th>
+                <th><span class="create-recipe">Generate recipe</span></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="recipes-table">
             {% for recipe in recipes %}
-                <tr>
+                <tr data-recipe="{{ recipe }}">
                     <td>{{ recipe }}</td>
                     <td>20g</td>
                     <td>45g</td>
@@ -66,7 +73,7 @@
         </table>
     </section>
     <dialog id="recipe-form-wrapper" active="False">
-        <h3 id="recipe-form-title">
+        <h3 class="recipe-form-title">
 
         </h3>
         <form id="recipe-form" class="recipe-form">
@@ -78,6 +85,7 @@
                             <path d="M5 30 L 20 45 L 45 5"></path>
                         </svg>
                     </label>
+                    <span>cheap</span>
                 </div>
                 <div class="checkbox-wrapper-dairyFree">
                     <input type="checkbox" id="input-dairyFree">
@@ -86,15 +94,19 @@
                             <path d="M5 30 L 20 45 L 45 5"></path>
                         </svg>
                     </label>
+                    <span>dairy free</span>
+
                 </div>
-                <div class="checkbox-wrapper-ketogenic">
-                    <input type="checkbox" id="input-ketogenic">
-                    <label for="input-ketogenic" style="--size: 30px">
-                        <svg viewBox="0,0,50,50">
-                            <path d="M5 30 L 20 45 L 45 5"></path>
-                        </svg>
-                    </label>
-                </div>
+                {#                <div class="checkbox-wrapper-ketogenic">#}
+                {#                    <input type="checkbox" id="input-ketogenic">#}
+                {#                    <label for="input-ketogenic" style="--size: 30px">#}
+                {#                        <svg viewBox="0,0,50,50">#}
+                {#                            <path d="M5 30 L 20 45 L 45 5"></path>#}
+                {#                        </svg>#}
+                {#                    </label>#}
+                {#                    <span>ketogenic</span>#}
+                {##}
+                {#                </div>#}
                 <div class="checkbox-wrapper-vegetarian">
                     <input type="checkbox" id="input-vegetarian">
                     <label for="input-vegetarian" style="--size: 30px">
@@ -102,6 +114,8 @@
                             <path d="M5 30 L 20 45 L 45 5"></path>
                         </svg>
                     </label>
+                    <span>vegetarian</span>
+
                 </div>
                 <div class="checkbox-wrapper-vegan">
                     <input type="checkbox" id="input-vegan">
@@ -110,6 +124,8 @@
                             <path d="M5 30 L 20 45 L 45 5"></path>
                         </svg>
                     </label>
+                    <span>vegan</span>
+
                 </div>
                 <div class="checkbox-wrapper-finished">
                     <input type="checkbox" id="input-finished">
@@ -118,6 +134,8 @@
                             <path d="M5 30 L 20 45 L 45 5"></path>
                         </svg>
                     </label>
+                    <span>finished</span>
+
                 </div>
                 <div class="checkbox-wrapper-is_personalised">
                     <input type="checkbox" id="input-is_personalised">
@@ -126,6 +144,8 @@
                             <path d="M5 30 L 20 45 L 45 5"></path>
                         </svg>
                     </label>
+                    <span>is personalised</span>
+
                 </div>
                 <div class="input-group">
                     <select class="long-input" id="dropdown-input"></select>
@@ -156,7 +176,6 @@
             <div class="input-group-summary">
                 <textarea id="input-summary" class="long-input" placeholder=" "></textarea>
                 <label for="input-summary" class="label-long">summary</label>
-
             </div>
             <p id="line"></p>
             <p id="recipe-macros">
@@ -171,6 +190,7 @@
                     </svg>
                 </div>
             </button>
+
 
         </form>
 

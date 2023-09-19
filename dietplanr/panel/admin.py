@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ClientProfile, DietitianProfile, Appointment, CustomUser
+from .models import ClientProfile, DietitianProfile, Appointment, CustomUser, Notification
 
 
 @admin.register(ClientProfile)
@@ -40,5 +40,12 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_filter = ['email', 'first_name', 'last_name',
                    'is_active', 'is_staff', 'is_dietitian',
                    'is_client']
+
+
+@admin.register(Notification)
+class CustomUserAdmin(admin.ModelAdmin):
+    pass
+    # list_display = "__all__"
+    # list_filter = "__all__"
 
 # Register your models here.

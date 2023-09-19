@@ -3,30 +3,58 @@
 {% block additional_stylesheets %}
     <link href="{% static "css/home.css" %}" rel="stylesheet">
 {% endblock %}
+{% block additional_scripts %}
+    <script src="{% static "js/home.js" %}" defer></script>
+{% endblock %}
 {% block information %}
-{#    <div class="container">#}
-{#        <div class="form">#}
-{#            <h3>Witaj, {{ user.first_name }}!</h3>#}
-{#            <a href="{% url 'panel:logout' %}">Wyloguj się</a>#}
-{#            <a href="{% url 'panel:user_edit_profile' %}">#}
-{#                Create a client profile#}
-{#            </a>#}
-{#            <a href="{% url 'panel:show_calendar' %}">#}
-{#                Calendar#}
-{#            </a>#}
-{#            <a href="{% url 'panel:login' %}">Login again</a>#}
-{#            {% if user.is_client %}#}
-{#                <a href="{% url 'tracker:register_activity' %}">#}
-{#                   Register activity#}
-{#                </a>#}
-{#            {% elif user.is_dietitian %}#}
-{#                <a href="{% url 'panel:show_clients' %}">#}
-{#                    Clients#}
-{#                </a>#}
-{#            {% endif %}#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div class="container">#}
+    {#        <div class="form">#}
+    {#            <h3>Witaj, {{ user.first_name }}!</h3>#}
+    {#            <a href="{% url 'panel:logout' %}">Wyloguj się</a>#}
+    {#            <a href="{% url 'panel:user_edit_profile' %}">#}
+    {#                Create a client profile#}
+    {#            </a>#}
+    {#            <a href="{% url 'panel:show_calendar' %}">#}
+    {#                Calendar#}
+    {#            </a>#}
+    {#            <a href="{% url 'panel:login' %}">Login again</a>#}
+    {#            {% if user.is_client %}#}
+    {#                <a href="{% url 'tracker:register_activity' %}">#}
+    {#                   Register activity#}
+    {#                </a>#}
+    {#            {% elif user.is_dietitian %}#}
+    {#                <a href="{% url 'panel:show_clients' %}">#}
+    {#                    Clients#}
+    {#                </a>#}
+    {#            {% endif %}#}
+    {#        </div>#}
+    {#    </div>#}
     <div class="home-container">
         <h1>Witaj {{ user.first_name }}!</h1>
+        {% if user.is_dietitian %}
+            <div class="overview-container">
+                <div class="clients-activity-wrapper">
+                    <p>Clients activity </p>
+                    <div class="clients-span">
+
+                    </div>
+
+                </div>
+                <div class="messages-wrapper">
+                    <p> Messages </p>
+                    <div class="messages-span">
+
+                    </div>
+
+                </div>
+                <div class="appointments-activity-wrapper">
+                    <p> Appointments </p>
+                    <div class="appointments-span">
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
+
 {% endblock %}

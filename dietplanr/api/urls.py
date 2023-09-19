@@ -1,12 +1,24 @@
 from rest_framework.routers import DefaultRouter
 from rest_framework.urlpatterns import path, include
 
-from .views import AppointmentsView, RecipesView
+from .views import AppointmentsView, PersonalizeRecipeView, AppointmentDetailView, ClientsView, NotificationsView, MyProfileView
 app_name = 'api'
 router = DefaultRouter()
 router.register(r'get-appointments', AppointmentsView, basename='appointments')
 
 urlpatterns = [
-    path('get-appointments', AppointmentsView.as_view(), name='get_appointments'),
-    path('personalise-reicipe/<int:id>', RecipesView.as_view(), name='personalize_recipes'),
+    path('appointments/<int:pk>/', AppointmentDetailView.as_view(), name='appointments-detail'),
+
+    path('appointments/', AppointmentsView.as_view(), name='appointments-list'),
+    path('recipes/<int:id>/personalize/', PersonalizeRecipeView.as_view(), name='personalize-recipe'),
+    path('clients/', ClientsView.as_view(), name='clients-list'),
+    path('notifications/', NotificationsView.as_view(), name='notification-list'),
+    path('notifications/<int:id>', ClientsView.as_view(), name='notification-details'),
+    path('my-profile/', MyProfileView.as_view(), name='notification-details'),
+
+    # path('create-appointment/', CreateAppointmentView.as_view(), name='create_appointment'),
+
+    # path('clients/<int:id>/', ClientsDetailView.as_view(), name='clients-detail'),
+    # path('clients/', ClientsView.as_view(), name='clients-list'),
 ]
+

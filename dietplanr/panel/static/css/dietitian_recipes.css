@@ -9,7 +9,7 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.personalize-btn {
+.personalize-btn, .create-recipe {
     outline: none;
     border: none;
     font-weight: bold;
@@ -17,8 +17,12 @@
     padding: 0.5rem;
     border-radius: .6rem;
 }
+.create-recipe {
+    display:inline-block;
+    height: 1fr;
+}
 
-.personalize-btn:hover {
+.personalize-btn:hover, .create-recipe:hover {
     cursor: pointer;
     scale: 1.1
 }
@@ -54,7 +58,24 @@ tbody tr:nth-of-type(even) {
     background-color: hsla(0, 0%, 90%, 0.5);
 }
 
+.search-wrapper .input-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
+.input-wrapper i{
+    position: absolute;
+    z-index: 2;
+    left: 0.5rem;
+    opacity: 50%;
+}
+
+.input-wrapper input{
+    text-indent: 1.2rem;
+}
+
+/* form styling */
 #recipe-form-wrapper {
     box-shadow: rgba(17, 17, 26, 0.3) 0 0 4rem;
     position: fixed;
@@ -143,7 +164,7 @@ tbody tr:nth-of-type(even) {
     background-color: transparent;
     border-radius: 8px;
     width: 100%;
-    margin-bottom: 1em;
+    margin-bottom: .1em;
     display: flex;
     flex-direction: column;
     cursor: auto;
@@ -182,8 +203,8 @@ tbody tr:nth-of-type(even) {
 
 [class^="checkbox-wrapper-"] span {
     position: relative;
-    top: 20%;
-    height: fit-content;
+    top: .16em;
+    /* height: fit-content; */
     margin-left: 10px;
 }
 
@@ -252,7 +273,15 @@ tbody tr:nth-of-type(even) {
 
 }
 
-.recipe-form > button {
+.get-random-recipe-btn {
+    grid-column: 1/2;
+    grid-row: ;
+    margin-left: auto;
+    width: 35%;
+    margin-right: 2%;
+    margin-bottom: 3%;
+}
+.cssbuttons-io-button {
     grid-column: 2/3;
     margin-left: auto;
     width: 35%;
@@ -364,11 +393,9 @@ tbody tr:nth-of-type(even) {
     width: inherit;
     height: fit-content;
     align-items: center;
-    margin: 0 0 0.3em 0;
+    margin: 0 0 .3em 0;
     border: 2px solid transparent;
     border-radius: 6px;
-
-
 }
 
 .ingredient .icon {
