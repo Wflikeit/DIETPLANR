@@ -27,6 +27,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 await self.channel_layer.group_add(self.user_id, self.channel_name)
                 await self.accept()
                 print('done')
+            else:
+                await self.send(text_data=json.dumps({
+                    'error': 'User is not authenticated'
+                }))
+                return
         else:
             await self.close()
         # Join the group
