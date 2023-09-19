@@ -11,7 +11,7 @@
 }
 
 .input-group textarea:not(:placeholder-shown) + label {
-    transform: translateY(-3rem);
+    transform: translateY(-2rem);
     padding: 0.4rem;
     background-color: white;
     resize: none;
@@ -24,7 +24,7 @@
 
 .input-group label {
     position: relative;
-    bottom: 3rem;
+    bottom: 7.6rem;
     right: .2rem;
     padding: 0.8rem;
     margin-left: 0.5rem;
