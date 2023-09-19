@@ -40,7 +40,8 @@ client_textables.forEach(button => {
         const pre_exist_conv = chat_links.find(link => link.getAttribute("data-value") === id);
         if (!pre_exist_conv) {
             makeNewChatElem(name, id);
-            const chat_link = createConvLink(null, name, id);
+            const chat_link = makeConversationLink(null, name, id);
+            conversations_container.prepend(chat_link);
             chat_link.click();
         } else {
             pre_exist_conv.click();
@@ -76,12 +77,9 @@ function connect() {
                         const chat_container = chat_containers.find(container => container.dataset.chat === data.user_id);
                         chat_container.querySelector("[data-chat-log]").append(message_div);
                         who = data.user + ": ";
-                        chat_link.querySelector(".last-message").innerHTML = who + data.message;
-                        console.log(chat_icon);
-                        console.log(chat_container);
                         if (!chat_icon.classList.contains("active") && !chat_container.classList.contains("active")) {
                             chat_link.querySelector(".last-message").classList.add("unread");
-                            const count = chat_links.reduce((count, link) =>{
+                            const count = chat_links.reduce((count, link) => {
                                 return link.querySelector(".last-message").classList.contains("unread") ? count + 1 : count;
                             }, 0);
                             chat_list.setAttribute("data-notification-count", count);
@@ -89,11 +87,12 @@ function connect() {
                     } else {
                         const chat_container = makeNewChatElem(data.user, data.user_id);
                         chat_container.querySelector("[data-chat-log]").append(message_div);
-                        chat_link = createConvLink(data.message, data.user, data.user_id);
+                        chat_link = makeConversationLink(data.message, data.user, data.user_id);
+                        conversations_container.prepend(chat_link);
                         who = data.user + ": ";
-                        chat_link.querySelector(".last-message").innerHTML = who + data.message;
                         chat_link.click();
                     }
+                    chat_link.querySelector(".last-message").innerHTML = who + data.message;
                 } else {
                     Class = "right";
                     // chatLog.children.item(current_conversation.index).appendChild(message_div)
@@ -158,7 +157,7 @@ function createChatMessage(message) {
     return message_div;
 }
 
-function createConvLink(last_message_text, user_name, id) {
+function makeConversationLink(last_message_text, user_name, id) {
     const conv_wrapper = document.createElement("div");
     const icon = document.createElement("i");
     const last_message = document.createElement("div");
@@ -187,8 +186,12 @@ function createConvLink(last_message_text, user_name, id) {
         chat_containers.find(container => container.dataset.chat === this.dataset.value).classList.add("active");
     })
     chat_links.push(conv_wrapper);
-    conversations_container.appendChild(conv_wrapper);
     return conv_wrapper;
+}
+
+function createConvLink(last_message_text, user_name, id) {
+    const conv_wrapper = makeConversationLink(last_message_text, user_name, id);
+    conversations_container.appendChild(conv_wrapper);
 }
 
 let offset = 0; // Zmienna do śledzenia ofsetu wiadomości

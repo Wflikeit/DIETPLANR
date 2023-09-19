@@ -159,9 +159,6 @@ function addDropEventToDay(day) {
             const input_date = new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day));
             data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
             let id = dragged_elem.getAttribute("data-id");
-            console.log(id);
-            console.log(dragged_elem);
-            console.log(data_object);
             const url = `/api/appointments/${id}/`;
             fetch(url, {
                 method: 'PUT',
