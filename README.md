@@ -62,7 +62,8 @@ will be:
 - improve performance
 - use PostgreSQL instead of SQLite3
 - make some custom signals
-- introduce MessageBroker for asynchronously sending notifications 
+- introduce MessageBroker for asynchronously sending notifications
+- improve the interaction with appointments inside the calendar
 
 
 ## Authors
