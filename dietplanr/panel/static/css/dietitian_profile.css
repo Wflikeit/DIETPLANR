@@ -116,6 +116,11 @@
     font-weight: bold;
     font-size: medium;
 }
+#appointment-dialog {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .appointment-form .appointment-btn {
     background-color: rgba(81, 108, 252, 70%);
@@ -124,9 +129,15 @@
 
 .appointment-form {
     background-color: rgba(255, 255, 255, 0.7);
-    display: grid;
-    grid-template-columns: repeat(3, auto);
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffffa6;
+    border-radius: 0;
+    width: 100%;
+    overflow:hidden;
     justify-content: space-around;
+    height: fit-content;
+
 }
 
 .appointment-form > * {
@@ -186,4 +197,36 @@ input[type="text"]:focus{
     .name-img-wrapper img{
         display: none;
     }
+}
+.input-group input:not(:placeholder-shown) + label {
+    transform: translateY(-40%);
+    padding: 0.2rem;
+    resize: none;
+    right: .5rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    width: 100%;
+    background-color: transparent;
+}
+.input-group {
+    display: flex;
+    flex-direction: column;
+    height:1.5rem;
+}
+.input-group label {
+    position: relative;
+    bottom: 4vh;
+    right: 1.2rem;
+    padding: 0.8rem;
+    margin-left: 0.5rem;
+    pointer-events: none;
+    transition: all 0.5s ease;
+    color: rgb(100, 100, 100);
+}
+#appointment-dialog {
+    border-radius: 1rem;
+    background-color: #4d70a6;
+    width:20rem;
+}
+.appointment-btn {
+    margin-bottom:.2rem;
 }

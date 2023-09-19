@@ -289,10 +289,6 @@ tbody tr:nth-of-type(even) {
     margin-bottom: 3%;
 }
 
-.recipe-form > button:hover {
-    /* background-color:red; */
-}
-
 .recipe-form > button {
     background: hsla(214, 95%, 50%, 60%);
     color: white;
