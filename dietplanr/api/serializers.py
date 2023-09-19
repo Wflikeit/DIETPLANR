@@ -9,7 +9,7 @@ class AppointmentSerializer(ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['user2_data', 'date', 'event_duration', 'title']
+        fields = ['user2_data', 'date', 'event_duration', 'title', 'id']
         # fields = 'all'
 
     def get_user2_data(self, appointment):

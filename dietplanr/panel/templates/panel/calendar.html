@@ -8,7 +8,10 @@
             defer></script>
 {% endblock %}
 {% block information %}
-{#    <span data-token="{% csrf_token %}" class="d-none"></span>#}
+    {% csrf_token %}
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+    </script>
     <div class="calendar-container" data-container>
         <header>
             <div id="selected_year" class="d-none">{{ selected_year }}</div>

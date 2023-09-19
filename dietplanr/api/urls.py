@@ -7,8 +7,9 @@ router = DefaultRouter()
 router.register(r'get-appointments', AppointmentsView, basename='appointments')
 
 urlpatterns = [
-    path('appointments/', AppointmentsView.as_view(), name='appointments-list'),
     path('appointments/<int:pk>/', AppointmentDetailView.as_view(), name='appointments-detail'),
+
+    path('appointments/', AppointmentsView.as_view(), name='appointments-list'),
     path('recipes/<int:id>/personalize/', PersonalizeRecipeView.as_view(), name='personalize-recipe'),
     path('clients/', ClientsView.as_view(), name='clients-list'),
     path('notifications/', NotificationsView.as_view(), name='notification-list'),

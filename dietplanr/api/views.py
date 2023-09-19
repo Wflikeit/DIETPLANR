@@ -43,10 +43,10 @@ class PersonalizeRecipeView(generics.RetrieveUpdateDestroyAPIView):
 class AppointmentDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     serializer_class = AppointmentSerializer
-
-    def get_queryset(self):
-        appointment_id = self.kwargs.get('id')
-        return Appointment.objects.filter(id=appointment_id)
+    def get_object(self):
+        appointment_id = self.kwargs.get('pk')
+        l = Appointment.objects.get(id=appointment_id)
+        return l
 
 
 class ClientsView(generics.ListAPIView):

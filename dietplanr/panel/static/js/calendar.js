@@ -175,29 +175,33 @@ function addDropEventToDay(day) {
             const data_object = {
                 title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
                 time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, ""),
-                date: new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day))
+                date: new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day)),
+                event_duration: '0:30:00'
             };
-            // console.log(document.querySelector("[data-token]").getAttribute("value"));
-            // fetch('/api/appointments/', {
-            //     method: 'PUT',
-            //     headers: {
-            //         'X-CSRF-Token': document.querySelector("[data-token]").getAttribute("value"),
-            //         //session data
-            //     },
-            //     body: JSON.stringify(data_object), // Convert your data to JSON format
-            // })
-            //     .then(response => {
-            //         if (!response.ok) {
-            //             throw new Error('Network response was not ok');
-            //         }
-            //     })
-            //     .then(data => {
-            //         // Handle the data returned by the server
-            //         console.log('PUT request succeeded with JSON response', data);
-            //     })
-            //     .catch(error => {
-            //         console.error('There was a problem with the PUT request:', error);
-            //     });
+            let id = 1;
+            const url = `/api/appointments/${id}/`;
+            console.log(csrfToken)
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                    //session data
+                },
+                body: JSON.stringify(data_object), // Convert your data to JSON format
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .then(data => {
+                    // Handle the data returned by the server
+                    console.log('PUT request succeeded with JSON response', data);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the PUT request:', error);
+                });
 
             const appointment_count = day.querySelector("[data-appointment-count]");
             if (appointment_count) {
@@ -301,6 +305,7 @@ function prepareCalendarContainer(param, is_month) {
     fetch(`/api/appointments`)
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             const groupedAppointments = {};
             for (const appointment of data) {
                 const appointmentDate = new Date(appointment.date);
