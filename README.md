@@ -20,6 +20,7 @@ DIETPLANR is a brand new platform designed especially for dietitians to connect 
 > **Fetch API,**
 > **HTML,**
 > **CSS,**
+> **Socket.IO**
 ### Tools:
 > **Docker,**
 > **Pycharm,**
@@ -56,14 +57,12 @@ Depending on what you are making, it can be a good idea to include screenshots o
 ## Incoming change
 Our next steps to make our app even more exceptional
 will be:
-- finishing integration with external API for recipes
 - improve the design of our landing page,
 - improve the view of user profile,
 - improve performance
 - use PostgreSQL instead of SQLite3
 - make some custom signals
 - introduce MessageBroker for asynchronously sending notifications
-- improve the interaction with appointments inside the calendar
 
 
 ## Authors
