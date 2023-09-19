@@ -33,6 +33,13 @@ class AppointmentSerializer(ModelSerializer):
         }
 
 
+class MakeAppointmentSerializer(ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = ['date', 'event_duration', 'title', 'id']
+        # fields = 'all'
+
+
 class PersonalizeRecipeSerializer(ModelSerializer):
     assigned_to_full_name = SerializerMethodField()
 

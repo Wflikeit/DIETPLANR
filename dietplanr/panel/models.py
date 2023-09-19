@@ -168,7 +168,8 @@ class Appointment(models.Model):
     date = models.DateTimeField()
     user_profile = models.ForeignKey(CustomUser,
                                      on_delete=models.CASCADE,
-                                     related_name='user_appointments')
+                                     related_name='user_appointments',
+                                     null=True)
     dietitian_profile = models.ForeignKey(DietitianProfile,
                                           on_delete=models.CASCADE,
                                           related_name='dietitian_appointments')

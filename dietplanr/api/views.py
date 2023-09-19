@@ -1,11 +1,12 @@
 from panel.models import DietitianProfile, ClientProfile, Appointment
 from recipes.models import Recipe
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 
 from .serializers import AppointmentSerializer, PersonalizeRecipeSerializer, \
     ClientsSerializer, NotificationsSerializer, \
-    ClientProfileSerializer, DietitianProfileSerializer
+    ClientProfileSerializer, DietitianProfileSerializer, MakeAppointmentSerializer
 
 
 class ConversationsPagination(PageNumberPagination):
@@ -43,6 +44,7 @@ class PersonalizeRecipeView(generics.RetrieveUpdateDestroyAPIView):
 class AppointmentDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     serializer_class = AppointmentSerializer
+
     def get_object(self):
         appointment_id = self.kwargs.get('pk')
         l = Appointment.objects.get(id=appointment_id)
@@ -64,7 +66,6 @@ class NotificationsView(generics.ListAPIView):
 
 
 class MyProfileView(generics.RetrieveUpdateDestroyAPIView):
-    # serializer_class = self.get_serializer_class()
 
     def get_serializer_class(self):
         if self.request.user.is_dietitian:
@@ -87,5 +88,16 @@ class MyProfileView(generics.RetrieveUpdateDestroyAPIView):
                 return profile
             except ClientProfile.DoesNotExist:
                 print('Brak profilu klienta')
-
         return None
+
+
+class MakeAppointmentView(generics.CreateAPIView):
+    serializer_class = MakeAppointmentSerializer
+
+    def perform_create(self, serializer):
+        dietitian_profile_id = self.request.data.get('dietitian_profile_id')
+        if self.request.user.is_dietitian:
+            serializer.save(dietitian_profile_id=dietitian_profile_id)
+        else:
+            return Response({'detail': 'You do not have permission to assign a dietitian.'},
+                            status=status.HTTP_403_FORBIDDEN)

@@ -76,8 +76,8 @@
                 <div class="title">Consultation</div>
                 <div class="body">
                     <div class="numbers">
-                        <div class="price">Price: 30$</div>
-                        <div class="time">Time: 60 min</div>
+                        <div class="price">Price:</div>
+                        <div class="time">Time: <span data-card>60 min</span></div>
                     </div>
                     <p>
                         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam ad quam non veritatis inventore
@@ -109,25 +109,26 @@
         </div>
         <dialog id="appointment-dialog">
             <form action="" method="post" class="appointment-form" id="appointment-form">
+                {% csrf_token %}
+                <script>
+                    const csrfToken = "{{ csrf_token }}"
+                </script>
                 <div class="input-group">
-                    <input type="text" placeholder=" " id="first-name">
+                    <input type="text" placeholder=" " id="first-name" data-form>
                     <label for="first-name">First name</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" placeholder=" " id="last-name">
+                    <input type="text" placeholder=" " id="last-name" data-form>
                     <label for="last-name"> Last name</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" placeholder=" " id="mail">
+                    <input type="text" placeholder=" " id="mail" data-form>
                     <label for="mail"> Text</label>
                 </div>
                 <div class="input-group">
-                    <input type="text" placeholder=" " id="date_of_birth">
-                    <label for="date_of_birth">Date of Birth</label>
-                </div>
-                <div class="input-group">
-                    <input type="text" placeholder=" " id="gender">
-                    <label for="gender">Gender</label>
+                    <input type="date" placeholder=" " id="date" data-form
+                           value="2018-07-22" min="2018-01-01" max="2018-12-31">
+                    <label for="date">Date</label>
                 </div>
                 <button type="submit" class="appointment-btn">
                     Appoint

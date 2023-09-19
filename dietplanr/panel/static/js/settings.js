@@ -13,13 +13,6 @@ fetch("http://127.0.0.1:8000/api/my-profile/")
         }
     });
 
-const options = {
-    method: 'PUT',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-    },
-};
 
 profileSettingsButton.addEventListener('click', (e) => {
     e.preventDefault();
@@ -30,7 +23,13 @@ profileSettingsButton.addEventListener('click', (e) => {
     fields.forEach((element) => {
         updatedData[element.id] = element.value;
     });
-
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+    };
     options.body = JSON.stringify(updatedData);
 
     fetch('http://127.0.0.1:8000/api/my-profile/', options)
