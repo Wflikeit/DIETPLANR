@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from panel.models import Appointment, ClientProfile, Notification, DietitianProfile
 from recipes.models import Recipe
 from rest_framework.fields import SerializerMethodField
@@ -6,10 +8,11 @@ from rest_framework.serializers import ModelSerializer
 
 class AppointmentSerializer(ModelSerializer):
     user2_data = SerializerMethodField()
-
+    date = SerializerMethodField()
+    time = SerializerMethodField()
     class Meta:
         model = Appointment
-        fields = ['user2_data', 'date', 'event_duration', 'title', 'id']
+        fields = ['user2_data', 'date', 'time', 'event_duration', 'title', 'id']
         # fields = 'all'
 
     def get_user2_data(self, appointment):
@@ -31,7 +34,11 @@ class AppointmentSerializer(ModelSerializer):
             'name': "error",
             'id': "error",
         }
-
+    def get_date(self, appointment):
+        date = datetime.strptime(str(appointment.date.date()), "%Y-%m-%d").isoformat()
+        return date
+    def get_time(self, appointment):
+        return appointment.date.strftime("%H:%M")
 
 class PersonalizeRecipeSerializer(ModelSerializer):
     assigned_to_full_name = SerializerMethodField()

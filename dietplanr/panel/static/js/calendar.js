@@ -20,22 +20,6 @@ const monthsList = ['January', 'February', 'March', 'April', 'May', 'June',
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 monthButton.style.display = "block";
 yearButton.style.display = "none";
-formatDatasets();
-
-function formatDatasets() {
-    appointment_counts.forEach(count_elem => {
-        const input_date = new Date(count_elem.dataset.value);
-        count_elem.setAttribute("data-value", new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]);
-    })
-    appointments.forEach(appointment => {
-        const input_date = new Date(appointment.dataset.appointment);
-        appointment.setAttribute("data-appointment", new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]);
-    })
-    dialog.querySelectorAll("[data-dialog-content]").forEach(element => {
-        const input_date = new Date(element.dataset.dialogContent);
-        element.setAttribute("data-dialog-content", new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0]);
-    })
-}
 
 appointments.forEach(appointment => {
     setTimeout(() => {
@@ -93,21 +77,16 @@ function makeCalendar(year, month_num) {
 }
 
 function makeAppointment(appointment, key) {
-    const appointmentDate = new Date(appointment.date);
-    const appointment_div = appointment_template.cloneNode("true");
-    const dialog_appointment_form = makeDialogContentForm(appointment);
-    dialog_appointment_form.classList.add("d-none", "dialog-form");
-    dialog_appointment_form.method = "POST";
+    const appointment_div = appointment_template.cloneNode(true);
     appointment_div.setAttribute("data-appointment", key);
-    dialog_appointment_form.setAttribute("data-dialog-content", key);
+    appointment_div.setAttribute("data-id", appointment.id);
     const totalSeconds = parseInt(appointment.event_duration);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
     appointment_div.querySelector(".title").innerHTML = appointment.title;
-    appointment_div.querySelector(".time").innerHTML = `${appointmentDate.getHours().toString().padStart(2, '0')}:${appointmentDate.getMinutes().toString().padStart(2, '0')}`;
+    appointment_div.querySelector(".time").innerHTML = appointment.time;
     appointment_div.querySelector(".duration").innerHTML = `Duration: ${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    dialog_content_div.append(dialog_appointment_form);
     addEventsToAppointment(appointment_div);
     return appointment_div;
 }
@@ -175,18 +154,20 @@ function addDropEventToDay(day) {
             const data_object = {
                 title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
                 time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, ""),
-                date: new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day)),
                 event_duration: '0:30:00'
             };
-            let id = 1;
+            const input_date = new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day));
+            data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+            let id = dragged_elem.getAttribute("data-id");
+            console.log(id);
+            console.log(dragged_elem);
+            console.log(data_object);
             const url = `/api/appointments/${id}/`;
-            console.log(csrfToken)
             fetch(url, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken,
-                    //session data
                 },
                 body: JSON.stringify(data_object), // Convert your data to JSON format
             })
@@ -208,8 +189,6 @@ function addDropEventToDay(day) {
                 const count = parseInt(appointment_count.dataset.appointmentCount) + 1;
                 appointment_count.setAttribute("data-appointment-count", count.toString());
                 appointment_count.innerHTML = `Appointment count: ${count}`;
-                const input_date = new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day));
-                data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
                 const dialog_appointment_form = makeDialogContentForm(data_object);
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
                 dialog_content_div.append(dialog_appointment_form);
@@ -229,9 +208,6 @@ function addDropEventToDay(day) {
                 dragged_elem.remove();
                 dragged_elem = null;
             } else {
-                const date = new Date(dragged_elem.dataset.appointment);
-                const input_date = new Date(date.getFullYear(), date.getMonth(), parseInt(day.dataset.day));
-                data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
                 const dialog_appointment_form = makeDialogContentForm(data_object);
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
                 dialog_content_div.append(dialog_appointment_form);
@@ -305,11 +281,9 @@ function prepareCalendarContainer(param, is_month) {
     fetch(`/api/appointments`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             const groupedAppointments = {};
             for (const appointment of data) {
-                const appointmentDate = new Date(appointment.date);
-                const key = appointmentDate.toISOString().split('T')[0];
+                const key = appointment.date.split('T')[0];
                 if (!groupedAppointments[key]) {
                     groupedAppointments[key] = [];
                 }
@@ -347,16 +321,14 @@ function prepareCalendarContainer(param, is_month) {
                         if (group.length === 1) {
                             const appointment_div = makeAppointment(appointment, key);
                             day.append(appointment_div);
-                        } else {
-                            if (group.indexOf(appointment) === 0) {
-                                const appointment_count_div = document.createElement("div");
-                                appointment_count_div.setAttribute("data-appointment-count", group.length);
-                                appointment_count_div.setAttribute("data-value", key);
-                                addEventsToAppointmentCount(appointment_count_div);
-                                appointment_count_div.innerHTML = `Appointment count: ${group.length}`;
-                                appointment_count_div.classList.add("appointment-count");
-                                day.append(appointment_count_div);
-                            }
+                        } else if (group.indexOf(appointment) === 0) {
+                            const appointment_count_div = document.createElement("div");
+                            appointment_count_div.setAttribute("data-appointment-count", group.length);
+                            appointment_count_div.setAttribute("data-value", key);
+                            appointment_count_div.innerHTML = `Appointment count: ${group.length}`;
+                            appointment_count_div.classList.add("appointment-count");
+                            addEventsToAppointmentCount(appointment_count_div);
+                            day.append(appointment_count_div);
                         }
                     }
                     dialog_content_div.append(makeDialogContentForm(appointment));
