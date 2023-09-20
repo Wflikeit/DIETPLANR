@@ -91,12 +91,42 @@ function makeAppointment(appointment, key) {
     return appointment_div;
 }
 
+function handleDeleting(dialog_appointment_form, id) {
+
+}
+
 function makeDialogContentForm(appointment) {
     const dialog_appointment_form = dialog_form_template.cloneNode(true);
+    const id = appointment.id;
+    const delete_btn = dialog_appointment_form.querySelector("[data-delete-appointment]");
     dialog_appointment_form.querySelector(".title").innerHTML = appointment.title;
     dialog_appointment_form.querySelector("input[name=\"title\"]").value = appointment.title;
     dialog_appointment_form.querySelector("input[name=\"time\"]").value = appointment.time;
     dialog_appointment_form.setAttribute("data-dialog-content", appointment.date.split("T")[0]);
+    dialog_appointment_form.setAttribute("data-id", id);
+    delete_btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const url = `/api/appointments/${id}/`;
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                console.log('PUT request succeeded with JSON response', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the PUT request:', error);
+            });
+        // handleDeleting(dialog_appointment_form, id);
+    });
     return dialog_appointment_form;
 }
 
@@ -160,6 +190,7 @@ function addDropEventToDay(day) {
             data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
             let id = dragged_elem.getAttribute("data-id");
             const url = `/api/appointments/${id}/`;
+            console.log(data_object);
             fetch(url, {
                 method: 'PUT',
                 headers: {

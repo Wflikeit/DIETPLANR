@@ -49,7 +49,8 @@
                                     {% endif %}
                                 {% elif group|length == 1 %}
                                     <div class="appointment" draggable="true"
-                                         data-appointment="{{ appointment.date|date:"Y-m-d" }}" data-id="{{ appointment.id }}">
+                                         data-appointment="{{ appointment.date|date:"Y-m-d" }}"
+                                         data-id="{{ appointment.id }}">
                                         <div class="time">
                                             {{ appointment.date|date:"H:i" }}
                                         </div>
@@ -88,6 +89,7 @@
             </select>
             <input type="time" name="time">
             <button data-dialog-form-button>SUBMIT</button>
+            <button data-delete-appointment>DELETE</button>
         </form>
     </template>
     <dialog class="appointment-dialog" data-appointment-dialog>
@@ -99,7 +101,8 @@
         <div class="content">
             {% for group in grouped_appointments %}
                 {% for appointment in group %}
-                    <form class="d-none dialog-form" data-dialog-content="{{ appointment.date|date:"Y-m-d" }}">
+                    <form class="d-none dialog-form" data-dialog-content="{{ appointment.date|date:"Y-m-d" }}"
+                          data-id="{{ appointment.id }}">
                         <div class="title">{{ appointment.title }}</div>
                         <input type="text" name="title" value="{{ appointment.title }}">
                         <select name="duration">
@@ -108,6 +111,7 @@
                         </select>
                         <input type="time" value="{{ appointment.date|date:"H:i" }}">
                         <button data-dialog-form-button>SUBMIT</button>
+                        <button data-delete-appointment>DELETE</button>
                     </form>
                 {% endfor %}
             {% endfor %}

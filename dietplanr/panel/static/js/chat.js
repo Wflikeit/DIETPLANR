@@ -40,8 +40,7 @@ client_textables.forEach(button => {
         const pre_exist_conv = chat_links.find(link => link.getAttribute("data-value") === id);
         if (!pre_exist_conv) {
             makeNewChatElem(name, id);
-            const chat_link = makeConversationLink(null, name, id);
-            conversations_container.prepend(chat_link);
+            const chat_link = createConvLink(null, name, id);
             chat_link.click();
         } else {
             pre_exist_conv.click();
@@ -84,6 +83,7 @@ function connect() {
                             }, 0);
                             chat_list.setAttribute("data-notification-count", count);
                         }
+                        conversations_container.prepend(chat_link);
                     } else {
                         const chat_container = makeNewChatElem(data.user, data.user_id);
                         chat_container.querySelector("[data-chat-log]").append(message_div);
@@ -191,7 +191,10 @@ function makeConversationLink(last_message_text, user_name, id) {
 
 function createConvLink(last_message_text, user_name, id) {
     const conv_wrapper = makeConversationLink(last_message_text, user_name, id);
-    conversations_container.appendChild(conv_wrapper);
+    if (conv_wrapper.querySelector(".last-message").classList.contains("unread"))
+        conversations_container.prepend(conv_wrapper);
+    else conversations_container.appendChild(conv_wrapper);
+    return conv_wrapper;
 }
 
 let offset = 0; // Zmienna do śledzenia ofsetu wiadomości
