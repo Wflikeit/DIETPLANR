@@ -1,7 +1,9 @@
-const appointments = document.querySelectorAll("[data-appointment]");
-const appointment_counts = document.querySelectorAll("[data-appointment-count]");
+let appointments = Array.from(document.querySelectorAll("[data-appointment]"));
+let appointment_counts = Array.from(document.querySelectorAll("[data-appointment-count]"));
 const dialog = document.querySelector("[data-appointment-dialog]");
 const dialog_content_div = dialog.querySelector(".content");
+const dialog_forms = dialog_content_div.querySelectorAll("[data-dialog-content]");
+const dialog_close_btn = dialog.querySelector("[data-dialog-close]");
 let dragged_elem;
 let calendar = document.querySelector('.calendar');
 let calendar_container = document.querySelector('.calendar-container');
@@ -18,6 +20,7 @@ const arrowDown = document.getElementById("arrow-down");
 const monthsList = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+let records = [];
 monthButton.style.display = "block";
 yearButton.style.display = "none";
 
@@ -37,6 +40,33 @@ document.querySelectorAll("[data-day]").forEach(day => {
     }, 500);
 })
 
+dialog_forms.forEach(form => {
+    const delete_btn = form.querySelector("[data-delete-appointment]");
+    const id = form.dataset.id;
+    delete_btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        // const url = `/api/appointments/${id}/`;
+        // fetch(url, {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'X-CSRFToken': csrfToken,
+        //     },
+        // })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //     })
+        //     .then(data => {
+        //         console.log('PUT request succeeded with JSON response', data);
+        //     })
+        //     .catch(error => {
+        //         console.error('There was a problem with the PUT request:', error);
+        //     });
+        handleDeleting(form, id);
+    });
+})
 function makeCalendar(year, month_num) {
     const calendar = document.createElement("div");
     calendar.classList.add("calendar");
@@ -92,7 +122,31 @@ function makeAppointment(appointment, key) {
 }
 
 function handleDeleting(dialog_appointment_form, id) {
-
+    const appointment = appointments.find(app => app.dataset.id === id);
+    const record = records.find(record => record.id.toString() === id);
+    if (appointment) {
+        appointments = appointments.filter(app => app !== appointment);
+        appointment.remove();
+        dialog_close_btn.click();
+    } else {
+        const app_count = appointment_counts.find(app => app.dataset.value === record.date.toString().split("T")[0]);
+        const count = parseInt(app_count.dataset.appointmentCount) - 1;
+        if (count === 1) {
+            appointment_counts = appointment_counts.filter(app => app !== app_count);
+            const key = record.date.split('T')[0];
+            const day = app_count.parentElement;
+            const remaining_form = Array.from(dialog_content_div.querySelectorAll("[data-dialog-content]")).find(form => form.dataset.id !== id);
+            const new_record = records.find(rec => rec.id.toString() === remaining_form.dataset.id);
+            const new_app = makeAppointment(new_record, key);
+            appointments.push(new_app);
+            app_count.remove();
+            day.append(new_app);
+        }
+        app_count.dataset.appointmentCount = count.toString();
+        app_count.innerHTML = "Appointment count: " + count.toString();
+    }
+    records = records.filter(rec => rec !== record);
+    dialog_appointment_form.remove();
 }
 
 function makeDialogContentForm(appointment) {
@@ -106,27 +160,28 @@ function makeDialogContentForm(appointment) {
     dialog_appointment_form.setAttribute("data-id", id);
     delete_btn.addEventListener("click", (e) => {
         e.preventDefault();
-        const url = `/api/appointments/${id}/`;
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-            })
-            .then(data => {
-                console.log('PUT request succeeded with JSON response', data);
-            })
-            .catch(error => {
-                console.error('There was a problem with the PUT request:', error);
-            });
-        // handleDeleting(dialog_appointment_form, id);
+        // const url = `/api/appointments/${id}/`;
+        // fetch(url, {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'X-CSRFToken': csrfToken,
+        //     },
+        // })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //     })
+        //     .then(data => {
+        //         console.log('PUT request succeeded with JSON response', data);
+        //     })
+        //     .catch(error => {
+        //         console.error('There was a problem with the PUT request:', error);
+        //     });
+        handleDeleting(dialog_appointment_form, id);
     });
+    dialog_content_div.append(dialog_appointment_form);
     return dialog_appointment_form;
 }
 
@@ -162,7 +217,7 @@ function addEventsToAppointment(appointment_div) {
             this.dragging = false;
         }
     });
-    appointment_div.addEventListener("dragend", (e) => {
+    appointment_div.addEventListener("dragend", () => {
         appointment_div.classList.remove("dragging");
     })
     appointment_div.addEventListener("click", () => {
@@ -181,16 +236,12 @@ function addDropEventToDay(day) {
     })
     day.addEventListener("drop", () => {
         if (dragged_elem && day.querySelector("[data-appointment]") !== dragged_elem) {
-            const data_object = {
-                title: dragged_elem.querySelector(".title").innerHTML.replace(/\s/g, ""),
-                time: dragged_elem.querySelector(".time").innerHTML.replace(/\s/g, ""),
-                event_duration: '0:30:00'
-            };
+            const id = dragged_elem.getAttribute("data-id");
+            const data_object = records.find(record => record.id.toString() === id);
             const input_date = new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day));
             data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-            let id = dragged_elem.getAttribute("data-id");
+            data_object.event_duration = "0:30:00";
             const url = `/api/appointments/${id}/`;
-            console.log(data_object);
             fetch(url, {
                 method: 'PUT',
                 headers: {
@@ -217,9 +268,8 @@ function addDropEventToDay(day) {
                 const count = parseInt(appointment_count.dataset.appointmentCount) + 1;
                 appointment_count.setAttribute("data-appointment-count", count.toString());
                 appointment_count.innerHTML = `Appointment count: ${count}`;
-                const dialog_appointment_form = makeDialogContentForm(data_object);
+                makeDialogContentForm(data_object);
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
-                dialog_content_div.append(dialog_appointment_form);
                 dragged_elem.remove();
                 dragged_elem = null;
             } else if (day.querySelector("[data-appointment]")) {
@@ -233,12 +283,12 @@ function addDropEventToDay(day) {
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).setAttribute("data-dialog-content", first_app_div.dataset.appointment);
                 addEventsToAppointmentCount(app_count_div);
                 day.append(app_count_div);
+                appointment_counts.push(app_count_div);
                 dragged_elem.remove();
                 dragged_elem = null;
             } else {
-                const dialog_appointment_form = makeDialogContentForm(data_object);
+                makeDialogContentForm(data_object);
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
-                dialog_content_div.append(dialog_appointment_form);
                 dragged_elem.dataset.appointment = data_object.date;
                 day.append(dragged_elem);
                 dragged_elem = null;
@@ -339,6 +389,9 @@ function prepareCalendarContainer(param, is_month) {
                 selectedMonth = parseInt(param.dataset.number);
             }
             dialog_content_div.innerHTML = "";
+            appointment_counts = [];
+            appointments = [];
+            records = [];
             const days = calendar_elem.querySelectorAll(".day");
             for (const key in groupedAppointments) {
                 const groupDate = new Date(key);
@@ -349,6 +402,7 @@ function prepareCalendarContainer(param, is_month) {
                         if (group.length === 1) {
                             const appointment_div = makeAppointment(appointment, key);
                             day.append(appointment_div);
+                            appointments.push(appointment_div);
                         } else if (group.indexOf(appointment) === 0) {
                             const appointment_count_div = document.createElement("div");
                             appointment_count_div.setAttribute("data-appointment-count", group.length);
@@ -357,9 +411,11 @@ function prepareCalendarContainer(param, is_month) {
                             appointment_count_div.classList.add("appointment-count");
                             addEventsToAppointmentCount(appointment_count_div);
                             day.append(appointment_count_div);
+                            appointment_counts.push(appointment_count_div);
                         }
+                        records.push(appointment);
                     }
-                    dialog_content_div.append(makeDialogContentForm(appointment));
+                    makeDialogContentForm(appointment);
                 }
             }
             if (dragged_elem) {
@@ -380,5 +436,3 @@ function prepareCalendarContainer(param, is_month) {
             monthButton.style.display = "block";
         });
 }
-
-
