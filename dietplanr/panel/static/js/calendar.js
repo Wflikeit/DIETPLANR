@@ -67,6 +67,7 @@ dialog_forms.forEach(form => {
         handleDeleting(form, id);
     });
 })
+
 function makeCalendar(year, month_num) {
     const calendar = document.createElement("div");
     calendar.classList.add("calendar");
@@ -122,8 +123,8 @@ function makeAppointment(appointment, key) {
 }
 
 function handleDeleting(dialog_appointment_form, id) {
-    const appointment = appointments.find(app => app.dataset.id === id);
-    const record = records.find(record => record.id.toString() === id);
+    const appointment = appointments.find(app => app.dataset.id == id);
+    const record = records.find(record => record.id == id);
     if (appointment) {
         appointments = appointments.filter(app => app !== appointment);
         appointment.remove();
@@ -135,8 +136,8 @@ function handleDeleting(dialog_appointment_form, id) {
             appointment_counts = appointment_counts.filter(app => app !== app_count);
             const key = record.date.split('T')[0];
             const day = app_count.parentElement;
-            const remaining_form = Array.from(dialog_content_div.querySelectorAll("[data-dialog-content]")).find(form => form.dataset.id !== id);
-            const new_record = records.find(rec => rec.id.toString() === remaining_form.dataset.id);
+            const remaining_form = Array.from(dialog_content_div.querySelectorAll("[data-dialog-content]")).find(form => form.dataset.id != id && form.dataset.dialogContent == key);
+            const new_record = records.find(rec => rec.id == remaining_form.dataset.id);
             const new_app = makeAppointment(new_record, key);
             appointments.push(new_app);
             app_count.remove();
@@ -237,7 +238,7 @@ function addDropEventToDay(day) {
     day.addEventListener("drop", () => {
         if (dragged_elem && day.querySelector("[data-appointment]") !== dragged_elem) {
             const id = dragged_elem.getAttribute("data-id");
-            const data_object = records.find(record => record.id.toString() === id);
+            const data_object = records.find(record => record.id == id);
             const input_date = new Date(selectedYear, selectedMonth - 1, parseInt(day.dataset.day));
             data_object.date = new Date(input_date.getTime() - input_date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
             data_object.event_duration = "0:30:00";
@@ -270,6 +271,7 @@ function addDropEventToDay(day) {
                 appointment_count.innerHTML = `Appointment count: ${count}`;
                 makeDialogContentForm(data_object);
                 dialog_content_div.querySelector(`[data-dialog-content="${dragged_elem.dataset.appointment}"]`).remove();
+                appointments = appointments.filter(app => app !== dragged_elem);
                 dragged_elem.remove();
                 dragged_elem = null;
             } else if (day.querySelector("[data-appointment]")) {
@@ -284,6 +286,7 @@ function addDropEventToDay(day) {
                 addEventsToAppointmentCount(app_count_div);
                 day.append(app_count_div);
                 appointment_counts.push(app_count_div);
+                appointments = appointments.filter(app => app !== dragged_elem && app !== first_app_div);
                 dragged_elem.remove();
                 dragged_elem = null;
             } else {
@@ -356,9 +359,31 @@ arrowDown.addEventListener("click", function () {
 
 function prepareCalendarContainer(param, is_month) {
     let calendar_elem = null;
-    fetch(`/api/appointments`)
+    if (!is_month) {
+        let newMonth;
+        let newYear;
+        if (param === 'up') {
+            newYear = selectedMonth < 12 ? selectedYear : selectedYear + 1;
+            newMonth = selectedMonth < 12 ? selectedMonth + 1 : 1;
+            calendar_elem = makeCalendar(newYear, newMonth);
+            calendar_elem.classList.add("from-down");
+        } else if (param === 'down') {
+            newYear = selectedMonth > 1 ? selectedYear : selectedYear - 1;
+            newMonth = selectedMonth > 1 ? selectedMonth - 1 : 12;
+            calendar_elem = makeCalendar(newYear, newMonth);
+            calendar_elem.classList.add("from-up");
+        }
+        selectedYear = newYear;
+        selectedMonth = newMonth;
+    } else {
+        calendar_elem = makeCalendar(selectedYear, param.dataset.number);
+        calendar_elem.classList.add("from-up");
+        selectedMonth = parseInt(param.dataset.number);
+    }
+    fetch(`/api/appointments/${selectedYear}/${selectedMonth}`)
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             const groupedAppointments = {};
             for (const appointment of data) {
                 const key = appointment.date.split('T')[0];
@@ -366,27 +391,6 @@ function prepareCalendarContainer(param, is_month) {
                     groupedAppointments[key] = [];
                 }
                 groupedAppointments[key].push(appointment);
-            }
-            if (!is_month) {
-                let newMonth;
-                let newYear;
-                if (param === 'up') {
-                    newYear = selectedMonth < 12 ? selectedYear : selectedYear + 1;
-                    newMonth = selectedMonth < 12 ? selectedMonth + 1 : 1;
-                    calendar_elem = makeCalendar(newYear, newMonth);
-                    calendar_elem.classList.add("from-down");
-                } else if (param === 'down') {
-                    newYear = selectedMonth > 1 ? selectedYear : selectedYear - 1;
-                    newMonth = selectedMonth > 1 ? selectedMonth - 1 : 12;
-                    calendar_elem = makeCalendar(newYear, newMonth);
-                    calendar_elem.classList.add("from-up");
-                }
-                selectedYear = newYear;
-                selectedMonth = newMonth;
-            } else {
-                calendar_elem = makeCalendar(selectedYear, param.dataset.number);
-                calendar_elem.classList.add("from-up");
-                selectedMonth = parseInt(param.dataset.number);
             }
             dialog_content_div.innerHTML = "";
             appointment_counts = [];

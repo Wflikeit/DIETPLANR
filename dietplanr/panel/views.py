@@ -196,10 +196,10 @@ class ManageClientsView(DietitianRequiredMixin, ListView):
 
 
 class CalendarAppointmentsMixin:
-    def get_appointments(self, user):
+    def get_appointments(self, user, year, month):
         if hasattr(user, 'dietitianprofile'):
             dietitian_profile = user.dietitianprofile
-            return dietitian_profile.get_dietitian_appointments()
+            return dietitian_profile.get_dietitian_appointments(year, month)
 
         else:
             return user.get_user_appointments()
@@ -209,8 +209,8 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
     template_name = 'panel/calendar.html'
     context_object_name = 'appointments'
 
-    def get_queryset(self):
-        return self.get_appointments(self.request.user)
+    def get_queryset(self, year, month):
+        return self.get_appointments(self.request.user, year, month)
 
     def get(self, request):
         return self._handle_calendar_request(request)
@@ -236,7 +236,7 @@ class ManageCalendar(LoginRequiredMixin, ListView, CalendarAppointmentsMixin):
         next_days = range(1, 42 - last_day - weekday_of_start + 1)
         current_month = datetime.now().month
         month_name = calendar.month_name[current_month]
-        appointments = self.get_queryset()
+        appointments = self.get_queryset(selected_year, selected_month)
         sorted_appointments = sorted(appointments, key=attrgetter("date"))
         grouped_appointments = []
         for date, group in groupby(sorted_appointments, key=lambda app: app.date.date()):

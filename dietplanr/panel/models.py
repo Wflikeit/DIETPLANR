@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
+from django.db.models import Q
 from django.utils.text import slugify
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
@@ -118,8 +119,9 @@ class DietitianProfile(models.Model):
     def __str__(self):
         return self.user.full_name
 
-    def get_dietitian_appointments(self):
-        return Appointment.objects.filter(dietitian_profile=self)
+    def get_dietitian_appointments(self, year, month):
+        return Appointment.objects.filter(Q(dietitian_profile=self) &
+                                          Q(date__year=year, date__month=month))
 
     def get_clients(self):
         return ClientProfile.objects.filter(dietitian=self.user.dietitianprofile)
@@ -145,8 +147,9 @@ class ClientProfile(models.Model):
     def __str__(self):
         return self.user.full_name
 
-    def get_client_appointments(self):
-        return Appointment.objects.filter(user_profile=self.user)
+    def get_client_appointments(self, year, month):
+        return Appointment.objects.filter(Q(user_profile=self.user) &
+                                          Q(date__year=year, date__month=month))
 
     def get_dietitian(self):
         return self.dietitian

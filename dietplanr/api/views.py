@@ -19,12 +19,14 @@ class AppointmentsView(generics.ListAPIView):
     # pagination_class = ConversationsPagination
 
     def get_queryset(self):
+        year = self.kwargs.get('year')
+        month = self.kwargs.get('month')
         try:
             user1 = DietitianProfile.objects.get(user=self.request.user)
-            if user1: return user1.get_dietitian_appointments()
+            if user1: return user1.get_dietitian_appointments(year, month)
         except DietitianProfile.DoesNotExist:
             user2 = ClientProfile.objects.get(user=self.request.user)
-            if user2: return user2.get_client_appointments()
+            if user2: return user2.get_client_appointments(year, month)
         return []
 
 
